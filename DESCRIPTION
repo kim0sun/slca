@@ -1,0 +1,34 @@
+Package: slca
+Type: Package
+Title: Structural Modeling for Multiple Latent Class Variables
+Version: 1.0.0
+Authors@R: 
+   c(person(given = "Youngsun", family = "Kim",
+            email = "yskstat@gmail.com",
+            role = c("aut", "cre"),
+            comment = c(ORCID = "0000-0001-8003-1939")),
+     person(given = "Hwan", family = "Chung",
+            email = "hwanch@korea.ac.kr",
+            role = c("aut"), 
+            comment = c(ORCID = "0000-0002-8969-9086")))
+Maintainer: Youngsun Kim <yskstat@gmail.com>
+Description: Provides tools for the easy implementation of 
+    Structural Latent Class Models (SLCM) encompassing 
+    Latent Transition Analysis (LTA), latent class profile analysis (LCPA), 
+    joint latent class analysis (JLCA), and additional extended models involving 
+    multiple latent class variables.
+License: GPL (>= 3)
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.1
+LinkingTo: 
+    Rcpp
+Imports: 
+    DiagrammeR,
+    magrittr,
+    MASS,
+    Rcpp,
+    stats
+Depends: 
+    R (>= 2.10)
