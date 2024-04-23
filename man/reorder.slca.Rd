@@ -9,10 +9,13 @@
 \arguments{
 \item{x}{an object of class \code{slca} and \code{estimated}.}
 
-\item{...}{arguments designating the new order of the latent class variables.}
+\item{...}{additional arguments specifying the new order for the latent class variables.}
+}
+\value{
+Returns the modified \code{slca} or \code{estimated} object with the reordered latent classes.
 }
 \description{
-Reordering latent class for certain latent class variables
+This function reorders the latent class membership for specified latent class variables.
 }
 \examples{
 library(magrittr)
@@ -24,6 +27,9 @@ reordered1 <- nlsy_jlcpa \%>\%
            drk98 = c(2, 1, 3),
            mrj98 = c(3, 2, 1))
 reordered1 \%>\% param
+# Label class1: nonuse
+#       class2: lifetime use
+#       class3: current use
 
 # Reorder the TAU parameters for joint classes as ascending order
 reordered2 <- reordered1 \%>\%

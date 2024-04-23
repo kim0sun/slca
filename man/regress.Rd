@@ -18,14 +18,43 @@ regress(object, ...)
 
 \item{...}{additional arguments.}
 
-\item{formula}{a formula defining the regression model. It should include both latent class variables from the estimated model and any exogenous (external) variables}
+\item{formula}{a formula defining the regression model, including both latent class variables from the estimated model and any exogenous (external) variables.}
 
-\item{data}{an optional data frame containing the exogenous variables in interest.}
+\item{data}{an optional data frame containing the exogenous variables of interest.}
 
-\item{imputation}{imputation method for latent class variables.}
+\item{imputation}{the imputation method for imputing (assigning) latent class variables. Possible values are:
+\itemize{
+\item "modal": Assigns each individual to the latent class with the highest posterior probability.
+\item "prob": Assigns classes to individuals randomly according to the distribution of posterior probabilities.
+}}
 
-\item{method}{bias-adjusting method for three-step approach}
+\item{method}{the method used to adjust bias in the three-step approach, with options including "naive", "BCH", and "ML".}
+}
+\value{
+A \code{list} with following components:
+
+\item{coefficients}{a matrix of regression coefficients representing the odds ratios of each class against the baseline class (the last class).}
+\item{std.err}{a matrix of standard errors corresponding to the regression coefficients.}
+\item{vcov}{the calculated variance-covariance matrix for the regression coefficients.}
+\item{dim}{the dimensions of the coefficients matrix.}
+\item{ll}{the log likelihood of the regression model.}
+
+Using the \code{summary} function, you can print coefficients, standard errors, corresponding Wald statistics, and p-values for these statistics.
 }
 \description{
-This function allows you to perform regression analysis to understand the impact of exogenous (external) variables on the latent class variables in the estimated \code{slca} model. Logistic regression and three-step approach is used for this purpose.
+This function performs regression analysis to explore the influence of exogenous (external) variables on the latent class variables within an estimated \code{slca} model. It utilizes logistic regression and employs a three-step approach.
+}
+\examples{
+library(magrittr)
+names(nlsy97)
+nlsy_jlcpa \%>\% regress(smk98 ~ SEX, nlsy97)
+nlsy_jlcpa \%>\% regress(drk98 ~ SEX, nlsy97)
+nlsy_jlcpa \%>\% regress(mrj98 ~ SEX, nlsy97)
+\donttest{
+nlsy_jlcpa \%>\% regress(use98 ~ SEX, nlsy97)
+nlsy_jlcpa \%>\% regress(prof ~ SEX, nlsy97)
+}
+}
+\references{
+Vermunt, J. K. (2010). Latent Class Modeling with Covariates: Two Improved Three-Step Approaches. Political Analysis, 18(4), 450–469. http://www.jstor.org/stable/25792024
 }

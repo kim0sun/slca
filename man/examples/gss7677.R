@@ -19,7 +19,7 @@ summary(model_lta)
 param(model_lta)
 
 regress(model_lta, status ~ SEX, data)
-\dontrun{
+\donttest{
 regress(model_lta, status ~ SEX, data, method = "BCH")
 regress(model_lta, status ~ SEX, data, method = "ML")
 }

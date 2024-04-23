@@ -7,6 +7,9 @@ reordered1 <- nlsy_jlcpa %>%
            drk98 = c(2, 1, 3),
            mrj98 = c(3, 2, 1))
 reordered1 %>% param
+# Label class1: nonuse
+#       class2: lifetime use
+#       class3: current use
 
 # Reorder the TAU parameters for joint classes as ascending order
 reordered2 <- reordered1 %>%

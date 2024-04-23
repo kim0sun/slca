@@ -17,18 +17,18 @@ param(object, ...)
 
 \item{...}{additional arguments.}
 
-\item{type}{a character string indicating the format in which the estimated parameters should be returned. If set to \code{"probs"}, estimates are returned in probability form, while \code{"logit"} returns them in log-odds (logit) form. Default is \code{"probs"}.}
+\item{type}{a character string specifying the format in which the estimated parameters should be displayed. The options are \code{"probs"} for probability format or \code{"logit"} for log-odds (logit) format. The default setting is \code{"probs"}.}
 
-\item{se}{a logical value whether to print parameter estimates or standard errors.}
+\item{se}{a logical indicating whether standard errors (TRUE) or parameter estimates (FALSE) should be displayed.}
 
-\item{index}{a logical value. If \code{TRUE}, the indices of the estimated parameters are included in the output, enclosed in parentheses. If \code{FALSE}, they are omitted.}
+\item{index}{a logical indicating whether to include (\code{TRUE}) or exclude (\code{FALSE}) the indices of the estimated parameters in the output.}
 }
 \value{
-A list containing the specified estimated parameters (or corresponding standard errors for \code{se} function):
+A \code{list} containing the specified estimated parameters or their standard errors if \code{se} is set to \code{TRUE}. The components of the list include:
 \item{pi}{Membership probabilities of the root variable.}
 \item{tau}{Conditional probabilities between latent class variables, represented with uppercase alphabets for considering measurement invariance.}
 \item{rho}{Item response probabilities for each measurement model, represented with lowercase alphabets for considering measurement invariance.}
 }
 \description{
-By passing \code{estimated} \code{slca} object, the function prints estimated parameters of the slca model.
+This function prints the estimated parameters of the \code{slca} model by accepting an \code{estimated} \code{slca} object.
 }

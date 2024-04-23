@@ -51,13 +51,13 @@ stat4 <- slca(status(4) ~ PAPRES + PADEG + MADEG) \%>\%
 
 gof(stat2, stat3, stat4)
 gof(stat2, stat3, stat4, test = "chisq")
-\dontrun{
+\donttest{
 gof(stat2, stat3, stat4, test = "boot")
 }
 
 compare(stat3, stat4)
 compare(stat3, stat4, test = "chisq")
-\dontrun{
+\donttest{
 compare(stat3, stat4, test = "boot")
 }
 }

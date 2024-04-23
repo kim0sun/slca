@@ -39,7 +39,7 @@ nlsy_smoke <- slca(smk98(3) ~ ESMK_98 + FSMK_98 + DSMK_98 + HSMK_98) \%>\%
    estimate(data = nlsy97)
 summary(nlsy_smoke)
 
-\dontrun{
+\donttest{
 # JLCA
 model_jlca <- slca(
    smk98(3) ~ ESMK_98 + FSMK_98 + DSMK_98 + HSMK_98,
@@ -73,9 +73,8 @@ nlsy_jlcpa <- slca(
       c("use98 ~ drk98", "use03 ~ drk03", "use08 ~ drk08"),
       c("use98 ~ mrj98", "use03 ~ mrj03", "use08 ~ mrj08")
    )
-) \%>\% estimate(nlsy97, control = list(nrep = 30, test.iter = 1000))
+) \%>\% estimate(nlsy97)
 }
-nlsy_jlcpa \%>\% param
 }
 \references{
 Bureau of Labor Statistics, U.S. Department of Labor. National Longitudinal Survey of Youth 1997 cohort, 1997-2017 (rounds 1-18). Produced and distributed by the Center for Human Resource Research (CHRR), The Ohio State University. Columbus, OH: 2019.

@@ -1,13 +1,18 @@
 #' Simulate data from \code{slca} model.
-#' This function simulate data from constructed \code{slca} model.
-#' If the object is not estimated, the parameters can be given by user or can be generated at random.
 #'
-#' @param object a \code{slca} object
-#' @param nsim number of response observation to be simulated. Defaults to 500.
-#' @param seed random seed.
-#' @param parm parameter set by users.
-#' @param nlevel number of levels for each manifest items declared in the model.
+#' This function simulates data from a constructed \code{slca} model. If the model is not already estimated, parameters can be specified by the user or generated randomly.
+#'
+#' @param object a \code{slca} object representing the model from which data will be simulated.
+#' @param nsim the number of response observations to simulate. Defaults to 500.
+#' @param seed a random seed for reproducibility of the
+#' @param parm a set of parameters provided by the user to guide the simulation, if the model has not been estimated.
+#' @param nlevel the number of levels for each manifest item declared in the model. If not provided, the default is 2.
 #' @param ... additional arguments.
+#'
+#' @returns
+#' A `list` of two components:
+#' \item{class}{A `data.frame` providing the assigned latent class for each individual across different latent class variables.}
+#' \item{response}{A `data.frame` containing the manifest items that were simulated.}
 #'
 #' @example man/examples/sim.R
 #'

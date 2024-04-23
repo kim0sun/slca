@@ -229,7 +229,7 @@ summary.slca = function(
 
 #' Printing Estimated Parameters of `slca` Object
 #'
-#' By passing `estimated` `slca` object, the function prints estimated parameters of the slca model.
+#' This function prints the estimated parameters of the `slca` model by accepting an `estimated` `slca` object.
 #'
 #' @aliases param param.slca
 #' @usage
@@ -241,13 +241,13 @@ summary.slca = function(
 #' )
 #'
 #' @param object an object of class `slca` and `estimated`.
-#' @param type a character string indicating the format in which the estimated parameters should be returned. If set to `"probs"`, estimates are returned in probability form, while `"logit"` returns them in log-odds (logit) form. Default is `"probs"`.
-#' @param se a logical value whether to print parameter estimates or standard errors.
-#' @param index a logical value. If `TRUE`, the indices of the estimated parameters are included in the output, enclosed in parentheses. If `FALSE`, they are omitted.
+#' @param type a character string specifying the format in which the estimated parameters should be displayed. The options are `"probs"` for probability format or `"logit"` for log-odds (logit) format. The default setting is `"probs"`.
+#' @param se a logical indicating whether standard errors (TRUE) or parameter estimates (FALSE) should be displayed.
+#' @param index a logical indicating whether to include (`TRUE`) or exclude (`FALSE`) the indices of the estimated parameters in the output.
 #' @param ... additional arguments.
 #'
 #' @returns
-#' A list containing the specified estimated parameters (or corresponding standard errors for `se` function):
+#' A `list` containing the specified estimated parameters or their standard errors if `se` is set to `TRUE`. The components of the list include:
 #' \item{pi}{Membership probabilities of the root variable.}
 #' \item{tau}{Conditional probabilities between latent class variables, represented with uppercase alphabets for considering measurement invariance.}
 #' \item{rho}{Item response probabilities for each measurement model, represented with lowercase alphabets for considering measurement invariance.}
@@ -382,11 +382,20 @@ predict.slca <- function(
 #' Computes confidence intervals for one or more parameters of fitted model. Package \pkg{slca} adds methods for \code{slca} fits.
 #'
 #' @param object an object of class `slca` and `estimated`.
-#' @param parm an integer string specifying parameters to compute confidence intervals.
-#' @param level level a numeric value representing the desired confidence level for the intervals. Default is 0.95
-#' @param type a character string specifying the format in which the results should be returned. Options are `"probs"` for probability format and `"logit"` for log-odds (logit) format. The default is `"probs"`.
+#' @param parm an integer string specifying parameters to be given confidence intervals.
+#' @param level numeric value representing the desired confidence level for the intervals, with a default of 0.95.
+#' @param type a character string specifying the format in which the results should be returned. Options include `"probs"` for probability format and `"logit"` for log-odds (logit) format, with the default being `"probs"`.
 #' @param ... additional arguments.
 #'
+#' @returns
+#' A `matrix` with two columns representing the confidence intervals for the selected parameters. The columns are named based on the specified confidence level (`level`):
+#'
+#' - `100 * (level / 2) %`: This column shows the lower bound of the confidence interval.
+#' - `100 * (1 - level / 2) %`: This column shows the upper bound of the confidence interval.
+#'
+#' The `level` parameter specifies the confidence level, with common values being 0.05 for a 95% confidence interval and 0.01 for a 99% confidence interval.
+#'
+#' @example man/examples/confint.R
 #'
 #' @exportS3Method stats::confint slca
 confint.slca <- function(
@@ -394,7 +403,6 @@ confint.slca <- function(
 ) {
    if (!inherits(object, "estimated")) stop("the model is not estimated.")
    if (missing(parm)) parm <- seq_along(object$par)
-   if (missing(index)) index <- seq_along(object$logit)
    type <- match.arg(type)
 
    logit <- object$logit
@@ -423,10 +431,12 @@ format_pc <- function(perc, digits)
 
 #' Reorder Latent Class Membership of Class Variables
 #'
-#' Reordering latent class for certain latent class variables
-#'
+#' This function reorders the latent class membership for specified latent class variables.
+
 #' @param x an object of class `slca` and `estimated`.
-#' @param ... arguments designating the new order of the latent class variables.
+#' @param ... additional arguments specifying the new order for the latent class variables.
+#'
+#' @returns Returns the modified `slca` or `estimated` object with the reordered latent classes.
 #'
 #' @example man/examples/reorder.R
 #'

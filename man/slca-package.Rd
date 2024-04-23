@@ -5,7 +5,7 @@
 \alias{slca-package}
 \title{slca: An R Package for Structural Modeling for Multiple Latent Class Variables}
 \description{
-\code{slca} package provides tools for the easy implementation of Structural Latent Class Models (SLCM), including Latent Transition Analysis (LTA), Latent Class Profile Analysis (LCPA), and Joint Latent Class Analysis (JLCA).
+The \code{slca} package provides a comprehensive toolkit for the implementation of Structural Latent Class Models (SLCM). This includes tools for conducting Latent Transition Analysis (LTA), Latent Class Profile Analysis (LCPA), and Joint Latent Class Analysis (JLCA), facilitating the analysis of complex latent structures in statistical data.
 }
 \author{
 \strong{Maintainer}: Youngsun Kim \email{yskstat@gmail.com} (\href{https://orcid.org/0000-0001-8003-1939}{ORCID})

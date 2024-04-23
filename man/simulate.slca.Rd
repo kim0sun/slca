@@ -2,29 +2,30 @@
 % Please edit documentation in R/simulate.slca.R
 \name{simulate.slca}
 \alias{simulate.slca}
-\title{Simulate data from \code{slca} model.
-This function simulate data from constructed \code{slca} model.
-If the object is not estimated, the parameters can be given by user or can be generated at random.}
+\title{Simulate data from \code{slca} model.}
 \usage{
 \method{simulate}{slca}(object, nsim = 500, seed = NULL, parm, nlevel, ...)
 }
 \arguments{
-\item{object}{a \code{slca} object}
+\item{object}{a \code{slca} object representing the model from which data will be simulated.}
 
-\item{nsim}{number of response observation to be simulated. Defaults to 500.}
+\item{nsim}{the number of response observations to simulate. Defaults to 500.}
 
-\item{seed}{random seed.}
+\item{seed}{a random seed for reproducibility of the}
 
-\item{parm}{parameter set by users.}
+\item{parm}{a set of parameters provided by the user to guide the simulation, if the model has not been estimated.}
 
-\item{nlevel}{number of levels for each manifest items declared in the model.}
+\item{nlevel}{the number of levels for each manifest item declared in the model. If not provided, the default is 2.}
 
 \item{...}{additional arguments.}
 }
+\value{
+A \code{list} of two components:
+\item{class}{A \code{data.frame} providing the assigned latent class for each individual across different latent class variables.}
+\item{response}{A \code{data.frame} containing the manifest items that were simulated.}
+}
 \description{
-Simulate data from \code{slca} model.
-This function simulate data from constructed \code{slca} model.
-If the object is not estimated, the parameters can be given by user or can be generated at random.
+This function simulates data from a constructed \code{slca} model. If the model is not already estimated, parameters can be specified by the user or generated randomly.
 }
 \examples{
 library(magrittr)

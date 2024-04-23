@@ -1,6 +1,6 @@
 #' Regress Exogenous Variables on Latent Variables
 #'
-#' This function allows you to perform regression analysis to understand the impact of exogenous (external) variables on the latent class variables in the estimated \code{slca} model. Logistic regression and three-step approach is used for this purpose.
+#' This function performs regression analysis to explore the influence of exogenous (external) variables on the latent class variables within an estimated \code{slca} model. It utilizes logistic regression and employs a three-step approach.
 #'
 #' @aliases regress regress.slca
 #' @usage
@@ -12,11 +12,28 @@
 #'    method = c("naive", "BCH", "ML"), ...
 #' )
 #' @param object an object of class `slca` and `estimated`
-#' @param formula a formula defining the regression model. It should include both latent class variables from the estimated model and any exogenous (external) variables
-#' @param data an optional data frame containing the exogenous variables in interest.
-#' @param imputation imputation method for latent class variables.
-#' @param method bias-adjusting method for three-step approach
+#' @param formula a formula defining the regression model, including both latent class variables from the estimated model and any exogenous (external) variables.
+#' @param data an optional data frame containing the exogenous variables of interest.
+#' @param imputation the imputation method for imputing (assigning) latent class variables. Possible values are:
+#' - "modal": Assigns each individual to the latent class with the highest posterior probability.
+#' - "prob": Assigns classes to individuals randomly according to the distribution of posterior probabilities.
+#' @param method the method used to adjust bias in the three-step approach, with options including "naive", "BCH", and "ML".
 #' @param ... additional arguments.
+#'
+#' @returns
+#' A `list` with following components:
+#'
+#' \item{coefficients}{a matrix of regression coefficients representing the odds ratios of each class against the baseline class (the last class).}
+#' \item{std.err}{a matrix of standard errors corresponding to the regression coefficients.}
+#' \item{vcov}{the calculated variance-covariance matrix for the regression coefficients.}
+#' \item{dim}{the dimensions of the coefficients matrix.}
+#' \item{ll}{the log likelihood of the regression model.}
+#'
+#' Using the `summary` function, you can print coefficients, standard errors, corresponding Wald statistics, and p-values for these statistics.
+#'
+#' @references Vermunt, J. K. (2010). Latent Class Modeling with Covariates: Two Improved Three-Step Approaches. Political Analysis, 18(4), 450–469. http://www.jstor.org/stable/25792024
+#'
+#' @example man/examples/reg.R
 #'
 #' @export
 regress <- function(object, ...) UseMethod("regress")

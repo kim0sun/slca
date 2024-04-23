@@ -34,6 +34,11 @@ estModel <- function(method, control, par, mf, arg) {
    } else if (method == "nlm") {
       if (control$verbose) cat("nlm iteration begin.\n")
       fix0 <- union(which(arg$fix0), which(is.infinite(par)))
+      while (any(cond <- arg$ref_idx %in% fix0)) {
+         arg$ref[cond] <- arg$ref[cond] - 1
+         arg$ref_idx[cond] <- arg$ref_idx[cond] - 1
+      }
+
       logit <- par - par[arg$ref_idx[arg$id]]
       nonlm <- stats::nlm(
          llf, logit[-c(which(arg$fix0), arg$ref_idx)],
@@ -67,7 +72,15 @@ estModel <- function(method, control, par, mf, arg) {
       par <- em$param
       if (control$verbose) cat(".. done. \nnlm iteration begin.\n")
       fix0 <- union(which(arg$fix0), which(is.infinite(par)))
+      if (control$verbose) cat("nlm iteration begin.\n")
+      fix0 <- union(which(arg$fix0), which(is.infinite(par)))
+      while (any(cond <- arg$ref_idx %in% fix0)) {
+         arg$ref[cond] <- arg$ref[cond] - 1
+         arg$ref_idx[cond] <- arg$ref_idx[cond] - 1
+      }
+
       logit <- par - par[arg$ref_idx[arg$id]]
+
       nonlm <- stats::nlm(
          llf, logit[-c(fix0, arg$ref_idx)],
          fix0, arg$ref_idx, arg$id, y = attr(mf, "y"),
