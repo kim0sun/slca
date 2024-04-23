@@ -4,14 +4,32 @@
 # slca
 
 <!-- badges: start -->
+
+[![CRAN
+status](https://www.r-pkg.org/badges/version/slca)](https://CRAN.R-project.org/package=slca)
+[![Downloads](https://cranlogs.r-pkg.org/badges/grand-total/slca?color=blue)](https://r-pkg.org/pkg/slca)
+[![R-CMD-check](https://github.com/kim0sun/slca/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/kim0sun/slca/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-The goal of slca is to …
+`slca` provides comprehensive tools for the implementation of Structural
+Latent Class Models (SLCM), including Latent Transition Analysis (LTA;
+Linda M. Collins and Stephanie T. Lanza, 2009)
+<doi:10.1002/9780470567333>, Latent Class Profile Analysis (LCPA; Hwan
+Chung et al., 2010) <doi:10.1111/j.1467-985x.2010.00674.x>, and Joint
+Latent Class Analysis (JLCA; Saebom Jeon et al., 2017)
+<doi:10.1080/10705511.2017.1340844>, and any other extended models
+involving multiple latent class variables.
 
 ## Installation
 
-You can install the development version of slca from
-[GitHub](https://github.com/) with:
+You can install the released version of slca from
+[CRAN](https://CRAN.R-project.org) with:
+
+``` r
+install.packages("slca")
+```
+
+And the development version from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
