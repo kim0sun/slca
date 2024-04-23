@@ -1,4 +1,6 @@
 url: https://kim0sun.github.io/slca/
 template:
   bootstrap: 5
-
+  params:
+    bootswatch:
+    ganalytics:
