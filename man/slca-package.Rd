@@ -7,6 +7,15 @@
 \description{
 The \code{slca} package provides a comprehensive toolkit for the implementation of Structural Latent Class Models (SLCM). This includes tools for conducting Latent Transition Analysis (LTA), Latent Class Profile Analysis (LCPA), and Joint Latent Class Analysis (JLCA), facilitating the analysis of complex latent structures in statistical data.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/kim0sun/slca}
+  \item \url{https://kim0sun.github.io/slca/}
+  \item Report bugs at \url{https://github.com/kim0sun/slca/issues}
+}
+
+}
 \author{
 \strong{Maintainer}: Youngsun Kim \email{yskstat@gmail.com} (\href{https://orcid.org/0000-0001-8003-1939}{ORCID})
 
