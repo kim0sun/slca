@@ -1,4 +1,4 @@
-#' Estimating Parameters of `slca` Object
+#' Estimate Parameters of `slca` Object
 #'
 #' Estimate the parameters of model constructed using the `slca` function.
 #'

@@ -18,7 +18,7 @@ deviance.slca <- function(object, ...) {
       2 * (attr(x$mf, "loglik") - stats::logLik(x)))
 }
 
-#' Goodness of Fit Tests for Estimated `slca` Model
+#' Goodness of Fit Test for Estimated `slca` Model
 #'
 #' Provides AIC, BIC and deviance statistic (G-squared) for goodness of fit test for the fitted model. Absolute model fit can be tested with deviance statistics, if `test` argument is specified.
 #'
@@ -139,7 +139,7 @@ gof.slca <- function(
              class = c("anova", "data.frame"))
 }
 
-#' Comparing Two Estimated `slca` Models
+#' Compare Two Estimated `slca` Models
 #'
 #' Provides relative model fit test for two fitted SLCM models with deviance statistic.
 #'

@@ -227,7 +227,7 @@ summary.slca = function(
    invisible(object)
 }
 
-#' Printing Estimated Parameters of `slca` Object
+#' Print Estimated Parameters of `slca` Object
 #'
 #' This function prints the estimated parameters of the `slca` model by accepting an `estimated` `slca` object.
 #'
