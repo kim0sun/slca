@@ -99,18 +99,18 @@
 <code class="sourceCode R"><span><span class="fu">L1</span><span class="op">(</span><span class="fl">3</span><span class="op">)</span> <span class="op">~</span> <span class="va">x1</span> <span class="op">+</span> <span class="va">x2</span> <span class="op">+</span> <span class="va">x3</span></span>
 <span><span class="va">L2</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">~</span> <span class="va">y1</span> <span class="op">+</span> <span class="va">y2</span> <span class="op">+</span> <span class="va">y3</span></span>
 <span><span class="fu">L3</span><span class="op">(</span><span class="fl">3</span><span class="op">)</span> <span class="op">~</span> <span class="va">z1</span> <span class="op">+</span> <span class="va">z2</span> <span class="op">+</span> <span class="va">z3</span></span></code></pre></div>
-<p><img src="reference/figures/syn1.svg"></p>
+<p><img src="reference/figures/syn1.png"></p>
 <div class="section level4">
 <h4 id="structural-model-specification">Structural model specification<a class="anchor" aria-label="anchor" href="#structural-model-specification"></a>
 </h4>
 <p>This part focuses on establishing relationships between different latent class variables. For example, <code>L1 ~ L2</code> indicates a relationship where <code>L1</code> have impact on or related to <code>L2</code>, as shown below:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">L1</span> <span class="op">~</span> <span class="va">L2</span></span></code></pre></div>
-<p><img src="reference/figures/syn2.svg"></p>
+<p><img src="reference/figures/syn2.png"></p>
 <p>In some cases, you might need to define higher-level latent class variables that are influenced by or comprise several other latent class variables. For example, a higher-level variable <code>P</code> could be a composite of <code>L1</code>, <code>L2</code>, and <code>L3</code>. Here, note that you should define the number of latent classes for <code>P</code>. This relationship can be represented as follows:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">P</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span> <span class="op">~</span> <span class="va">L1</span> <span class="op">+</span> <span class="va">L2</span> <span class="op">+</span> <span class="va">L3</span></span></code></pre></div>
-<p><img src="reference/figures/syn3.svg"></p>
+<p><img src="reference/figures/syn3.png"></p>
 </div>
 <div class="section level4">
 <h4 id="parameter-constraints">Parameter constraints<a class="anchor" aria-label="anchor" href="#parameter-constraints"></a>
@@ -139,18 +139,18 @@
 <span><span class="va">lta</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/slca.html">slca</a></span><span class="op">(</span><span class="va">L1</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">~</span> <span class="va">x1</span> <span class="op">+</span> <span class="va">y1</span> <span class="op">+</span> <span class="va">z1</span>, <span class="va">L2</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">~</span> <span class="va">x2</span> <span class="op">+</span> <span class="va">y2</span> <span class="op">+</span> <span class="va">z2</span>, <span class="va">L3</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">~</span> <span class="va">x3</span> <span class="op">+</span> <span class="va">y3</span> <span class="op">+</span> <span class="va">z3</span>,</span>
 <span>            <span class="va">L1</span> <span class="op">~</span> <span class="va">L2</span>, <span class="va">L2</span> <span class="op">~</span> <span class="va">L3</span>, constraints <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"L1"</span>, <span class="st">"L2"</span>, <span class="st">"L3"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">lta</span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/lta.svg"></p>
+<p><img src="reference/figures/lta.png"></p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">jlca</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/slca.html">slca</a></span><span class="op">(</span><span class="va">L1</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">~</span> <span class="va">x1</span> <span class="op">+</span> <span class="va">x2</span> <span class="op">+</span> <span class="va">x3</span>, <span class="va">L2</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">~</span> <span class="va">y1</span> <span class="op">+</span> <span class="va">y2</span> <span class="op">+</span> <span class="va">y3</span>, <span class="va">L3</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">~</span> <span class="va">z1</span> <span class="op">+</span> <span class="va">z2</span> <span class="op">+</span> <span class="va">z3</span>,</span>
 <span>             <span class="va">JC</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">~</span> <span class="va">L1</span> <span class="op">+</span> <span class="va">L2</span> <span class="op">+</span> <span class="va">L3</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">jlca</span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/jlca.svg"></p>
+<p><img src="reference/figures/jlca.png"></p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lcamg</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/slca.html">slca</a></span><span class="op">(</span><span class="va">L1</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">~</span> <span class="va">x1</span> <span class="op">+</span> <span class="va">x2</span> <span class="op">+</span> <span class="va">x3</span>, <span class="va">L2</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">~</span> <span class="va">y1</span> <span class="op">+</span> <span class="va">y2</span> <span class="op">+</span> <span class="va">y3</span>, <span class="va">L3</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">~</span> <span class="va">z1</span> <span class="op">+</span> <span class="va">z2</span> <span class="op">+</span> <span class="va">z3</span>,</span>
 <span>              <span class="va">JC</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">~</span> <span class="va">L1</span> <span class="op">+</span> <span class="va">L2</span> <span class="op">+</span> <span class="va">L3</span>, <span class="va">LG</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">~</span> <span class="va">g1</span> <span class="op">+</span> <span class="va">g2</span> <span class="op">+</span> <span class="va">g3</span>, </span>
 <span>              <span class="va">LG</span> <span class="op">~</span> <span class="va">JC</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">lcamg</span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/lcamg.svg"></p>
+<p><img src="reference/figures/lcamg.png"></p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
@@ -191,7 +191,6 @@
 <ul class="list-unstyled">
 <li><a href="https://CRAN.R-project.org/package=slca" class="external-link"><img src="https://www.r-pkg.org/badges/version/slca" alt="CRAN status"></a></li>
 <li><a href="https://r-pkg.org/pkg/slca" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/grand-total/slca?color=blue" alt="Downloads"></a></li>
-<li><a href="https://github.com/kim0sun/slca/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/kim0sun/slca/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
 </ul>
 </div>
 
