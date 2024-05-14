@@ -152,9 +152,3 @@ plot(lcamg)
 ```
 
 ![](fig/lcamg.svg)
-
-## Data example (`gss7677`)
-
-``` r
-data("gss7677")
-```
