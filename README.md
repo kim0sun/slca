@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# slca <a href="https://kim0sun.github.io/slca"><img src="fig/logo.png" align="right" height="138" /></a>
+# slca <a href="https://kim0sun.github.io/slca"><img src="man/figures/logo.png" align="right" height="138" /></a>
 
 <!-- badges: start -->
 
@@ -68,7 +68,7 @@ L2[3] ~ y1 + y2 + y3
 L3(3) ~ z1 + z2 + z3
 ```
 
-![](fig/syn1.svg)
+![](man/figures/syn1.svg)
 
 #### Structural model specification
 
@@ -80,7 +80,7 @@ class variables. For example, `L1 ~ L2` indicates a relationship where
 L1 ~ L2
 ```
 
-![](fig/syn2.svg)
+![](man/figures/syn2.svg)
 
 In some cases, you might need to define higher-level latent class
 variables that are influenced by or comprise several other latent class
@@ -92,7 +92,7 @@ latent classes for `P`. This relationship can be represented as follows:
 P[4] ~ L1 + L2 + L3
 ```
 
-![](fig/syn3.svg)
+![](man/figures/syn3.svg)
 
 #### Parameter constraints
 
@@ -134,7 +134,7 @@ lta <- slca(L1[3] ~ x1 + y1 + z1, L2[3] ~ x2 + y2 + z2, L3[3] ~ x3 + y3 + z3,
 plot(lta)
 ```
 
-![](fig/lta.svg)
+![](man/figures/lta.svg)
 
 ``` r
 jlca <- slca(L1[3] ~ x1 + x2 + x3, L2[3] ~ y1 + y2 + y3, L3[3] ~ z1 + z2 + z3,
@@ -142,7 +142,7 @@ jlca <- slca(L1[3] ~ x1 + x2 + x3, L2[3] ~ y1 + y2 + y3, L3[3] ~ z1 + z2 + z3,
 plot(jlca)
 ```
 
-![](fig/jlca.svg)
+![](man/figures/jlca.svg)
 
 ``` r
 lcamg <- slca(L1[3] ~ x1 + x2 + x3, L2[3] ~ y1 + y2 + y3, L3[3] ~ z1 + z2 + z3,
@@ -151,4 +151,4 @@ lcamg <- slca(L1[3] ~ x1 + x2 + x3, L2[3] ~ y1 + y2 + y3, L3[3] ~ z1 + z2 + z3,
 plot(lcamg)
 ```
 
-![](fig/lcamg.svg)
+![](man/figures/lcamg.svg)
