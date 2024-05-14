@@ -1,0 +1,26 @@
+{
+    "id": "8E9016C3",
+    "path": "~/Github/slca/R/nlsy_jlcpa.R",
+    "project_path": "R/nlsy_jlcpa.R",
+    "type": "r_source",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1712666053139.0,
+    "source_on_save": false,
+    "relative_order": 6,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "9,29",
+        "scrollLine": "0"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1713185538,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1713185538744,
+    "read_only": false,
+    "read_only_alternatives": []
+}

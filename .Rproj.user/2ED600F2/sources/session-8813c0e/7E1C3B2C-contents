@@ -1,0 +1,46 @@
+slcaParm <- function(model) {
+   cat("Insert PI\n")
+   for (r in seq_len(arg$npi)) {
+      cat(rownames(model$latent)[arg$rt[r] + 1], ":")
+      input <- abs(scan(n = arg$nc_pi[r]))
+      if (length(input == arg$nc_pi[r])) {
+         par[(pos + 1):(pos + arg$nc_pi[r])] <- input
+      } else {
+         par[(pos + 1):(pos + arg$nc_pi[r])] <- stats::runif(arg$nc_pi[r])
+      }
+      pos <- pos + arg$nc_pi[r]
+   }
+   
+   if (arg$ntau > 0) {
+      cat("Insert TAU\n")
+      for (k in seq_len(arg$ntau)) {
+         cat(LETTERS[k], ":")
+         input <- abs(scan(n = arg$nk_tau[k] * arg$nl_tau[k]))
+         if (length(input) == arg$nk_tau[k] * arg$nl_tau[k]) {
+            par[(pos + 1):(pos + arg$nk_tau[k] * arg$nl_tau[k])] <-
+               input
+         } else {
+            par[(pos + 1):(pos + arg$nk_tau[k] * arg$nl_tau[k])] <-
+               stats::runif(arg$nk_tau[k] * arg$nl_tau[k])
+         }
+         pos <- pos + arg$nk_tau[k] * arg$nl_tau[k]
+      }
+   }
+   
+   cat("Insert RHO\n")
+   for (r in seq_len(arg$nrho)) {
+      cat(letters[r], ":")
+      input <- abs(scan(n = arg$nc_rho[r] * arg$nr_rho[r]))
+      if (length(input) == arg$nc_rho[r] * arg$nr_rho[r]) {
+         par[(pos + 1):(pos + arg$nc_rho[r] * arg$nr_rho[r])] <-
+            input
+      } else {
+         par[(pos + 1):(pos + arg$nc_rho[r] * arg$nr_rho[r])] <-
+            stats::runif(arg$nc_rho[r] * arg$nr_rho[r])
+      }
+      pos <- pos + arg$nc_rho[r] * arg$nr_rho[r]
+   }
+}
+
+
+   

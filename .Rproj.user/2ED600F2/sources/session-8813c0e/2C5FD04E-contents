@@ -1,0 +1,48 @@
+library(DiagrammeR)
+library(DiagrammeRsvg)
+library(magrittr)
+library(rsvg)
+plot(lta) %>% export_svg %>% charToRaw %>% rsvg_svg("lta.svg")
+plot(jlca) %>% export_svg %>% charToRaw %>% rsvg_svg("jlca.svg")
+plot(lcamg) %>% export_svg %>% charToRaw %>% rsvg_svg("lcamg.svg")
+
+text1 <- "
+digraph { 
+   rankdir = 'TD';node[fontname = 'Helvetica']
+   
+   node [shape = box]
+   x1, x2, x3, y1, y2, y3, z1, z2, z3
+   
+   node [shape = oval]
+   L1, L2, L3
+   
+   L1  -> { x1, x2, x3 }
+   L2  -> { y1, y2, y3 }
+   L3  -> { z1, z2, z3 }
+}
+"
+text2 <- "
+digraph { 
+   rankdir = 'LR';node[fontname = 'Helvetica']
+   
+   node [shape = oval]
+   L1, L2
+   
+   L1 -> L2
+}
+"
+
+text3 <- "
+digraph { 
+   rankdir = 'TD';node[fontname = 'Helvetica']
+   
+   node [shape = oval]
+   L1, L2, L3, P
+   
+   P -> {L1, L2, L3}
+}
+"
+
+grViz(text1) %>% export_svg %>% charToRaw %>% rsvg_svg("syn1.svg")
+grViz(text2) %>% export_svg %>% charToRaw %>% rsvg_svg("syn2.svg")
+grViz(text3) %>% export_svg %>% charToRaw %>% rsvg_svg("syn3.svg")

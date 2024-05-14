@@ -1,0 +1,342 @@
+[
+    {
+        "file": "/Users/kim0sun/Github/slca/src/auxiliary.cpp",
+        "file_last_write": 1696337152.0,
+        "definitions": [
+            {
+                "usr": "c:@F@sample1#I#*d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "sample1(int, double *)",
+                "file": "/Users/kim0sun/Github/slca/src/auxiliary.cpp",
+                "line": 4,
+                "column": 5,
+                "hidden": false
+            },
+            {
+                "usr": "c:@F@log_add_exp#d#d#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "log_add_exp(double, double)",
+                "file": "/Users/kim0sun/Github/slca/src/auxiliary.cpp",
+                "line": 15,
+                "column": 8,
+                "hidden": false
+            },
+            {
+                "usr": "c:@F@log_sum_exp#$@N@Rcpp@S@Vector>#VI14#@N@Rcpp@ST>1#T@PreserveStorage#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "log_sum_exp(NumericVector)",
+                "file": "/Users/kim0sun/Github/slca/src/auxiliary.cpp",
+                "line": 27,
+                "column": 8,
+                "hidden": false
+            },
+            {
+                "usr": "c:@F@elogdiri#$@N@Rcpp@S@Vector>#VI14#@N@Rcpp@ST>1#T@PreserveStorage#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "elogdiri(NumericVector)",
+                "file": "/Users/kim0sun/Github/slca/src/auxiliary.cpp",
+                "line": 36,
+                "column": 15,
+                "hidden": false
+            },
+            {
+                "usr": "c:@F@plogdiri#$@N@Rcpp@S@Vector>#VI14#@N@Rcpp@ST>1#T@PreserveStorage#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "plogdiri(NumericVector, NumericVector)",
+                "file": "/Users/kim0sun/Github/slca/src/auxiliary.cpp",
+                "line": 40,
+                "column": 15,
+                "hidden": false
+            }
+        ],
+        "hidden": false
+    },
+    {
+        "file": "/Users/kim0sun/Github/slca/src/auxiliary.h",
+        "file_last_write": 1696337163.0,
+        "definitions": [],
+        "hidden": false
+    },
+    {
+        "file": "/Users/kim0sun/Github/slca/src/calculate.cpp",
+        "file_last_write": 1705130503.0,
+        "definitions": [
+            {
+                "usr": "c:@F@calcModel#$@N@Rcpp@S@Vector>#VI13#@N@Rcpp@ST>1#T@PreserveStorage#I#S0_#S0_#$@N@Rcpp@S@Vector>#VI14#@N@Rcpp@ST>1#T@PreserveStorage#$@N@Rcpp@S@Vector>#VI10#@N@Rcpp@ST>1#T@PreserveStorage#S0_#I#I#I#I#I#I#S0_#S0_#S0_#S0_#S0_#S0_#S0_#S0_#S0_#S0_#S0_#S0_#S0_#S0_#S0_#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "calcModel(IntegerVector, int, IntegerVector, IntegerVector, NumericVector, LogicalVector, IntegerVector, int, int, int, int, int, int, IntegerVector, IntegerVector, IntegerVector, IntegerVector, IntegerVector, IntegerVector, IntegerVector, IntegerVector, IntegerVector, IntegerVector, IntegerVector, IntegerVector, IntegerVector, IntegerVector, IntegerVector, IntegerVector)",
+                "file": "/Users/kim0sun/Github/slca/src/calculate.cpp",
+                "line": 7,
+                "column": 6,
+                "hidden": false
+            }
+        ],
+        "hidden": false
+    },
+    {
+        "file": "/Users/kim0sun/Github/slca/src/downward.cpp",
+        "file_last_write": 1695038555.0,
+        "definitions": [
+            {
+                "usr": "c:@F@dnInit#*d#S0_#S0_#S0_#S0_#I#I#b#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "dnInit(double *, double *, double *, double *, double *, int, int, bool)",
+                "file": "/Users/kim0sun/Github/slca/src/downward.cpp",
+                "line": 5,
+                "column": 6,
+                "hidden": false
+            },
+            {
+                "usr": "c:@F@calclr#*d#S0_#I#I#b#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "calclr(double *, double *, int, int, bool)",
+                "file": "/Users/kim0sun/Github/slca/src/downward.cpp",
+                "line": 27,
+                "column": 8,
+                "hidden": false
+            },
+            {
+                "usr": "c:@F@calclri#*d#S0_#S0_#I#I#b#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "calclri(double *, double *, double *, int, int, bool)",
+                "file": "/Users/kim0sun/Github/slca/src/downward.cpp",
+                "line": 45,
+                "column": 6,
+                "hidden": false
+            },
+            {
+                "usr": "c:@F@dnRec#*d#S0_#S0_#S0_#S0_#I#I#I#S0_#S0_#S0_#S0_#b#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "dnRec(double *, double *, double *, double *, double *, int, int, int, double *, double *, double *, double *, bool)",
+                "file": "/Users/kim0sun/Github/slca/src/downward.cpp",
+                "line": 60,
+                "column": 6,
+                "hidden": false
+            }
+        ],
+        "hidden": false
+    },
+    {
+        "file": "/Users/kim0sun/Github/slca/src/downward.h",
+        "file_last_write": 1696337173.0,
+        "definitions": [],
+        "hidden": false
+    },
+    {
+        "file": "/Users/kim0sun/Github/slca/src/estimate.cpp",
+        "file_last_write": 1705059938.0,
+        "definitions": [
+            {
+                "usr": "c:@F@em_est#$@N@Rcpp@S@Vector>#VI13#@N@Rcpp@ST>1#T@PreserveStorage#I#S0_#S0_#$@N@Rcpp@S@Vector>#VI14#@N@Rcpp@ST>1#T@PreserveStorage#$@N@Rcpp@S@Vector>#VI10#@N@Rcpp@ST>1#T@PreserveStorage#I#I#I#I#I#I#S0_#S0_#S0_#S0_#S0_#S0_#S0_#S0_#S0_#S0_#S0_#S0_#S0_#S0_#S0_#S0_#I#d#b#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "em_est(IntegerVector, int, IntegerVector, IntegerVector, NumericVector, LogicalVector, int, int, int, int, int, int, IntegerVector, IntegerVector, IntegerVector, IntegerVector, IntegerVector, IntegerVector, IntegerVector, IntegerVector, IntegerVector, IntegerVector, IntegerVector, IntegerVector, IntegerVector, IntegerVector, IntegerVector, IntegerVector, int, double, bool)",
+                "file": "/Users/kim0sun/Github/slca/src/estimate.cpp",
+                "line": 9,
+                "column": 6,
+                "hidden": false
+            },
+            {
+                "usr": "c:@F@fll#$@N@Rcpp@S@Vector>#VI13#@N@Rcpp@ST>1#T@PreserveStorage#$@N@Rcpp@S@Vector>#VI14#@N@Rcpp@ST>1#T@PreserveStorage#I#S0_#S0_#I#I#I#I#I#I#S0_#S0_#S0_#S0_#S0_#S0_#S0_#S0_#S0_#S0_#S0_#S0_#S0_#S0_#S0_#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "fll(IntegerVector, NumericVector, int, IntegerVector, IntegerVector, int, int, int, int, int, int, IntegerVector, IntegerVector, IntegerVector, IntegerVector, IntegerVector, IntegerVector, IntegerVector, IntegerVector, IntegerVector, IntegerVector, IntegerVector, IntegerVector, IntegerVector, IntegerVector, IntegerVector, IntegerVector)",
+                "file": "/Users/kim0sun/Github/slca/src/estimate.cpp",
+                "line": 238,
+                "column": 8,
+                "hidden": false
+            }
+        ],
+        "hidden": false
+    },
+    {
+        "file": "/Users/kim0sun/Github/slca/src/mstep.cpp",
+        "file_last_write": 1709709572.0,
+        "definitions": [
+            {
+                "usr": "c:@F@cumPi#*d#S0_#S0_#I#I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "cumPi(double *, double *, double *, int, int)",
+                "file": "/Users/kim0sun/Github/slca/src/mstep.cpp",
+                "line": 5,
+                "column": 6,
+                "hidden": false
+            },
+            {
+                "usr": "c:@F@cumTau#*d#S0_#S0_#I#I#I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "cumTau(double *, double *, double *, int, int, int)",
+                "file": "/Users/kim0sun/Github/slca/src/mstep.cpp",
+                "line": 20,
+                "column": 6,
+                "hidden": false
+            },
+            {
+                "usr": "c:@F@cumRho#*1d#*d#*I#I#I#S2_#I#S1_#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "cumRho(const double *, double *, int *, int, int, int *, int, double *, const double *)",
+                "file": "/Users/kim0sun/Github/slca/src/mstep.cpp",
+                "line": 35,
+                "column": 6,
+                "hidden": false
+            },
+            {
+                "usr": "c:@F@updatePi#*d#S0_#S0_#I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "updatePi(double *, double *, double *, int)",
+                "file": "/Users/kim0sun/Github/slca/src/mstep.cpp",
+                "line": 63,
+                "column": 6,
+                "hidden": false
+            },
+            {
+                "usr": "c:@F@updateTau#*d#S0_#S0_#I#I#*I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "updateTau(double *, double *, double *, int, int, int *)",
+                "file": "/Users/kim0sun/Github/slca/src/mstep.cpp",
+                "line": 71,
+                "column": 6,
+                "hidden": false
+            },
+            {
+                "usr": "c:@F@updateRho#*d#S0_#S0_#I#I#I#*I#S1_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "updateRho(double *, double *, double *, int, int, int, int *, int *)",
+                "file": "/Users/kim0sun/Github/slca/src/mstep.cpp",
+                "line": 93,
+                "column": 6,
+                "hidden": false
+            },
+            {
+                "usr": "c:@F@updateA#*d#S0_#I#I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "updateA(double *, double *, int, int)",
+                "file": "/Users/kim0sun/Github/slca/src/mstep.cpp",
+                "line": 123,
+                "column": 6,
+                "hidden": false
+            },
+            {
+                "usr": "c:@F@updateB#*d#S0_#I#I#*I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "updateB(double *, double *, int, int, int *)",
+                "file": "/Users/kim0sun/Github/slca/src/mstep.cpp",
+                "line": 137,
+                "column": 6,
+                "hidden": false
+            },
+            {
+                "usr": "c:@F@updateC#*d#S0_#S0_#I#I#I#*I#S1_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "updateC(double *, double *, double *, int, int, int, int *, int *)",
+                "file": "/Users/kim0sun/Github/slca/src/mstep.cpp",
+                "line": 159,
+                "column": 6,
+                "hidden": false
+            }
+        ],
+        "hidden": false
+    },
+    {
+        "file": "/Users/kim0sun/Github/slca/src/mstep.h",
+        "file_last_write": 1696337179.0,
+        "definitions": [],
+        "hidden": false
+    },
+    {
+        "file": "/Users/kim0sun/Github/slca/src/saturated.cpp",
+        "file_last_write": 1706596550.0,
+        "definitions": [
+            {
+                "usr": "c:@F@calcfreq#$@N@Rcpp@S@Vector>#VI13#@N@Rcpp@ST>1#T@PreserveStorage#S0_#I#S0_#S0_#I#I#d#I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "calcfreq(IntegerVector, IntegerVector, int, IntegerVector, IntegerVector, int, int, double, int)",
+                "file": "/Users/kim0sun/Github/slca/src/saturated.cpp",
+                "line": 5,
+                "column": 6,
+                "hidden": false
+            }
+        ],
+        "hidden": false
+    },
+    {
+        "file": "/Users/kim0sun/Github/slca/src/simulate.cpp",
+        "file_last_write": 1695038555.0,
+        "definitions": [
+            {
+                "usr": "c:@F@simModel#I#$@N@Rcpp@S@Vector>#VI13#@N@Rcpp@ST>1#T@PreserveStorage#$@N@Rcpp@S@Vector>#VI19#@N@Rcpp@ST>1#T@PreserveStorage#$@N@Rcpp@S@Vector>#VI14#@N@Rcpp@ST>1#T@PreserveStorage#I#I#I#I#I#I#S0_#S0_#S0_#S0_#S0_#S0_#S0_#S0_#S0_#S0_#S0_#S0_#S0_#S0_#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "simModel(int, IntegerVector, List, NumericVector, int, int, int, int, int, int, IntegerVector, IntegerVector, IntegerVector, IntegerVector, IntegerVector, IntegerVector, IntegerVector, IntegerVector, IntegerVector, IntegerVector, IntegerVector, IntegerVector, IntegerVector, IntegerVector, IntegerVector)",
+                "file": "/Users/kim0sun/Github/slca/src/simulate.cpp",
+                "line": 6,
+                "column": 6,
+                "hidden": false
+            }
+        ],
+        "hidden": false
+    },
+    {
+        "file": "/Users/kim0sun/Github/slca/src/upward.cpp",
+        "file_last_write": 1695038555.0,
+        "definitions": [
+            {
+                "usr": "c:@F@upInit#*I#*1d#*d#I#I#I#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "upInit(int *, const double *, double *, int, int, int, int *)",
+                "file": "/Users/kim0sun/Github/slca/src/upward.cpp",
+                "line": 5,
+                "column": 6,
+                "hidden": false
+            },
+            {
+                "usr": "c:@F@upRec#*d#S0_#S0_#*1d#I#I#I#b#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "upRec(double *, double *, double *, const double *, int, int, int, bool)",
+                "file": "/Users/kim0sun/Github/slca/src/upward.cpp",
+                "line": 23,
+                "column": 6,
+                "hidden": false
+            },
+            {
+                "usr": "c:@F@upRec2#*d#S0_#*1d#I#I#I#b#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "upRec2(double *, double *, const double *, int, int, int, bool)",
+                "file": "/Users/kim0sun/Github/slca/src/upward.cpp",
+                "line": 47,
+                "column": 6,
+                "hidden": false
+            }
+        ],
+        "hidden": false
+    },
+    {
+        "file": "/Users/kim0sun/Github/slca/src/upward.h",
+        "file_last_write": 1695038555.0,
+        "definitions": [],
+        "hidden": false
+    }
+]
