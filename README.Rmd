@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# slca
+# slca <a href="https://kim0sun.github.io/slca"><img src="fig/logo.png" align="right" height="138" /></a>
 
 <!-- badges: start -->
 [![CRAN status](https://www.r-pkg.org/badges/version/slca)](https://CRAN.R-project.org/package=slca)
