@@ -3,7 +3,7 @@
 \name{gof}
 \alias{gof}
 \alias{gof.slca}
-\title{Goodness of Fit Tests for Estimated \code{slca} Model}
+\title{Goodness of Fit Test for Estimated \code{slca} Model}
 \usage{
 gof(object, ...)
 

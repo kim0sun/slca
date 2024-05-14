@@ -3,7 +3,7 @@
 \name{estimate}
 \alias{estimate}
 \alias{estimate.slca}
-\title{Estimating Parameters of \code{slca} Object}
+\title{Estimate Parameters of \code{slca} Object}
 \usage{
 estimate(x, ...)
 

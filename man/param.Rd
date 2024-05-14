@@ -3,7 +3,7 @@
 \name{param}
 \alias{param}
 \alias{param.slca}
-\title{Printing Estimated Parameters of \code{slca} Object}
+\title{Print Estimated Parameters of \code{slca} Object}
 \usage{
 param(object, ...)
 

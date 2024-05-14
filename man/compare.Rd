@@ -2,7 +2,7 @@
 % Please edit documentation in R/diagnostic.R
 \name{compare}
 \alias{compare}
-\title{Comparing Two Estimated \code{slca} Models}
+\title{Compare Two Estimated \code{slca} Models}
 \usage{
 compare(
   model1,
