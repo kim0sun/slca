@@ -36,7 +36,7 @@ and marijuana use.
 \examples{
 library(magrittr)
 nlsy_smoke <- slca(smk98(3) ~ ESMK_98 + FSMK_98 + DSMK_98 + HSMK_98) \%>\%
-   estimate(data = nlsy97)
+   estimate(data = nlsy97, control = list(verbose = FALSE))
 summary(nlsy_smoke)
 
 \donttest{
@@ -46,7 +46,7 @@ model_jlca <- slca(
    drk98(3) ~ EDRK_98 + CDRK_98 + WDRK_98 + BDRK_98,
    mrj98(3) ~ EMRJ_98 + CMRJ_98 + OMRJ_98 + SMRJ_98,
    substance(4) ~ smk98 + drk98 + mrj98
-) \%>\% estimate(data = nlsy97)
+) \%>\% estimate(data = nlsy97, control = list(verbose = FALSE))
 summary(model_jlca)
 param(model_jlca)
 
@@ -73,7 +73,7 @@ nlsy_jlcpa <- slca(
       c("use98 ~ drk98", "use03 ~ drk03", "use08 ~ drk08"),
       c("use98 ~ mrj98", "use03 ~ mrj03", "use08 ~ mrj08")
    )
-) \%>\% estimate(nlsy97)
+) \%>\% estimate(nlsy97, control = list(verbose = FALSE))
 }
 }
 \references{

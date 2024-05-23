@@ -35,12 +35,12 @@ The variables associating social status include father's occupation and educatio
 library(magrittr)
 data <- gss7677[gss7677$RACE == "BLACK",]
 model_stat <- slca(status(3) ~ PAPRES + PADEG + MADEG) \%>\%
-   estimate(data = data)
+   estimate(data = data, control = list(verbose = FALSE))
 summary(model_stat)
 param(model_stat)
 
 model_tol <- slca(tol(4) ~ TOLRAC + TOLCOM + TOLHOMO + TOLATH + TOLMIL) \%>\%
-   estimate(data = data)
+   estimate(data = data, control = list(verbose = FALSE))
 summary(model_tol)
 param(model_tol)
 
@@ -48,7 +48,7 @@ model_lta <- slca(
    status(3) ~ PAPRES + PADEG + MADEG,
    tol(4) ~ TOLRAC + TOLCOM + TOLHOMO + TOLATH + TOLMIL,
    status ~ tol
-) \%>\% estimate(data = data)
+) \%>\% estimate(data = data, control = list(verbose = FALSE))
 summary(model_lta)
 param(model_lta)
 
