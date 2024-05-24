@@ -1,0 +1,22 @@
+bibentry(
+   bibtype  = "Manual",
+   title    = "slca: Structural Modeling for Multiple Latent Class Variables",
+   author   = c(
+      person(given = "Youngsun", family = "Kim",
+            email = "yskstat@gmail.com",
+            role = c("aut", "cre"),
+            comment = c(ORCID = "0000-0001-8003-1939")),
+     person(given = "Hwan", family = "Chung",
+            email = "hwanch@korea.ac.kr",
+            role = c("aut"),
+            comment = c(ORCID = "0000-0002-8969-9086"))),
+   journal  = "",
+   year     = "2024",
+   volume   = "",
+   number   = "",
+   pages    = "",
+   doi      = "",
+   note     = "R package version 1.0.0",
+   url      = "https://CRAN.R-project.org/package=slca",
+   key      = "slca-package"
+)

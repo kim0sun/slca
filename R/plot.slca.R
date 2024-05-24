@@ -1,6 +1,12 @@
+#' Plot \code{slca} Object
+#'
+#'
+#'
 #' @exportS3Method base::plot slca
-plot.slca <- function(x, abbreviation = FALSE, dir = "TD",
-                        equal_rank = NULL, font = "Helvetica", ...) {
+plot.slca <- function(
+   x, abbreviation = FALSE, dir = "TD",
+   equal_rank = NULL, font = "Helvetica", ...
+) {
    latent <- x$model$latent
    tree <- x$model$tree
 
@@ -34,37 +40,48 @@ plot.slca <- function(x, abbreviation = FALSE, dir = "TD",
       if (!missing(equal_rank)) ranks, "\n}"
    )
 
-   DiagrammeR::grViz(text, ...)
-
    if (inherits(x, "estimated")) {
-      oldmar <- par()$mar
-      on.exit(par(mar = oldmar))
-
       par <- slca::param(x)
       npar <- c(x$arg$npi, x$arg$ntau, x$arg$nrho)
       p <- menu(names(par)[npar > 0], title = "Select parameter type")
-      if (p == 1) {
+      if (p == 0) invisible()
+      if (names(par)[npar > 0][p] == "pi") {
          v <- menu(names(par$pi), title = "Which latent variable ?")
          if (v == 0) invisible()
-         else sp <- par$pi[[v]]
-      } else if (p == 2) {
+         else sp <- par$pi[[v]][1,]
+         barplot(sp, col = gray.colors(length(sp)),
+                 main = "Latent class prevalence",
+                 ylab = "Prevalence", xlab = "Class")
+      } else if (names(par)[npar > 0][p] == "tau") {
          vn <- split(apply(x$model$struct[,1:3], 1, paste0, collapse = " "),
                      x$model$struct$constraint)
          sn <- paste0(names(vn), " (", sapply(vn, paste, collapse = ", "), ")")
          v <- menu(sn, title = "Which tau parameter ?")
-         if (v == 0) invisible()
-         else sp <- par$tau[[v]]
-         barplot(par$tau[[1]], xlab = "Parent", ylab = "",
-                 main = "Transition probabilities", space = 0)
-      } else if (p == 3) {
+         if (v > 0) {
+            sp <- par$tau[[v]]
+            cols <- gray.colors(nrow(sp), start = 0.1, end = 0.9)
+            barplot(sp[nrow(sp):1,], xlab = "Parent", ylab = "",
+                    col = cols, space = 0,
+                    main = "Transition probabilities")
+            legend("topright", fill = rev(cols),
+                   title = "child", legend = seq_len(nrow(sp)))
+         }
+      } else if (names(par)[npar > 0][p] == "rho") {
          vn <- split(rownames(x$model$measure), x$model$measure$constraint)
          sn <- paste0(names(vn), " (", sapply(vn, paste, collapse = ", "), ")")
          v <- menu(sn, title = "Which rho parameter ?")
-         if (v == 0) invisible()
-         else sp <- par$rho[[v]]
-      } else invisible()
+         if (v > 0) {
+            sp <- par$rho[[v]]
+            nlev <- x$arg$nlev[[v]]
+            cols <- unlist(sapply(rev(nlev), gray.colors, start = 0.1, end = 0.9))
+            barplot(sp[nrow(sp):1,], xlab = "Class", ylab = "", col = cols,
+                    main = "Item response probabilities", axes = FALSE)
+            axis(2, at = 1:length(nlev) - 0.5, labels = paste0("V", length(nlev):1),
+                 las = 1, tick = FALSE, hadj = 0)
+         }
+      }
    }
-   invisible()
+   DiagrammeR::grViz(text, ...)
 }
 
 

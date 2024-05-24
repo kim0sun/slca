@@ -1,0 +1,9 @@
+plot(nlsy_jlcpa)
+1
+1
+plot(nlsy_jlcpa)
+2
+1
+plot(nlsy_jlcpa)
+3
+1
