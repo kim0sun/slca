@@ -34,8 +34,9 @@ deviance.slca <- function(object, ...) {
 #'
 #' @param object an object of class `slca` and `estimated`.
 #' @param ... additional objects of class `slca` and `estimated`.
-#' @param test a character string specifying the type of test to be conducted. If "chisq", a chi-squared test is conducted. If "boot", a bootstrap test is conducted.
+#' @param test a character string specifying the type of test to be conducted. If `"chisq"`, a chi-squared test is conducted. If `"boot"`, a bootstrap test is conducted.
 #' @param nboot an integer specifying the number of bootstrap rounds to be performed.
+#' @param plot a logical value indicating whether to print histogram of G-squared statistics for boostrap samples, only for `test = "boot"`.
 #' @param maxiter an integer specifying maximum number of iterations allowed for the estimation process of each bootstrapping round.
 #' @param tol a numeric value setting tolerance for the convergence of each bootstrapping round.
 #' @param verbose a logical value indicating whether to print progress updates on the number of bootstrapping rounds completed.
@@ -53,7 +54,8 @@ gof <- function(object, ...) UseMethod("gof")
 
 #' @exportS3Method slca::gof slca
 gof.slca <- function(
-      object, ...,  test = c("none", "chisq", "boot"), nboot = 100,
+      object, ...,  test = c("none", "chisq", "boot"),
+      nboot = 100, plot = FALSE,
       maxiter = 100, tol = 1e-6, verbose = FALSE
 ) {
    cl <- match.call(expand.dots = FALSE)
@@ -131,6 +133,12 @@ gof.slca <- function(
          }
          if (verbose) cat("\n")
          pb[i] <- mean(gb >= gsq[i])
+         if (plot) {
+            hist(gb, breaks = "FD",
+                 main = bquote(.(mn[i]) ~ ": Bootstrap Histogram"),
+                 xlab = bquote("G"^2 ~ "statistic"))
+            abline(v = gsq[i], col = "red", lwd = 1.5)
+         }
       }
       if (verbose) cat("END.\n")
       dt["Pr(Boot)"] <-pb
@@ -145,9 +153,10 @@ gof.slca <- function(
 #'
 #' @param model1 an object of class `slca` and `estimated`.
 #' @param model2 another object of class `slca` and `estimated`.
-#' @param test a character string specifying the type of test to be conducted. If "chisq", a chi-squared test is conducted. If "boot", a bootstrap test is conducted.
+#' @param test a character string specifying the type of test to be conducted. If `"chisq"`, a chi-squared test is conducted. If `"boot"`, a bootstrap test is conducted.
 #' @param nboot an integer specifying the number of bootstrap rounds to be performed.
 #' @param method estimation method for bootstrapping.
+#' @param plot a logical value indicating whether to print histogram of G-squared statistics for boostrap samples, only for `test = "boot"`.
 #' @param maxiter an integer specifying maximum number of iterations allowed for the estimation process of each bootstrapping round.
 #' @param tol a numeric value setting tolerance for the convergence of each bootstrapping round.
 #' @param verbose a logical value indicating whether to print progress updates on the number of bootstrapping rounds completed.
@@ -156,14 +165,14 @@ gof.slca <- function(
 #' A `data.frame` containing the number of parameters (Df), loglikelihood, AIC, BIC, G-squared statistics, and the residual degree of freedom for each object.
 #' Depending on the `test` argument, the p-value for the corresponding statistical test may also be included.
 #'
-#' @seealso \link[slca]{compare}
+#' @seealso \link[slca]{gof}
 #'
 #' @example man/examples/diag.R
 #'
 #' @export
 compare <- function(
-      model1, model2, test = c("none", "chisq", "boot"),
-      nboot = 100, method = c("hybrid", "em", "nlm"),
+      model1, model2, test = c("none", "chisq", "boot"), nboot = 100,
+      method = c("hybrid", "em", "nlm"), plot = FALSE,
       maxiter = 1000, tol = 1e-8, verbose = FALSE
 ) {
    models <- list(model1, model2)
@@ -183,8 +192,6 @@ compare <- function(
    df <- sapply(models, function(x) x$arg$df)
    models <- models[order(df)]
    h0 <- models[[1]]; h1 <- models[[2]]
-   cat("Model H0:", deparse(name[[which.min(df)]]),
-       "\nModel H1:", deparse(name[[which.max(df)]]), "\n\n")
 
    aic <- sapply(models, stats::AIC)
    bic <- sapply(models, stats::BIC)
@@ -259,9 +266,18 @@ compare <- function(
          }
          if (verbose) cat("\r")
       }
+      if (verbose) cat("DONE Bootstrap Sampling.\n")
       dt$`Pr(Boot)` <- c(NA, mean(gb >= gsq))
+      if (plot) {
+         hist(gb, breaks = "FD",
+              main = "Bootstrap Histogram",
+              xlab = bquote("G"^2 ~ "statistic"))
+         abline(v = gsq, col = "red", lwd = 1.5)
+      }
    }
-
-   structure(dt, heading = "Analysis of Relative Model Fit\n",
+   title = "Analysis of Relative Model Fit\n"
+   notes = paste0("Model H0: ", name[[which.min(df)]],
+                  "\nModel H1: ", name[[which.max(df)]])
+   structure(dt, heading = c(title, notes),
              class = c("anova", "data.frame"))
 }

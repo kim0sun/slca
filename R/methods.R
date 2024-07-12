@@ -163,14 +163,19 @@ summary.slca = function(
             na.print = "")
 
       cat("\n Frequencies for each categories:\n")
-      freq <- lapply(object$mf, table)
-      for (i in seq_len(nvar)) {
-         mat[i, seq_along(freq[[i]])] <- freq[[i]]
-      }
+      freq <- lapply(object$mf, function(x) {
+         tab <- table(x, useNA = "always")
+         names(tab)[length(tab)] <- "<NA>"
+         tab
+      })
+      mat <- matrix(nrow = nvar, ncol = max(sapply(lev, length)) + 1)
       dimnames(mat) <- list(
-         paste0(" ", names(freq)),
-         response = seq_len(ncol(mat))
+         paste0(" ", names(lev)),
+         response = c(seq_len(ncol(mat) - 1), "<NA>")
       )
+      for (i in seq_len(nvar)) {
+         mat[i, names(freq[[i]])] <- freq[[i]]
+      }
       print(mat, quote = FALSE, print.gap = 2,
             na.print = "")
 
@@ -193,7 +198,7 @@ summary.slca = function(
       )$ll
       mfreq <- exp(rowSums(ll) + log(arg$nobs))
       dfreq <- attr(object$mf, "freq")
-      chisq <- sum((dfreq - mfreq)^2 / mfreq) +
+      chisq <- sum(((dfreq - mfreq)^2 / mfreq)[mfreq > 0]) +
          (arg$nobs - sum(mfreq))
 
       gsq <- 2 * (attr(object$mf, "loglik") - stats::logLik(object))
