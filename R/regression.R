@@ -71,12 +71,6 @@ regress.slca <- function(
    mf <- stats::model.frame(formula, data)
 
    # Functions
-   dn <- function(X, b, y, k)
-      -sum(stats::dnorm(X, b[y], b[k], log = TRUE))
-
-   d <- function(X, b, y, k)
-      -sum(stats::dnorm(X, b[y], b[k], log = TRUE))
-
    cprobs <- function(X, b, ref) {
       beta <- matrix(nrow = nrow(b), ncol = ncol(b) + 1)
       beta[, ref] = 0
@@ -88,7 +82,7 @@ regress.slca <- function(
    }
 
    y <- stats::model.response(mf)
-   X <- stats::model.matrix(formula, mf)
+   X <- stats::model.matrix(formula, mf, ...)
    nr <- nlevels(y) - 1
    nc <- ncol(X)
    init <- numeric(nc * nr)
@@ -125,8 +119,8 @@ regress.slca <- function(
       p <- object$posterior$marginal[[latent]][rownames(mf),]
       w <- switch(
          imputation,
-         modal = apply(p, 1, function(x) x == max(x)),
-         prob  = p
+         modal = apply(p, 1, function(x) as.numeric(x == max(x))),
+         prob  = t(p)
       )
       d <- (w %*% p) / colSums(p)
 
@@ -169,6 +163,7 @@ regress.slca <- function(
             ll <- colSums(exp(prob + w_))
             -sum(log(ll))
          }
+
          fit1 <- try(suppressWarnings(stats::nlm(
             ml_ll, init, X = X, w_ = w_, ref = nlevels(y), hessian = TRUE
             )), silent = TRUE)
