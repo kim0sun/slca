@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">slca</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -43,6 +43,7 @@
 <span>  test <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"none"</span>, <span class="st">"chisq"</span>, <span class="st">"boot"</span><span class="op">)</span>,</span>
 <span>  nboot <span class="op">=</span> <span class="fl">100</span>,</span>
 <span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"hybrid"</span>, <span class="st">"em"</span>, <span class="st">"nlm"</span><span class="op">)</span>,</span>
+<span>  plot <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  maxiter <span class="op">=</span> <span class="fl">1000</span>,</span>
 <span>  tol <span class="op">=</span> <span class="fl">1e-08</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
@@ -62,7 +63,7 @@
 
 
 <dt id="arg-test">test<a class="anchor" aria-label="anchor" href="#arg-test"></a></dt>
-<dd><p>a character string specifying the type of test to be conducted. If "chisq", a chi-squared test is conducted. If "boot", a bootstrap test is conducted.</p></dd>
+<dd><p>a character string specifying the type of test to be conducted. If <code>"chisq"</code>, a chi-squared test is conducted. If <code>"boot"</code>, a bootstrap test is conducted.</p></dd>
 
 
 <dt id="arg-nboot">nboot<a class="anchor" aria-label="anchor" href="#arg-nboot"></a></dt>
@@ -71,6 +72,10 @@
 
 <dt id="arg-method">method<a class="anchor" aria-label="anchor" href="#arg-method"></a></dt>
 <dd><p>estimation method for bootstrapping.</p></dd>
+
+
+<dt id="arg-plot">plot<a class="anchor" aria-label="anchor" href="#arg-plot"></a></dt>
+<dd><p>a logical value indicating whether to print histogram of G-squared statistics for boostrap samples, only for <code>test = "boot"</code>.</p></dd>
 
 
 <dt id="arg-maxiter">maxiter<a class="anchor" aria-label="anchor" href="#arg-maxiter"></a></dt>
@@ -92,7 +97,7 @@ Depending on the <code>test</code> argument, the p-value for the corresponding s
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p>compare</p></div>
+    <div class="dont-index"><p><a href="gof.html">gof</a></p></div>
     </div>
 
     <div class="section level2">
