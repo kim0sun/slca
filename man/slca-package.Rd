@@ -10,7 +10,6 @@ The \code{slca} package provides a comprehensive toolkit for the implementation 
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/kim0sun/slca}
   \item \url{https://kim0sun.github.io/slca/}
   \item Report bugs at \url{https://github.com/kim0sun/slca/issues}
 }

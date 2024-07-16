@@ -3,9 +3,8 @@
 #' The \code{slca} model estimated using NLSY97 data
 #'
 #' @name nlsy_jlcpa
-#' @format A data frame with 1004 rows and 38 columns:
-#'
-#' @source National Longitudinal Survey of Youth 1997 (NLSY97)
+#' @aliases nlsy_jlta
+#' @format An `slca` object `estimated` for JLCPA model using `nlsy97`.
 #'
 #' @references Bureau of Labor Statistics, U.S. Department of Labor. National Longitudinal Survey of Youth 1997 cohort, 1997-2017 (rounds 1-18). Produced and distributed by the Center for Human Resource Research (CHRR), The Ohio State University. Columbus, OH: 2019.
 #'

@@ -8,7 +8,8 @@
 gof(object, ...)
 
 \method{gof}{slca}(
-   object, ..., test = c("none", "chisq", "boot"), nboot = 100,
+   object, ..., test = c("none", "chisq", "boot"),
+   nboot = 100, plot = FALSE,
    maxiter = 100, tol = 1e-6, verbose = FALSE
 )
 }
@@ -17,9 +18,11 @@ gof(object, ...)
 
 \item{...}{additional objects of class \code{slca} and \code{estimated}.}
 
-\item{test}{a character string specifying the type of test to be conducted. If "chisq", a chi-squared test is conducted. If "boot", a bootstrap test is conducted.}
+\item{test}{a character string specifying the type of test to be conducted. If \code{"chisq"}, a chi-squared test is conducted. If \code{"boot"}, a bootstrap test is conducted.}
 
 \item{nboot}{an integer specifying the number of bootstrap rounds to be performed.}
+
+\item{plot}{a logical value indicating whether to print histogram of G-squared statistics for boostrap samples, only for \code{test = "boot"}.}
 
 \item{maxiter}{an integer specifying maximum number of iterations allowed for the estimation process of each bootstrapping round.}
 

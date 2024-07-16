@@ -1,7 +1,7 @@
 Package: slca
 Type: Package
 Title: Structural Modeling for Multiple Latent Class Variables
-Version: 1.0.1
+Version: 1.1.0
 Authors@R: 
    c(person(given = "Youngsun", family = "Kim",
             email = "yskstat@gmail.com",
@@ -32,5 +32,8 @@ Imports:
     stats
 Depends: 
     R (>= 2.10)
-URL: https://github.com/kim0sun/slca, https://kim0sun.github.io/slca/
+URL: https://kim0sun.github.io/slca/
 BugReports: https://github.com/kim0sun/slca/issues
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3

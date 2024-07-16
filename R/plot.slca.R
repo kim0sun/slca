@@ -1,7 +1,3 @@
-#' Plot \code{slca} Object
-#'
-#'
-#'
 #' @exportS3Method base::plot slca
 plot.slca <- function(
    x, dir = "TD", font = "Helvetica", ...

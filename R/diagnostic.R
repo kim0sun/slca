@@ -28,7 +28,8 @@ deviance.slca <- function(object, ...) {
 #' gof(object, ...)
 #'
 #' \method{gof}{slca}(
-#'    object, ..., test = c("none", "chisq", "boot"), nboot = 100,
+#'    object, ..., test = c("none", "chisq", "boot"),
+#'    nboot = 100, plot = FALSE,
 #'    maxiter = 100, tol = 1e-6, verbose = FALSE
 #' )
 #'
@@ -134,10 +135,10 @@ gof.slca <- function(
          if (verbose) cat("\n")
          pb[i] <- mean(gb >= gsq[i])
          if (plot) {
-            hist(gb, breaks = "FD",
+            graphics::hist(gb, breaks = "FD",
                  main = bquote(.(mn[i]) ~ ": Bootstrap Histogram"),
                  xlab = bquote("G"^2 ~ "statistic"))
-            abline(v = gsq[i], col = "red", lwd = 1.5)
+            graphics::abline(v = gsq[i], col = "red", lwd = 1.5)
          }
       }
       if (verbose) cat("END.\n")
@@ -269,10 +270,10 @@ compare <- function(
       if (verbose) cat("DONE Bootstrap Sampling.\n")
       dt$`Pr(Boot)` <- c(NA, mean(gb >= gsq))
       if (plot) {
-         hist(gb, breaks = "FD",
+         graphics::hist(gb, breaks = "FD",
               main = "Bootstrap Histogram",
               xlab = bquote("G"^2 ~ "statistic"))
-         abline(v = gsq, col = "red", lwd = 1.5)
+         graphics::abline(v = gsq, col = "red", lwd = 1.5)
       }
    }
    title = "Analysis of Relative Model Fit\n"

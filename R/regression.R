@@ -294,3 +294,14 @@ confint.reg.slca <- function(
    }
    invisible(ci[, parm])
 }
+
+logit2ll <- function(x) {
+   cf <- x$coefficient
+   bb <- -colSums(cf) / (nrow(cf) + 1)
+   ll <- rbind(sweep(cf, 2, -bb), bb)
+   dimnames(ll) <- list(
+      class = seq_len(nrow(ll)),
+      colnames(cf)
+   )
+   ll
+}
