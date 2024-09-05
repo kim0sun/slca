@@ -51,7 +51,8 @@ count_row <- function(mf, nlev, na.rm) {
       fmis <- tabulate(cumsum(umis))
 
       calc_mis <- calcfreq(
-         imis, rmis, nmis, fmis, obs_freq, ncell, nrow(mf), 1e-6, 500
+         imis, rmis, nmis, fmis, obs_freq, ncell,
+         nrow(mf), 1e-6, 500
       )
       return(c(list(y_unique = obs_uniq), calc_mis))
    }
