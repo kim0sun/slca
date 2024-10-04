@@ -192,6 +192,7 @@ compare <- function(
 
    df <- sapply(models, function(x) x$arg$df)
    models <- models[order(df)]
+   name <- name[order(df)]
    h0 <- models[[1]]; h1 <- models[[2]]
 
    aic <- sapply(models, stats::AIC)
@@ -277,8 +278,8 @@ compare <- function(
       }
    }
    title = "Analysis of Relative Model Fit\n"
-   notes = paste0("Model H0: ", name[[which.min(df)]],
-                  "\nModel H1: ", name[[which.max(df)]])
+   notes = paste0("Model H0: ", name[1],
+                  "\nModel H1: ", name[])
    structure(dt, heading = c(title, notes),
              class = c("anova", "data.frame"))
 }
