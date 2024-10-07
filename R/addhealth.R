@@ -17,22 +17,22 @@
 #' \describe{
 #'   \item{\code{GRADE}}{Respondent's grade level at Wave I}
 #'   \item{\code{SEX}}{Respondent's sex \cr levels: (1)\code{Male}, (2)\code{Female}}
-#'   \item{\code{S1w1, S1w2}}{I felt that I could not shake off the blues even with help from my family and friends.}
-#'   \item{\code{S2w1, S2w2}}{I felt depressed.}
-#'   \item{\code{S3w1, S3w2}}{I felt lonely.}
-#'   \item{\code{S4w1, S4w2}}{I felt sad.}
-#'   \item{\code{D1w1, D1w2}}{People were unfriendly to me.}
-#'   \item{\code{D2w1, D2w2}}{I felt that people disliked me}
-#'   \item{\code{F1w1, F1w2}}{I thought my life had been a failure.}
-#'   \item{\code{F2w1, F2w2}}{I felt life was not worth living}
+#'   \item{\code{S1w1}, \code{S1w2}}{I felt that I could not shake off the blues even with help from my family and friends.}
+#'   \item{\code{S2w1}, \code{S2w2}}{I felt depressed.}
+#'   \item{\code{S3w1}, \code{S3w2}}{I felt lonely.}
+#'   \item{\code{S4w1}, \code{S4w2}}{I felt sad.}
+#'   \item{\code{D1w1}, \code{D1w2}}{People were unfriendly to me.}
+#'   \item{\code{D2w1}, \code{D2w2}}{I felt that people disliked me}
+#'   \item{\code{F1w1}, \code{F1w2}}{I thought my life had been a failure.}
+#'   \item{\code{F2w1}, \code{F2w2}}{I felt life was not worth living}
 #' }
 #'
-#' @source \link{https://addhealth.cpc.unc.edu/data/#public-use}
+#' @source \url{https://addhealth.cpc.unc.edu/data/#public-use}
 #'
 #' @references
 #' Collins, L.M., & Lanza, S.T. (2009). Latent Class and Latent Transition Analysis: With Applications in the Social, Behavioral, and Health Sciences.
 #'
-#' J.R. Udry. The National Longitudinal Study of Adolescent Health (Add Health), Waves I & II, 1994-1996 [machine-readable data file and documentation]. Carolina Population Center, University of North Carolina at Chapel Hill, Chapel Hill, NC, 2003.
+#' J.R. Udry. The National Longitudinal Study of Adolescent Health (Add Health), Waves I & II, 1994-1996. Carolina Population Center, University of North Carolina at Chapel Hill, Chapel Hill, NC, 2003.
 #'
 #' @example man/examples/addhealth.R
 #'
