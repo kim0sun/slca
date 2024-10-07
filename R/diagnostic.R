@@ -278,8 +278,8 @@ compare <- function(
       }
    }
    title = "Analysis of Relative Model Fit\n"
-   notes = paste0("Model H0: ", name[1],
-                  "\nModel H1: ", name[])
+   notes = paste0("Model H0: ", name[[1]],
+                  "\nModel H1: ", name[[2]])
    structure(dt, heading = c(title, notes),
              class = c("anova", "data.frame"))
 }
