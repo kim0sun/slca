@@ -1,16 +1,16 @@
 library(magrittr)
-f5_var <- slca(
-   DLQ1(5) ~ LIEw1 + LOUDw1 + DAMAGEw1 + SHOPLIFTw1 + STEALw1 + FIGHTw1,
-   DLQ2(5) ~ LIEw2 + LOUDw2 + DAMAGEw2 + SHOPLIFTw2 + STEALw2 + FIGHTw2,
-   DLQ1 ~ DLQ2
-) %>% estimate(addhealth[1:300,])
+lta5 <- slca(
+   DEP1(5) ~ S1w1 + S2w1 + S3w1 + S4w1 + D1w1 + D2w1 + F1w1 + F2w1,
+   DEP2(5) ~ S1w2 + S2w2 + S3w2 + S4w2 + D1w2 + D2w2 + F1w2 + F2w2,
+   DEP1 ~ DEP2
+) %>% estimate(addhealth, control = c(nrep = 10))
 
-f5_inv <- slca(
-   DLQ1(5) ~ LIEw1 + LOUDw1 + DAMAGEw1 + SHOPLIFTw1 + STEALw1 + FIGHTw1,
-   DLQ2(5) ~ LIEw2 + LOUDw2 + DAMAGEw2 + SHOPLIFTw2 + STEALw2 + FIGHTw2,
-   DLQ1 ~ DLQ2,
-   constraints = c("DLQ1", "DLQ2")
-) %>% estimate(addhealth[1:300,])
+lta5inv <- slca(
+   DEP1(5) ~ S1w1 + S2w1 + S3w1 + S4w1 + D1w1 + D2w1 + F1w1 + F2w1,
+   DEP2(5) ~ S1w2 + S2w2 + S3w2 + S4w2 + D1w2 + D2w2 + F1w2 + F2w2,
+   DEP1 ~ DEP2,
+   constraints = c("DEP1", "DEP2")
+) %>% estimate(addhealth, control = c(nrep = 10))
 
-compare(f5_var, f5_inv, test = "chisq")
-param(f5_inv)
+compare(lta5inv, lta5, test = "chisq")
+lta5inv %>% param()
