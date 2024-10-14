@@ -200,13 +200,13 @@ List em_est(
          else Rcout << std::scientific << std::setprecision(1) << dll;
          Rcout << "      \r" << std::flush;
 
-         if (iter % 100 == 0) {
+         if (iter % 1000 == 0) {
             Rcout << "\n" << std::flush;
          }
       }
    }
    if (verbose) {
-      if (iter % 100 != 0) Rcout << "\n";
+      if (iter % 1000 != 0) Rcout << "\n";
    }
 
    // Final estimates

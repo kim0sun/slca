@@ -172,7 +172,7 @@ gof.slca <- function(
 #'
 #' @export
 compare <- function(
-      model1, model2, test = c("none", "chisq", "boot"), nboot = 100,
+      model1, model2, test = c("none", "chisq", "boot"), nboot = 50,
       method = c("hybrid", "em", "nlm"), plot = FALSE,
       maxiter = 1000, tol = 1e-8, verbose = FALSE
 ) {

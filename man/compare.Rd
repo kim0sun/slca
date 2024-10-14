@@ -8,7 +8,7 @@ compare(
   model1,
   model2,
   test = c("none", "chisq", "boot"),
-  nboot = 100,
+  nboot = 50,
   method = c("hybrid", "em", "nlm"),
   plot = FALSE,
   maxiter = 1000,

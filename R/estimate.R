@@ -61,7 +61,10 @@ estimate.slca <- function(
       mf <- proc_data(data, x$model, na.rm)
    else if (inherits(x, "estimated"))
       mf <- x$mf
-   else data = parent.frame()
+   else {
+      data = parent.frame()
+      mf <- proc_data(data, x$model, na.rm)
+   }
 
    arg <- arg_mf(x$model, x$arg, mf, fix2zero)
 
