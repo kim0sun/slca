@@ -20,7 +20,7 @@ slcaControl <- function(
    nlm.iterlim = 1000, nlm.tol = 1e-8,
    init.param = NULL,
    nrep = 1, test.iter = 200,
-   na.rm = FALSE, verbose = TRUE
+   na.rm = FALSE, verbose = FALSE
 ) {
    ctrl <- list(
       em.iterlim = em.iterlim, em.tol = em.tol,
