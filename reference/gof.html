@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">slca</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -110,14 +110,14 @@ Depending on the <code>test</code> argument, the p-value for the corresponding s
 <span class="r-out co"><span class="r-pr">#&gt;</span>       Df  logLik    AIC    BIC     Gsq Res. Df</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> stat2 21 -1179.2 2400.4 2489.5 115.979      53</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> stat3 32 -1139.3 2342.6 2478.5  36.204      42</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> stat4 43 -1135.5 2357.0 2539.6  28.633      31</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> stat4 43 -1135.4 2356.8 2539.4  28.423      31</span>
 <span class="r-in"><span><span class="fu">gof</span><span class="op">(</span><span class="va">stat2</span>, <span class="va">stat3</span>, <span class="va">stat4</span>, test <span class="op">=</span> <span class="st">"chisq"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Analysis of Goodness of Fit Table</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       Df  logLik    AIC    BIC     Gsq Res. Df Pr(&gt;Chi)    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> stat2 21 -1179.2 2400.4 2489.5 115.979      53 1.34e-06 ***</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> stat3 32 -1139.3 2342.6 2478.5  36.204      42   0.7225    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> stat4 43 -1135.5 2357.0 2539.6  28.633      31   0.5883    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> stat4 43 -1135.4 2356.8 2539.4  28.423      31   0.5992    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
 <span class="r-in"><span><span class="co"># \donttest{</span></span></span>
@@ -126,8 +126,8 @@ Depending on the <code>test</code> argument, the p-value for the corresponding s
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       Df  logLik    AIC    BIC     Gsq Res. Df Pr(Boot)    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> stat2 21 -1179.2 2400.4 2489.5 115.979      53   &lt;2e-16 ***</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> stat3 32 -1139.3 2342.6 2478.5  36.204      42     0.21    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> stat4 43 -1135.5 2357.0 2539.6  28.633      31     0.31    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> stat3 32 -1139.3 2342.6 2478.5  36.204      42     0.15    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> stat4 43 -1135.4 2356.8 2539.4  28.423      31     0.33    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
@@ -139,7 +139,7 @@ Depending on the <code>test</code> argument, the p-value for the corresponding s
 <span class="r-out co"><span class="r-pr">#&gt;</span> Model H1: stat4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       Df  logLik    AIC    BIC    Gsq Res. Df</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> stat3 32 -1139.3 2342.6 2478.5               </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> stat4 43 -1135.5 2357.0 2539.6 7.5707      11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> stat4 43 -1135.4 2356.8 2539.4 7.7804      11</span>
 <span class="r-in"><span><span class="fu"><a href="compare.html">compare</a></span><span class="op">(</span><span class="va">stat3</span>, <span class="va">stat4</span>, test <span class="op">=</span> <span class="st">"chisq"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Analysis of Relative Model Fit</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -147,7 +147,7 @@ Depending on the <code>test</code> argument, the p-value for the corresponding s
 <span class="r-out co"><span class="r-pr">#&gt;</span> Model H1: stat4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       Df  logLik    AIC    BIC    Gsq Res. Df Pr(&gt;Chi)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> stat3 32 -1139.3 2342.6 2478.5                        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> stat4 43 -1135.5 2357.0 2539.6 7.5707      11   0.7512</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> stat4 43 -1135.4 2356.8 2539.4 7.7804      11   0.7328</span>
 <span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="compare.html">compare</a></span><span class="op">(</span><span class="va">stat3</span>, <span class="va">stat4</span>, test <span class="op">=</span> <span class="st">"boot"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Analysis of Relative Model Fit</span>
@@ -156,7 +156,7 @@ Depending on the <code>test</code> argument, the p-value for the corresponding s
 <span class="r-out co"><span class="r-pr">#&gt;</span> Model H1: stat4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       Df  logLik    AIC    BIC    Gsq Res. Df Pr(Boot)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> stat3 32 -1139.3 2342.6 2478.5                        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> stat4 43 -1135.5 2357.0 2539.6 7.5707      11     0.38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> stat4 43 -1135.4 2356.8 2539.4 7.7804      11     0.22</span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
