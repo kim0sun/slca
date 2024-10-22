@@ -203,7 +203,7 @@ compare <- function(
 
    gsq <- 2 * (stats::logLik(h1) - stats::logLik(h0))
    tab <- cbind(dff, ll, aic, bic, c(NA, gsq), c(NA, resdf))
-   rownames(tab) <- unlist(name[order(df)])
+   rownames(tab) <- unlist(name)
    dt <- data.frame(tab)
    names(dt) <- c("Df", "logLik", "AIC", "BIC", "Gsq", "Res. Df")
 
