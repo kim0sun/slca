@@ -38,15 +38,15 @@
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">slcaControl</span><span class="op">(</span></span>
-<span>  em.iterlim <span class="op">=</span> <span class="fl">3000</span>,</span>
-<span>  em.tol <span class="op">=</span> <span class="fl">1e-06</span>,</span>
+<span>  em.iterlim <span class="op">=</span> <span class="fl">5000</span>,</span>
+<span>  em.tol <span class="op">=</span> <span class="fl">1e-08</span>,</span>
 <span>  nlm.iterlim <span class="op">=</span> <span class="fl">1000</span>,</span>
-<span>  nlm.tol <span class="op">=</span> <span class="fl">1e-08</span>,</span>
+<span>  nlm.tol <span class="op">=</span> <span class="fl">1e-10</span>,</span>
 <span>  init.param <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  nrep <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  test.iter <span class="op">=</span> <span class="fl">200</span>,</span>
+<span>  test.iter <span class="op">=</span> <span class="fl">500</span>,</span>
 <span>  na.rm <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  verbose <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -55,11 +55,11 @@
 
 
 <dl><dt id="arg-em-iterlim">em.iterlim<a class="anchor" aria-label="anchor" href="#arg-em-iterlim"></a></dt>
-<dd><p>an integer specifying maximum number of iterations allowed for EM algorithm. Default is 3000.</p></dd>
+<dd><p>an integer specifying maximum number of iterations allowed for EM algorithm. Default is 5000.</p></dd>
 
 
 <dt id="arg-em-tol">em.tol<a class="anchor" aria-label="anchor" href="#arg-em-tol"></a></dt>
-<dd><p>a numeric value setting tolerance for the convergence of EM algorithm. Default is 1e-6.</p></dd>
+<dd><p>a numeric value setting tolerance for the convergence of EM algorithm. Default is 1e-8.</p></dd>
 
 
 <dt id="arg-nlm-iterlim">nlm.iterlim<a class="anchor" aria-label="anchor" href="#arg-nlm-iterlim"></a></dt>
@@ -67,7 +67,7 @@
 
 
 <dt id="arg-nlm-tol">nlm.tol<a class="anchor" aria-label="anchor" href="#arg-nlm-tol"></a></dt>
-<dd><p>a numeric value setting tolerance for the convergence of <code>nlm</code> function. Default is 1e-8.</p></dd>
+<dd><p>a numeric value setting tolerance for the convergence of <code>nlm</code> function. Default is 1e-10.</p></dd>
 
 
 <dt id="arg-init-param">init.param<a class="anchor" aria-label="anchor" href="#arg-init-param"></a></dt>
@@ -79,7 +79,7 @@
 
 
 <dt id="arg-test-iter">test.iter<a class="anchor" aria-label="anchor" href="#arg-test-iter"></a></dt>
-<dd><p>an integer specifying maximum number of iterations allowed for testing parameters. Default is 200</p></dd>
+<dd><p>an integer specifying maximum number of iterations allowed for testing parameters. Default is 500</p></dd>
 
 
 <dt id="arg-na-rm">na.rm<a class="anchor" aria-label="anchor" href="#arg-na-rm"></a></dt>
