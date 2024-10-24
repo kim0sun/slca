@@ -7,10 +7,11 @@
 \usage{
 estimate(x, ...)
 
-\method{estimate}{slca}(x, data,
-    method = c("em", "hybrid", "nlm"),
-    fix2zero = NULL,
-    control = slcaControl(), ...)
+\method{estimate}{slca}(x,
+   data,
+   method = c("em", "hybrid", "nlm"),
+   fix2zero = NULL,
+   control = slcaControl(), ...)
 }
 \arguments{
 \item{x}{an \code{slca} object defining SLCM model to be estimated.}
@@ -48,5 +49,5 @@ Estimate the parameters of model constructed using the \code{slca} function.
 To constrain certain parameters to zero, use the \code{fix2zero} argument. Each parameter is associated with a unique index. You can identify the index of a specific parameter by invoking the \link[slca]{param} function with the \code{index = TRUE} argument. To apply these constraints, include the relevant parameter indices in the \code{fix2zero} argument.
 }
 \seealso{
-\link[slca]{slca} \link[slca]{param} \link[slca]{regress} \link[slca]{slcaControl} \link[slca]{gss7677}, \link[slca]{nlsy97}
+\link[slca]{slca} \link[slca]{param} \link[slca]{regress} \link[slca]{slcaControl} \link[slca]{gss7677}, \link[slca]{addhealth}, \link[slca]{nlsy97}
 }

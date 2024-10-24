@@ -6,10 +6,11 @@
 #' @usage
 #' estimate(x, ...)
 #'
-#' \method{estimate}{slca}(x, data,
-#'     method = c("em", "hybrid", "nlm"),
-#'     fix2zero = NULL,
-#'     control = slcaControl(), ...)
+#' \method{estimate}{slca}(x,
+#'    data,
+#'    method = c("em", "hybrid", "nlm"),
+#'    fix2zero = NULL,
+#'    control = slcaControl(), ...)
 #'
 #' @param x an `slca` object defining SLCM model to be estimated.
 #' @param data a `data.frame` object containing observed categorical variables incorporated in the model.
@@ -37,7 +38,7 @@
 #'
 #' This returned object can be further processed using the \link[slca]{param} functions to extract the estimated parameters or their respective standard errors. Additionally, the \link[slca]{regress} function enables logistic regression analysis using three-step approach to evaluate the effect of external variables on latent class variables.
 #'
-#' @seealso \link[slca]{slca} \link[slca]{param} \link[slca]{regress} \link[slca]{slcaControl} \link[slca]{gss7677}, \link[slca]{nlsy97}
+#' @seealso \link[slca]{slca} \link[slca]{param} \link[slca]{regress} \link[slca]{slcaControl} \link[slca]{gss7677}, \link[slca]{addhealth}, \link[slca]{nlsy97}
 #'
 #'
 #'
