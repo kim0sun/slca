@@ -5,31 +5,31 @@
 \title{Control Parameters for slca Estimation}
 \usage{
 slcaControl(
-  em.iterlim = 3000,
-  em.tol = 1e-06,
+  em.iterlim = 5000,
+  em.tol = 1e-08,
   nlm.iterlim = 1000,
-  nlm.tol = 1e-08,
+  nlm.tol = 1e-10,
   init.param = NULL,
   nrep = 1,
-  test.iter = 200,
+  test.iter = 500,
   na.rm = FALSE,
-  verbose = TRUE
+  verbose = FALSE
 )
 }
 \arguments{
-\item{em.iterlim}{an integer specifying maximum number of iterations allowed for EM algorithm. Default is 3000.}
+\item{em.iterlim}{an integer specifying maximum number of iterations allowed for EM algorithm. Default is 5000.}
 
-\item{em.tol}{a numeric value setting tolerance for the convergence of EM algorithm. Default is 1e-6.}
+\item{em.tol}{a numeric value setting tolerance for the convergence of EM algorithm. Default is 1e-8.}
 
 \item{nlm.iterlim}{an integer specifying maximum number of iterations allowed for estimation with \code{nlm} function. Default is 1000.}
 
-\item{nlm.tol}{a numeric value setting tolerance for the convergence of \code{nlm} function. Default is 1e-8.}
+\item{nlm.tol}{a numeric value setting tolerance for the convergence of \code{nlm} function. Default is 1e-10.}
 
 \item{init.param}{initial parameters.}
 
 \item{nrep}{number of trials. Default is 1.}
 
-\item{test.iter}{an integer specifying maximum number of iterations allowed for testing parameters. Default is 200}
+\item{test.iter}{an integer specifying maximum number of iterations allowed for testing parameters. Default is 500}
 
 \item{na.rm}{a logical value indicating whether to remove observations including missing values (NA)}
 
