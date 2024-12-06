@@ -17,9 +17,9 @@ compare(
 )
 }
 \arguments{
-\item{model1}{an object of class \code{slca} and \code{estimated}.}
+\item{model1}{an object of class \code{slcafit}.}
 
-\item{model2}{another object of class \code{slca} and \code{estimated}.}
+\item{model2}{another object of class \code{slcafit}.}
 
 \item{test}{a character string specifying the type of test to be conducted. If \code{"chisq"}, a chi-squared test is conducted. If \code{"boot"}, a bootstrap test is conducted.}
 

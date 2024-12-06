@@ -46,39 +46,29 @@ print.slca <- function(x, ...) {
    }
 }
 
-#' @exportS3Method base::summary slca
-summary.slca = function(
-   object, ...
-) {
-   estimated <- inherits(object, "estimated")
-   cat("Structural Latent Class Model\n")
+#' @exportS3Method base::print slcafit
+print.slcafit <- function(x, ...) {
+   NextMethod()
+   cat("\nLogLik:", logLik(x))
+}
 
-   cat("\nSummary of analysis\n")
+#' @exportS3Method base::summary slca
+summary.slca = function(object, ...) {
+   cat("Structural Latent Class Model\n")
    lt <- object$model$latent
    mr <- object$model$measure
    st <- object$model$struct
    tr <- object$model$tree
-
    nvar <- length(setdiff(tr$child, tr$parent))
    nlv <- nrow(lt)
-   if (estimated) {
-      nobs <- object$arg$nobs
-      mat <- rbind(nobs, nvar, nlv)
-      dimnames(mat) <- list(
-         c(" Number of observations",
-           " Number of manifest variables",
-           " Number of latent class variables"), ""
-      )
-   } else {
-      mat <- rbind(nvar, nlv)
-      dimnames(mat) <- list(
-         c(" Number of manifest variables",
-           " Number of latent class variables"), ""
-      )
-   }
-   print(mat)
 
-   cat("\n\nSummary of model structure\n")
+   cat("\nSummary of model structure\n")
+   mat <- rbind(nvar, nlv)
+   dimnames(mat) <- list(
+      c(" Number of manifest variables",
+        " Number of latent class variables"), ""
+   )
+   print(mat)
    cat("\n Latent variables (Root*):")
    label <- row.names(lt)
    label[lt$root] <- paste0(label[lt$root], "*")
@@ -146,106 +136,119 @@ summary.slca = function(
       mat[, 1] <- ifelse(is.na(mat[, 1]), NA, paste0(" ", mat[, 1]))
       print(mat, quote = FALSE, na.print = "")
    }
-
-   if (inherits(object, "estimated")) {
-      cat("\n\nSummary of manifest variables\n")
-      cat("\n Categories for each variable:\n")
-      lev <- attr(object$mf, "levels")
-      mat <- matrix(nrow = nvar, ncol = max(sapply(lev, length)))
-      for (i in seq_len(nvar)) {
-         mat[i, seq_along(lev[[i]])] <- lev[[i]]
-      }
-      dimnames(mat) <- list(
-         paste0(" ", names(lev)),
-         response = seq_len(ncol(mat))
-      )
-      print(mat, quote = FALSE, print.gap = 2,
-            na.print = "")
-
-      cat("\n Frequencies for each categories:\n")
-      freq <- lapply(object$mf, function(x) {
-         tab <- table(x, useNA = "always")
-         names(tab)[length(tab)] <- "<NA>"
-         tab
-      })
-      mat <- matrix(nrow = nvar, ncol = max(sapply(lev, length)) + 1)
-      dimnames(mat) <- list(
-         paste0(" ", names(lev)),
-         response = c(seq_len(ncol(mat) - 1), "<NA>")
-      )
-      for (i in seq_len(nvar)) {
-         mat[i, names(freq[[i]])] <- freq[[i]]
-      }
-      print(mat, quote = FALSE, print.gap = 2,
-            na.print = "")
-
-      cat("\n\nSummary of model fit\n")
-      npar <- object$arg$df
-      llik <- stats::logLik(object)
-      aic <- stats::AIC(object)
-      bic <- stats::BIC(object)
-
-      arg <- object$arg
-      mf <- object$mf
-      ll <- calcModel(
-         attr(mf, "yu"), nrow(attr(mf, "y_unique")),
-         arg$nvar, unlist(arg$nlev), object$par, arg$fix0,
-         arg$ref - 1, arg$nlv, arg$nrl, arg$nlf,
-         arg$npi, arg$ntau, arg$nrho, arg$ul, arg$vl,
-         arg$lf, arg$tr, arg$rt, arg$eqrl, arg$eqlf,
-         arg$nc, arg$nk, arg$nl, arg$ncl,
-         arg$nc_pi, arg$nk_tau, arg$nl_tau, arg$nc_rho, arg$nr_rho
-      )$ll
-      mfreq <- exp(rowSums(ll) + log(arg$nobs))
-      dfreq <- attr(object$mf, "freq")
-      chisq <- sum(((dfreq - mfreq)^2 / mfreq)[mfreq > 0]) +
-         (arg$nobs - sum(mfreq))
-
-      gsq <- 2 * (attr(object$mf, "loglik") - stats::logLik(object))
-      resdf <- attr(object$mf, "df") - npar
-      sprintf("%.0f", npar)
-      mat <- rbind(
-         sprintf("%.0f", npar), sprintf("%.3f", llik), NA,
-         sprintf("%.3f", aic), sprintf("%.3f", bic), NA,
-         sprintf("%.0f", resdf), sprintf("%.3f", chisq),
-         sprintf("%.3f", stats::pchisq(chisq, resdf, lower.tail = FALSE)),
-         sprintf("%.3f", gsq),
-         sprintf("%.3f", stats::pchisq(gsq, resdf, lower.tail = FALSE)))
-      format(stats::pchisq(gsq, resdf, lower.tail = FALSE), digits = 3)
-      dimnames(mat) <- list(
-         c(" Number of free parameters",
-           " Log-likelihood",
-           " Information criteria",
-           "   Akaike (AIC)",
-           "   Bayesian (BIC)",
-           " Chi-squared Tests",
-           "   Residual degree of freedom (df)",
-           "   Pearson Chi-squared (X-squared)",
-           "     P(>Chi)",
-           "   Likelihood Ratio (G-squared)",
-           "     P(>Chi)"
-         ), ""
-      )
-      print(mat, na.print = "", quote = FALSE, right = TRUE)
-   }
-
    invisible(object)
 }
 
-#' Print Estimated Parameters of `slca` Object
+#' @exportS3Method base::summary slcafit
+summary.slcafit <- function(object, ...) {
+   NextMethod()
+
+   lt <- object$model$latent
+   mr <- object$model$measure
+   st <- object$model$struct
+   tr <- object$model$tree
+   nvar <- length(setdiff(tr$child, tr$parent))
+   nlv <- nrow(lt)
+
+   cat("\n\nSummary of manifest variables\n")
+   cat("\n Categories for each variable:\n")
+   lev <- attr(object$mf, "levels")
+   mat <- matrix(nrow = nvar, ncol = max(sapply(lev, length)))
+   for (i in seq_len(nvar)) {
+      mat[i, seq_along(lev[[i]])] <- lev[[i]]
+   }
+   dimnames(mat) <- list(
+      paste0(" ", names(lev)),
+      response = seq_len(ncol(mat))
+   )
+   print(mat, quote = FALSE, print.gap = 2,
+         na.print = "")
+
+   cat("\n Frequencies for each categories:\n")
+   freq <- lapply(object$mf, function(x) {
+      tab <- table(x, useNA = "always")
+      names(tab)[length(tab)] <- "<NA>"
+      tab
+   })
+   mat <- matrix(nrow = nvar, ncol = max(sapply(lev, length)) + 1)
+   dimnames(mat) <- list(
+      paste0(" ", names(lev)),
+      response = c(seq_len(ncol(mat) - 1), "<NA>")
+   )
+   for (i in seq_len(nvar)) {
+      mat[i, names(freq[[i]])] <- freq[[i]]
+   }
+   print(mat, quote = FALSE, print.gap = 2,
+         na.print = "")
+
+   cat("\n\nSummary of model fit\n")
+   nobs <- object$arg$nobs
+   npar <- object$arg$df
+   llik <- stats::logLik(object)
+   aic <- stats::AIC(object)
+   bic <- stats::BIC(object)
+
+   arg <- object$arg
+   mf <- object$mf
+   ll <- calcModel(
+      attr(mf, "yu"), nrow(attr(mf, "y_unique")),
+      arg$nvar, unlist(arg$nlev), object$par, arg$fix0,
+      arg$ref - 1, arg$nlv, arg$nrl, arg$nlf,
+      arg$npi, arg$ntau, arg$nrho, arg$ul, arg$vl,
+      arg$lf, arg$tr, arg$rt, arg$eqrl, arg$eqlf,
+      arg$nc, arg$nk, arg$nl, arg$ncl,
+      arg$nc_pi, arg$nk_tau, arg$nl_tau, arg$nc_rho, arg$nr_rho
+   )$ll
+   mfreq <- exp(rowSums(ll) + log(arg$nobs))
+   dfreq <- attr(object$mf, "freq")
+   chisq <- sum(((dfreq - mfreq)^2 / mfreq)[mfreq > 0]) +
+      (arg$nobs - sum(mfreq))
+
+   gsq <- 2 * (attr(object$mf, "loglik") - stats::logLik(object))
+   resdf <- attr(object$mf, "df") - npar
+   sprintf("%.0f", npar)
+   mat <- rbind(
+      sprintf("%.0f", nobs), sprintf("%.0f", npar),
+      sprintf("%.3f", llik), NA,
+      sprintf("%.3f", aic), sprintf("%.3f", bic), NA,
+      sprintf("%.0f", resdf), sprintf("%.3f", chisq),
+      sprintf("%.3f", stats::pchisq(chisq, resdf, lower.tail = FALSE)),
+      sprintf("%.3f", gsq),
+      sprintf("%.3f", stats::pchisq(gsq, resdf, lower.tail = FALSE)))
+   format(stats::pchisq(gsq, resdf, lower.tail = FALSE), digits = 3)
+   dimnames(mat) <- list(
+      c(" Number of observations",
+        " Number of free parameters",
+        " Log-likelihood",
+        " Information criteria",
+        "   Akaike (AIC)",
+        "   Bayesian (BIC)",
+        " Chi-squared Tests",
+        "   Residual degree of freedom (df)",
+        "   Pearson Chi-squared (X-squared)",
+        "     P(>Chi)",
+        "   Likelihood Ratio (G-squared)",
+        "     P(>Chi)"
+      ), ""
+   )
+   print(mat, na.print = "", quote = FALSE, right = TRUE)
+   invisible(object)
+}
+
+#' Print Estimated Parameters of `slcafit` Object
 #'
-#' This function prints the estimated parameters of the `slca` model by accepting an `estimated` `slca` object.
+#' This function prints the estimated parameters of the `slca` model by accepting an `slcafit` object.
 #'
-#' @aliases param param.slca
+#' @aliases param param.slcafit
 #' @usage
 #' param(object, ...)
 #'
-#' \method{param}{slca}(
+#' \method{param}{slcafit}(
 #'    object, type = c("probs", "logit"),
 #'    se = FALSE, index = FALSE, ...
 #' )
 #'
-#' @param object an object of class `slca` and `estimated`.
+#' @param object an object of class `slcafit`.
 #' @param type a character string specifying the format in which the estimated parameters should be displayed. The options are `"probs"` for probability format or `"logit"` for log-odds (logit) format. The default setting is `"probs"`.
 #' @param se a logical indicating whether standard errors (TRUE) or parameter estimates (FALSE) should be displayed.
 #' @param index a logical indicating whether to include (`TRUE`) or exclude (`FALSE`) the indices of the estimated parameters in the output.
@@ -259,16 +262,15 @@ summary.slca = function(
 #'
 #' @export
 param <- function(object, ...) UseMethod("param")
-#' @exportS3Method slca::param slca
-param.slca <- function(
+#' @exportS3Method slca::param slcafit
+param.slcafit <- function(
    object, type = c("probs", "logit"),
    se = FALSE, index = FALSE, ...
 ) {
-   if (!inherits(object, "estimated")) return(NA)
    type <- match.arg(type)
 
    if (se) {
-      vcov <- vcov.slca(object, type)
+      vcov <- vcov.slcafit(object, type)
       var <- diag(vcov)
       est <- numeric(length(var))
       est[var >= 0] <- sqrt(var[var >= 0])
@@ -287,12 +289,12 @@ param.slca <- function(
    if (index) {
       attr(res, "idx") <- seq_along(est)
    }
-   class(res) <- c("param.slca", "list")
+   class(res) <- c("slcapar", "list")
    res
 }
 
-#' @exportS3Method base::print param.slca
-print.param.slca <- function(
+#' @exportS3Method base::print slcapar
+print.slcapar <- function(
    x, digits = max(3L, getOption("digits") - 3L), ...
 ) {
    class(x) <- "list"
@@ -327,9 +329,8 @@ print.param.slca <- function(
 }
 
 
-#' @exportS3Method stats::vcov slca
-vcov.slca <- function(object, type = c("probs", "logit"), ...) {
-   if (!inherits(object, "estimated")) return(NA)
+#' @exportS3Method stats::vcov slcafit
+vcov.slcafit <- function(object, type = c("probs", "logit"), ...) {
    type <- match.arg(type)
    id <- object$arg$id
    score <- object$score
@@ -346,17 +347,15 @@ vcov.slca <- function(object, type = c("probs", "logit"), ...) {
    vcov
 }
 
-#' @exportS3Method stats::predict slca
-predict.slca <- function(
-   object, newdata, label, type = c("class", "posterior"), ...
+#' @exportS3Method stats::predict slcafit
+predict.slcafit <- function(
+   object, newdata, type = c("class", "posterior"), ...
 ) {
    type <- match.arg(type)
-   if (!inherits(object, "estimated")) stop("Latent variable model should be estimated.")
-   if (missing(label)) label <- row.names(object$model$latent)
    if (missing(newdata)) post <- object$posterior
    else {
       mf <- proc_data(newdata, object$model, FALSE)
-      arg <- arg_mf(object$model, mf, object$fix2zero)
+      arg <- arg_mf(object$model, object$arg, mf, object$fix2zero)
 
       post <- calcModel(
          attr(mf, "y"), arg$nobs, arg$nvar, unlist(arg$nlev),
@@ -366,18 +365,15 @@ predict.slca <- function(
          arg$nc, arg$nk, arg$nl, arg$ncl,
          arg$nc_pi, arg$nk_tau, arg$nl_tau, arg$nc_rho, arg$nr_rho
       )$post
-      post <- utils::relist(post, object$skeleton$post)
+      skeleton <- get_frame(object$model, arg, mf)
+      post <- utils::relist(post, skeleton$post)
    }
-   impute <- function(x) apply(x, 1, which.max)
+   impute <- function(x) apply(x, 2, which.max)
 
    switch(
       type,
-      class = if (length(label) == 1)
-         impute(post$marginal[[label]])
-      else sapply(post$marginal[label], impute),
-      posterior = if (length(label) == 1)
-         post$marginal[[label]]
-      else post$marginal[label]
+      class = sapply(post, impute),
+      posterior = lapply(post, t)
    )
 }
 
@@ -386,7 +382,7 @@ predict.slca <- function(
 #'
 #' Computes confidence intervals for one or more parameters of fitted model. Package \pkg{slca} adds methods for \code{slca} fits.
 #'
-#' @param object an object of class `slca` and `estimated`.
+#' @param object an object of class `slcafit`.
 #' @param parm an integer string specifying parameters to be given confidence intervals.
 #' @param level numeric value representing the desired confidence level for the intervals, with a default of 0.95.
 #' @param type a character string specifying the format in which the results should be returned. Options include `"probs"` for probability format and `"logit"` for log-odds (logit) format, with the default being `"probs"`.
@@ -402,11 +398,10 @@ predict.slca <- function(
 #'
 #' @example man/examples/confint.R
 #'
-#' @exportS3Method stats::confint slca
-confint.slca <- function(
+#' @exportS3Method stats::confint slcafit
+confint.slcafit <- function(
    object, parm, level = 0.95, type = c("param", "logit"), ...
 ) {
-   if (!inherits(object, "estimated")) stop("the model is not estimated.")
    if (missing(parm)) parm <- seq_along(object$par)
    type <- match.arg(type)
 
@@ -438,17 +433,15 @@ format_pc <- function(perc, digits)
 #'
 #' This function reorders the latent class membership for specified latent class variables.
 
-#' @param x an object of class `slca` and `estimated`.
+#' @param x an object of class `slcafit`.
 #' @param ... additional arguments specifying the new order for the latent class variables.
 #'
-#' @returns Returns the modified `slca` or `estimated` object with the reordered latent classes.
+#' @returns Returns the modified `slcafit` object with the reordered latent classes.
 #'
 #' @example man/examples/reorder.R
 #'
-#' @exportS3Method stats::reorder slca
-#'
-reorder.slca <- function(x, ...) {
-   if (!inherits(x, "estimated")) return(x)
+#' @exportS3Method stats::reorder slcafit
+reorder.slcafit <- function(x, ...) {
    m <- match.call(expand.dots = FALSE)
    orders <- lapply(list(...), rank, ties.method = "first")
    name <- intersect(names(orders), row.names(x$model$latent))

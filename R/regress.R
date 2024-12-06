@@ -2,16 +2,15 @@
 #'
 #' This function performs regression analysis to explore the influence of exogenous (external) variables on the latent class variables within an estimated \code{slca} model. It utilizes logistic regression and employs a three-step approach.
 #'
-#' @aliases regress regress.slca
 #' @usage
 #' regress(object, ...)
 #'
-#' \method{regress}{slca}(
+#' \method{regress}{slcafit}(
 #'    object, formula, data = parent.frame(),
 #'    imputation = c("modal", "prob"),
 #'    method = c("naive", "BCH", "ML"), ...
 #' )
-#' @param object an object of class `slca` and `estimated`
+#' @param object an object of class `slcafit`.
 #' @param formula a formula defining the regression model, including both latent class variables from the estimated model and any exogenous (external) variables.
 #' @param data an optional data frame containing the exogenous variables of interest.
 #' @param imputation the imputation method for imputing (assigning) latent class variables. Possible values are:
@@ -33,20 +32,18 @@
 #'
 #' @references Vermunt, J. K. (2010). Latent Class Modeling with Covariates: Two Improved Three-Step Approaches. Political Analysis, 18(4), 450–469. http://www.jstor.org/stable/25792024
 #'
-#' @example man/examples/reg.R
+#' @example man/examples/regress.R
 #'
 #' @export
 regress <- function(object, ...) UseMethod("regress")
 
-#' @exportS3Method slca::regress slca
-regress.slca <- function(
+#' @rdname regress
+#' @exportS3Method slca::regress slcafit
+regress.slcafit <- function(
       object, formula, data = parent.frame(),
       imputation = c("modal", "prob"),
       method = c("naive", "BCH", "ML"), ...
 ) {
-   if (!inherits(object, "estimated"))
-      stop("Latent variable model should be estimated.")
-
    # Import
    labels <- all.vars(formula)
    latent <- labels[labels %in% row.names(object$model$latent)]

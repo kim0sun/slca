@@ -23,7 +23,7 @@
 #' To constrain certain parameters to zero, use the `fix2zero` argument. Each parameter is associated with a unique index. You can identify the index of a specific parameter by invoking the \link[slca]{param} function with the `index = TRUE` argument. To apply these constraints, include the relevant parameter indices in the `fix2zero` argument.
 #'
 #' @returns
-#' An object of class `slca` and `estimated` with an following elements:
+#' An object of class `slcafit` with an following elements:
 #' \item{model}{a `list` describing of the model.}
 #' \item{method}{the method used for estimation}
 #' \item{arg}{the brief model description used during the estimation.}
@@ -38,9 +38,9 @@
 #'
 #' This returned object can be further processed using the \link[slca]{param} functions to extract the estimated parameters or their respective standard errors. Additionally, the \link[slca]{regress} function enables logistic regression analysis using three-step approach to evaluate the effect of external variables on latent class variables.
 #'
-#' @seealso \link[slca]{slca} \link[slca]{param} \link[slca]{regress} \link[slca]{slcaControl} \link[slca]{gss7677}, \link[slca]{addhealth}, \link[slca]{nlsy97}
+#' @example man/examples/estimate.R
 #'
-#'
+#' @seealso [slca()] [param()] [slcaControl()]
 #'
 #' @export
 estimate <- function(x, ...) UseMethod("estimate")
@@ -60,7 +60,7 @@ estimate.slca <- function(
    na.rm <- control$na.rm
    if (!missing(data))
       mf <- proc_data(data, x$model, na.rm)
-   else if (inherits(x, "estimated"))
+   else if (inherits(x, "slcafit"))
       mf <- x$mf
    else {
       data = parent.frame()
@@ -69,7 +69,7 @@ estimate.slca <- function(
 
    arg <- arg_mf(x$model, x$arg, mf, fix2zero)
 
-   if (inherits(x, "estimated")) par <- x$par
+   if (inherits(x, "slcafit")) par <- x$par
    if (!is.null(control$init.param)) {
       init.param <- unlist(control$init.param)
       if (all(init.param >= 0))
@@ -77,7 +77,7 @@ estimate.slca <- function(
       else
          par <- unlist(tapply(init.param, arg$id, norm2), use.names = FALSE)
    }
-   if (!inherits(x, "estimated") &&
+   if (!inherits(x, "slcafit") &&
        is.null(control$init.param)) {
       if (control$nrep > 1) {
          if (control$verbose)
@@ -160,7 +160,7 @@ estimate.slca <- function(
    x$loglikelihood <- etc$ll
    x$control <- control
 
-   class(x) <- c("slca", "estimated")
+   class(x) <- c("slcafit", "slca")
    x
 }
 

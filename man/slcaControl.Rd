@@ -2,7 +2,7 @@
 % Please edit documentation in R/slcaControl.R
 \name{slcaControl}
 \alias{slcaControl}
-\title{Control Parameters for slca Estimation}
+\title{Control Parameters for \code{slca} Estimation}
 \usage{
 slcaControl(
   em.iterlim = 5000,
@@ -39,7 +39,7 @@ slcaControl(
 a \code{list} with control parameters for slca estimation.
 }
 \description{
-Control Parameters for slca Estimation
+Control Parameters for \code{slca} Estimation
 }
 \seealso{
 \link{slca}

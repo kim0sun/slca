@@ -2,21 +2,32 @@
 % Please edit documentation in R/diagnostic.R
 \name{gof}
 \alias{gof}
-\alias{gof.slca}
+\alias{gof.slcafit}
 \title{Goodness of Fit Test for Estimated \code{slca} Model}
 \usage{
 gof(object, ...)
 
-\method{gof}{slca}(
+\method{gof}{slcafit}(
    object, ..., test = c("none", "chisq", "boot"),
    nboot = 100, plot = FALSE,
    maxiter = 100, tol = 1e-6, verbose = FALSE
 )
+
+\method{gof}{slcafit}(
+  object,
+  ...,
+  test = c("none", "chisq", "boot"),
+  nboot = 100,
+  plot = FALSE,
+  maxiter = 100,
+  tol = 1e-06,
+  verbose = FALSE
+)
 }
 \arguments{
-\item{object}{an object of class \code{slca} and \code{estimated}.}
+\item{object}{an object of class \code{slcafit}.}
 
-\item{...}{additional objects of class \code{slca} and \code{estimated}.}
+\item{...}{additional objects of class \code{slcafit}.}
 
 \item{test}{a character string specifying the type of test to be conducted. If \code{"chisq"}, a chi-squared test is conducted. If \code{"boot"}, a bootstrap test is conducted.}
 

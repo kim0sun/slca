@@ -1,4 +1,4 @@
-#' Control Parameters for slca Estimation
+#' Control Parameters for `slca` Estimation
 #'
 #' @param em.iterlim an integer specifying maximum number of iterations allowed for EM algorithm. Default is 5000.
 #' @param em.tol a numeric value setting tolerance for the convergence of EM algorithm. Default is 1e-8.

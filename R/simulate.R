@@ -1,4 +1,4 @@
-#' Simulate data from \code{slca} model.
+#' Simulate Data from \code{slca} Model
 #'
 #' This function simulates data from a constructed \code{slca} model. If the model is not already estimated, parameters can be specified by the user or generated randomly.
 #'
@@ -14,7 +14,7 @@
 #' \item{class}{A `data.frame` providing the assigned latent class for each individual across different latent class variables.}
 #' \item{response}{A `data.frame` containing the manifest items that were simulated.}
 #'
-#' @example man/examples/sim.R
+#' @example man/examples/simulate.R
 #'
 #' @exportS3Method stats::simulate slca
 simulate.slca <- function(
@@ -38,7 +38,7 @@ simulate.slca <- function(
    }
    names(nlevel) <- vars
 
-   if (inherits(object, "estimated")) {
+   if (inherits(object, "slcafit")) {
       level <- levels(object$mf)
       par <- object$par
    } else if (missing(parm)) {
@@ -51,8 +51,8 @@ simulate.slca <- function(
       level <- sapply(unlist(arg$vars, use.names = FALSE), function(x)
          seq_len(nlevel[x]), simplify = FALSE)
       arg <- arg_sim(arg, level, object$fix2zero, nsim)
-      if (length(parm) == length(arg$id)) {
-         par <- unlist(tapply(par, arg$id, norm1), use.names = FALSE)
+      if (length(unlist(parm)) == length(arg$id)) {
+         par <- unlist(tapply(parm, arg$id, norm1), use.names = FALSE)
       } else {
          par <- stats::runif(length(arg$id))
          par <- unlist(tapply(par, arg$id, norm1), use.names = FALSE)
@@ -70,8 +70,8 @@ simulate.slca <- function(
 
    # data.name
    y <- data.frame(do.call(cbind, sim$y))
-   items <- unlist(model$latent[model$latent$leaf, "children"],
-                   use.names = FALSE)
+   child <- model$latent[model$latent$leaf, "children"]
+   items <- setdiff(unlist(child), names(child))
    colnames(y) <- items
    y[] <- lapply(items, function(x)
       factor(y[[x]], labels = level[[x]]))
@@ -81,5 +81,8 @@ simulate.slca <- function(
    colnames(class) <- row.names(model$latent)
    rownames(class) <- row.names(mf)
 
-   list(class = class, response = mf)
+   skeleton <- get_frame(model, arg, mf)
+   param <- utils::relist(exp(par), skeleton$par)
+
+   list(class = class, response = mf, parm = param)
 }

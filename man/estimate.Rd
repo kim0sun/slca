@@ -27,7 +27,7 @@ estimate(x, ...)
 \item{control}{a \code{list} of control for the estimation procedure. Used to modify default values in \link{slcaControl}.}
 }
 \value{
-An object of class \code{slca} and \code{estimated} with an following elements:
+An object of class \code{slcafit} with an following elements:
 \item{model}{a \code{list} describing of the model.}
 \item{method}{the method used for estimation}
 \item{arg}{the brief model description used during the estimation.}
@@ -48,6 +48,33 @@ Estimate the parameters of model constructed using the \code{slca} function.
 \details{
 To constrain certain parameters to zero, use the \code{fix2zero} argument. Each parameter is associated with a unique index. You can identify the index of a specific parameter by invoking the \link[slca]{param} function with the \code{index = TRUE} argument. To apply these constraints, include the relevant parameter indices in the \code{fix2zero} argument.
 }
+\examples{
+m <- slca(lc[3] ~ y1 + y2 + y3 + y4)
+pi <- rep(1 / 3, 3)
+rho <- c(.9, .1, .9, .1, .9, .1, .9, .1, # class 1
+         .9, .1, .9, .1, .1, .9, .1, .9, # class 2
+         .1, .9, .1, .9, .1, .9, .1, .9) # class 3
+dt <- simulate(m, parm = c(pi, rho))
+estimate(m, dt$response)
+
+# Several estimation methods
+estimate(m, dt$response, method = "em",
+         control = slcaControl(verbose = TRUE)) # default
+estimate(m, dt$response, method = "nlm",
+         control = slcaControl(verbose = TRUE))
+estimate(m, dt$response, method = "hybrid",
+         control = slcaControl(verbose = TRUE))
+
+# Parameter restriction
+mf <- estimate(m, dt$response)
+param(mf, index = TRUE)
+mf0 <- estimate(mf, fix2zero = c(4, 6, 8, 10))
+param(mf0)
+
+# Estimation control
+estimate(m, dt$response, control = slcaControl(nrep = 10, verbose = TRUE))
+estimate(m, dt$response, control = slcaControl(init.param = c(pi, rho)))
+}
 \seealso{
-\link[slca]{slca} \link[slca]{param} \link[slca]{regress} \link[slca]{slcaControl} \link[slca]{gss7677}, \link[slca]{addhealth}, \link[slca]{nlsy97}
+\code{\link[=slca]{slca()}} \code{\link[=param]{param()}} \code{\link[=slcaControl]{slcaControl()}}
 }

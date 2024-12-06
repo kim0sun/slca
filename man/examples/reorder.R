@@ -3,9 +3,9 @@ nlsy_jlcpa %>% param
 
 # Reorder the RHO parameters as ascending order
 reordered1 <- nlsy_jlcpa %>%
-   reorder(smk98 = c(2, 3, 1),
-           drk98 = c(2, 1, 3),
-           mrj98 = c(3, 2, 1))
+   reorder(SMK_98 = c(1, 3, 2),
+           DRK_98 = c(3, 2, 1),
+           MRJ_98 = c(3, 1, 2))
 reordered1 %>% param
 # Label class1: nonuse
 #       class2: lifetime use
@@ -13,7 +13,7 @@ reordered1 %>% param
 
 # Reorder the TAU parameters for joint classes as ascending order
 reordered2 <- reordered1 %>%
-   reorder(use98 = c(5, 1, 4, 2, 3))
+   reorder(SUB_98 = c(3, 4, 5, 1, 2))
 reordered2 %>% param
 # Label class1: nonuse
 #       class2: heavy drinking only
@@ -23,7 +23,7 @@ reordered2 %>% param
 
 # Reorder the TAU paramters for profiles as ascending order
 reordered3 <- reordered2 %>%
-   reorder(prof = c(4, 1, 3, 2))
+   reorder(PROF = c(4, 1, 3, 2))
 reordered3 %>% param
 # Label class1: nonuse stayer
 #       class2: heavy drinking advancer

@@ -2,18 +2,18 @@
 % Please edit documentation in R/methods.R
 \name{param}
 \alias{param}
-\alias{param.slca}
-\title{Print Estimated Parameters of \code{slca} Object}
+\alias{param.slcafit}
+\title{Print Estimated Parameters of \code{slcafit} Object}
 \usage{
 param(object, ...)
 
-\method{param}{slca}(
+\method{param}{slcafit}(
    object, type = c("probs", "logit"),
    se = FALSE, index = FALSE, ...
 )
 }
 \arguments{
-\item{object}{an object of class \code{slca} and \code{estimated}.}
+\item{object}{an object of class \code{slcafit}.}
 
 \item{...}{additional arguments.}
 
@@ -30,5 +30,5 @@ A \code{list} containing the specified estimated parameters or their standard er
 \item{rho}{Item response probabilities for each measurement model, represented with lowercase alphabets for considering measurement invariance.}
 }
 \description{
-This function prints the estimated parameters of the \code{slca} model by accepting an \code{estimated} \code{slca} object.
+This function prints the estimated parameters of the \code{slca} model by accepting an \code{slcafit} object.
 }
