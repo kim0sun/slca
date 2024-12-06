@@ -1,6 +1,6 @@
-#' @exportS3Method stats::logLik slca
-logLik.slca <- function(object, ...) {
-   res <- if (inherits(object, "estimated"))
+#' @exportS3Method stats::logLik slcafit
+logLik.slcafit <- function(object, ...) {
+   res <- if (inherits(object, "slcafit"))
       structure(sum(object$loglikelihood),
                 df = object$arg$df,
                 nobs = object$arg$nobs
@@ -10,31 +10,26 @@ logLik.slca <- function(object, ...) {
    res
 }
 
-#' @exportS3Method stats::deviance slca
-deviance.slca <- function(object, ...) {
-   if (!inherits(object, "estimated"))
-      stop("slca model is not estimated")
-   sapply(objects, function(x)
-      2 * (attr(x$mf, "loglik") - stats::logLik(x)))
+#' @exportS3Method stats::deviance slcafit
+deviance.slcafit <- function(object, ...) {
+   2 * (attr(object$mf, "loglik") - sum(object$loglikelihood))
 }
 
 #' Goodness of Fit Test for Estimated `slca` Model
 #'
 #' Provides AIC, BIC and deviance statistic (G-squared) for goodness of fit test for the fitted model. Absolute model fit can be tested with deviance statistics, if `test` argument is specified.
 #'
-#' @aliases gof gof.slca
-#'
 #' @usage
 #' gof(object, ...)
 #'
-#' \method{gof}{slca}(
+#' \method{gof}{slcafit}(
 #'    object, ..., test = c("none", "chisq", "boot"),
 #'    nboot = 100, plot = FALSE,
 #'    maxiter = 100, tol = 1e-6, verbose = FALSE
 #' )
 #'
-#' @param object an object of class `slca` and `estimated`.
-#' @param ... additional objects of class `slca` and `estimated`.
+#' @param object an object of class `slcafit`.
+#' @param ... additional objects of class `slcafit`.
 #' @param test a character string specifying the type of test to be conducted. If `"chisq"`, a chi-squared test is conducted. If `"boot"`, a bootstrap test is conducted.
 #' @param nboot an integer specifying the number of bootstrap rounds to be performed.
 #' @param plot a logical value indicating whether to print histogram of G-squared statistics for boostrap samples, only for `test = "boot"`.
@@ -48,22 +43,23 @@ deviance.slca <- function(object, ...) {
 #'
 #' @seealso \link[slca]{compare}
 #'
-#' @example man/examples/diag.R
+#' @example man/examples/diagnostic.R
 #'
 #' @export
 gof <- function(object, ...) UseMethod("gof")
 
-#' @exportS3Method slca::gof slca
-gof.slca <- function(
+#' @rdname gof
+#' @exportS3Method slca::gof slcafit
+gof.slcafit <- function(
       object, ...,  test = c("none", "chisq", "boot"),
       nboot = 100, plot = FALSE,
       maxiter = 100, tol = 1e-6, verbose = FALSE
 ) {
    cl <- match.call(expand.dots = FALSE)
    objects <- list(object, ...)
-   est <- sapply(objects, inherits, "estimated")
    mn <- sapply(c(cl[["object"]], cl[["..."]]), deparse)
-   if (all(!est)) stop("at least 1 model should be estimated")
+   est <- sapply(objects, inherits, "slcafit")
+   if (all(!est)) stop("all models should be estimated")
    objects <- objects[est]
    mn <- mn[est]
    nmodel <- length(mn)
@@ -152,8 +148,8 @@ gof.slca <- function(
 #'
 #' Provides relative model fit test for two fitted SLCM models with deviance statistic.
 #'
-#' @param model1 an object of class `slca` and `estimated`.
-#' @param model2 another object of class `slca` and `estimated`.
+#' @param model1 an object of class `slcafit`.
+#' @param model2 another object of class `slcafit`.
 #' @param test a character string specifying the type of test to be conducted. If `"chisq"`, a chi-squared test is conducted. If `"boot"`, a bootstrap test is conducted.
 #' @param nboot an integer specifying the number of bootstrap rounds to be performed.
 #' @param method estimation method for bootstrapping.
@@ -168,7 +164,7 @@ gof.slca <- function(
 #'
 #' @seealso \link[slca]{gof}
 #'
-#' @example man/examples/diag.R
+#' @example man/examples/diagnostic.R
 #'
 #' @export
 compare <- function(
@@ -181,7 +177,7 @@ compare <- function(
    test <- match.arg(test)
    method <- match.arg(method)
    name <- c(cl[["model1"]], cl[["model2"]])
-   if (any(!sapply(models, inherits, "estimated")))
+   if (any(!sapply(models, inherits, "slcafit")))
       stop("both model should be estimated")
    mf1 <- model1$mf
    mf2 <- model2$mf

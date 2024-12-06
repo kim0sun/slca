@@ -16,5 +16,5 @@ Bureau of Labor Statistics, U.S. Department of Labor. National Longitudinal Surv
 Jeon, S., Seo, T. S., Anthony, J. C., & Chung, H. (2022). Latent Class Analysis for Repeatedly Measured Multiple Latent Class Variables. Multivariate Behavioral Research, 57(2–3), 341–355.
 }
 \seealso{
-\link[slca]{reorder.slca}
+\link[slca]{reorder.slcafit}
 }

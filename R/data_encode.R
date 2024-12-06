@@ -33,7 +33,7 @@ count_row <- function(mf, nlev, na.rm) {
       uobs <- !duplicated(yobs)
       obs_uniq <- yobs[uobs, ]
       obs_freq <- tabulate(cumsum(uobs))
-      if (prod(nlev) * length(nlev) < 1e10) {
+      if (prod(nlev) * length(nlev) < 1e6) {
          fmat <- as.matrix(expand.grid(lapply(nlev, seq_len)))
          obs_uniq <- unique(rbind(obs_uniq, fmat))
          obs_freq <- c(obs_freq, rep(0, nrow(obs_uniq) - length(obs_freq)))
