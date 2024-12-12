@@ -360,9 +360,19 @@ vcov.slcafit <- function(object, type = c("probs", "logit"), ...) {
 predict.slcafit <- function(
    object, newdata, type = c("class", "posterior"), ...
 ) {
+   dims <- dim(object$mf)
+   levs <- levels(object$mf)
    type <- match.arg(type)
    if (missing(newdata)) post <- object$posterior
    else {
+      if (!is.data.frame(newdata)) {
+         mat <- matrix(newdata, ncol = dims[2])
+         colnames(mat) <- names(object$mf)
+         newdata <- data.frame(mat)
+      }
+      newdata[] <- lapply(names(object$mf), function(x) {
+         newdata[[x]] <- factor(newdata[[x]], levels = levs[[x]])
+      })
       mf <- proc_data2(newdata, object$model, FALSE)
       arg <- arg_mf(object$model, object$arg, mf, object$fix2zero)
 
