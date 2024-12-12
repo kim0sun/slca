@@ -89,12 +89,12 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> $lc1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1   2   3 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 840   7 153 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 286 289 425 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $lc2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1   2   3   4 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 246 523 197  34 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  60  73  72 795 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># simulate data with defined number of levels of manifest items</span></span></span>
@@ -103,9 +103,9 @@
 <span class="r-in"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="va">sim</span><span class="op">$</span><span class="va">response</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="va">d</span>, <span class="va">table</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    x1  x2  x3  x4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 113 292  88  73</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 197  44 159 221</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 190 164 253 206</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 218 198 127 184</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 124 164 195 177</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 158 138 178 139</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">sim</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/simulate.html" class="external-link">simulate</a></span><span class="op">(</span><span class="va">m2</span>, nlevel <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>x1 <span class="op">=</span> <span class="fl">2</span>, x3 <span class="op">=</span> <span class="fl">3</span>, x4 <span class="op">=</span> <span class="fl">4</span>, x5 <span class="op">=</span> <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="va">sim</span><span class="op">$</span><span class="va">response</span></span></span>
@@ -113,22 +113,22 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> $x1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1   2 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 190 310 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 335 165 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $x2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1   2   3 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  37 158 305 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 142 232 126 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $x3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1   2   3   4 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 168 156  44 132 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 123 197 107  73 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $x4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1   2   3   4   5 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  95 111 108 112  74 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 156  78  60  95 111 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># simulate data with user-defined parameters</span></span></span>
@@ -145,20 +145,20 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> (lc)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   class</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          1       2       3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     0.3166  0.2463  0.4372</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     0.4031  0.2059  0.3910</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> RHO :</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (a)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         class</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> response       1       2       3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    1(V1)  0.2158  0.9489  0.8097</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    2      0.7842  0.0511  0.1903</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    1(V2)  0.0000  0.8829  0.9941</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    2      1.0000  0.1171  0.0059</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    1(V3)  0.0914  0.9206  0.1792</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    2      0.9086  0.0794  0.8208</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    1(V4)  0.0910  1.0000  0.1302</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    2      0.9090  0.0000  0.8698</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    1(V1)  0.1917  1.0000  0.8665</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    2      0.8083  0.0000  0.1335</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    1(V2)  0.1634  0.9934  0.8839</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    2      0.8366  0.0066  0.1161</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    1(V3)  0.0934  0.1470  0.7982</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    2      0.9066  0.8530  0.2018</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    1(V4)  0.1046  0.0000  0.8794</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    2      0.8954  1.0000  0.1206</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    V1 V2 V3 V4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> lc y1 y2 y3 y4</span>
