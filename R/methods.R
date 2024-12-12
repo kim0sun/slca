@@ -235,9 +235,9 @@ summary.slcafit <- function(object, ...) {
    invisible(object)
 }
 
-#' Print Estimated Parameters of `slcafit` Object
+#' Print Estimated Parameters of an `slcafit` Object
 #'
-#' This function prints the estimated parameters of the `slca` model by accepting an `slcafit` object.
+#' Prints the estimated parameters of an `slca` model using an `slcafit` object.
 #'
 #' @aliases param param.slcafit
 #' @usage
@@ -250,15 +250,15 @@ summary.slcafit <- function(object, ...) {
 #'
 #' @param object an object of class `slcafit`.
 #' @param type a character string specifying the format in which the estimated parameters should be displayed. The options are `"probs"` for probability format or `"logit"` for log-odds (logit) format. The default setting is `"probs"`.
-#' @param se a logical indicating whether standard errors (TRUE) or parameter estimates (FALSE) should be displayed.
-#' @param index a logical indicating whether to include (`TRUE`) or exclude (`FALSE`) the indices of the estimated parameters in the output.
-#' @param ... additional arguments.
+#' @param se a logical value indicating whether to display standard errors (`TRUE`) or parameter estimates (`FALSE`). The default is `FALSE`.
+#' @param index a logical value indicating whether to include (`TRUE`) or exclude (`FALSE`) the indices of the estimated parameters in the output. The default is `FALSE`.
+#' @param ... additional arguments passed to other methods.
 #'
 #' @returns
-#' A `list` containing the specified estimated parameters or their standard errors if `se` is set to `TRUE`. The components of the list include:
-#' \item{pi}{Membership probabilities of the root variable.}
-#' \item{tau}{Conditional probabilities between latent class variables, represented with uppercase alphabets for considering measurement invariance.}
-#' \item{rho}{Item response probabilities for each measurement model, represented with lowercase alphabets for considering measurement invariance.}
+#' A `list` containing the requested estimated parameters or their standard errors (if `se = TRUE`). The components of the list include:
+#' \item{pi}{Membership probabilities for the root latent variable.}
+#' \item{tau}{Conditional probabilities between latent class variables, represented with uppercase letters to account for measurement invariance.}
+#' \item{rho}{Item response probabilities for each measurement model, represented with lowercase letters to account for measurement invariance.}
 #'
 #' @export
 param <- function(object, ...) UseMethod("param")
@@ -347,14 +347,20 @@ vcov.slcafit <- function(object, type = c("probs", "logit"), ...) {
    vcov
 }
 
-#' Model Predictions for estimated `slca` object
+#' Model Predictions for Estimated `slca` Object
 #'
-#' Provides predicted class membership or posterior probabilities of new data under estimated `slca` model.
+#' Provides predicted class memberships or posterior probabilities for new data based on a fitted `slca` model.
 #'
-#' @param object aa
-#' @param newdata aa
-#' @param type aa
-#' @param ... further arguments for other methods.
+#' @param object An object of class `slcafit`, representing a fitted `slca` model.
+#' @param newdata A `data.frame` containing the same variables as those used to estimate the `object`.
+#' @param type A character string indicating the type of prediction. Use `"class"` to obtain the predicted class membership for each observation and latent class variable, or `"posterior"` to retrieve posterior probabilities for each class. The default is `"class"`.
+#' @param ... Additional arguments passed to other methods.
+#'
+#' @returns A `data.frame` or `list` depending on the `type`:
+#'   \itemize{
+#'     \item For `type = "class"`, a `data.frame` is returned where rows represent observations and columns correspond to latent class variables.
+#'     \item For `type = "posterior"`, a `list` is returned containing `data.frame`s with posterior probabilities for each latent class variable.
+#'   }
 #'
 #' @exportS3Method stats::predict slcafit
 predict.slcafit <- function(
@@ -399,21 +405,22 @@ predict.slcafit <- function(
 
 #' Confidence Intervals for Model Parameters
 #'
-#' Computes confidence intervals for one or more parameters of fitted model. Package \pkg{slca} adds methods for \code{slca} fits.
+#' Computes confidence intervals for one or more parameters of a fitted model.
 #'
 #' @param object an object of class `slcafit`.
-#' @param parm an integer string specifying parameters to be given confidence intervals.
-#' @param level numeric value representing the desired confidence level for the intervals, with a default of 0.95.
+#' @param parm an integer or string specifying the parameters for which confidence intervals are to be computed.
+#' @param level a numeric value representing the confidence level for the intervals. The default is `0.95` (95% confidence level).
 #' @param type a character string specifying the format in which the results should be returned. Options include `"probs"` for probability format and `"logit"` for log-odds (logit) format, with the default being `"probs"`.
 #' @param ... additional arguments.
 #'
 #' @returns
-#' A `matrix` with two columns representing the confidence intervals for the selected parameters. The columns are named based on the specified confidence level (`level`):
+#' A `matrix` with two columns representing the confidence intervals for the selected parameters. The column names correspond to the specified confidence level:
+#' \itemize{
+#'   \item `100 * (level / 2)%`: The lower bound of the confidence interval.
+#'   \item `100 * (1 - level / 2)%`: The upper bound of the confidence interval.
+#' }
 #'
-#' - `100 * (level / 2) %`: This column shows the lower bound of the confidence interval.
-#' - `100 * (1 - level / 2) %`: This column shows the upper bound of the confidence interval.
-#'
-#' The `level` parameter specifies the confidence level, with common values being 0.05 for a 95% confidence interval and 0.01 for a 99% confidence interval.
+#' The `level` argument determines the confidence level, with common values being `0.95` for a 95% confidence interval and `0.99` for a 99% confidence interval.
 #'
 #' @example man/examples/confint.R
 #'
@@ -448,14 +455,15 @@ confint.slcafit <- function(
 format_pc <- function(perc, digits)
    paste(format(100 * perc, trim = TRUE, scientific = FALSE, digits = digits), "%")
 
-#' Reorder Latent Class Membership of Class Variables
+#' Reorder Latent Class Membership of Latent Class Variables
 #'
-#' This function reorders the latent class membership for specified latent class variables.
-
+#' Reorders the latent class membership for specified latent class variables in an `slcafit` object.
+#'
 #' @param x an object of class `slcafit`.
 #' @param ... additional arguments specifying the new order for the latent class variables.
 #'
-#' @returns Returns the modified `slcafit` object with the reordered latent classes.
+#' @returns
+#' A modified `slcafit` object with the latent classes reordered according to the specified order.
 #'
 #' @example man/examples/reorder.R
 #'

@@ -17,29 +17,28 @@ slcaControl(
 )
 }
 \arguments{
-\item{em.iterlim}{an integer specifying maximum number of iterations allowed for EM algorithm. Default is 5000.}
+\item{em.iterlim}{an integer specifying the maximum number of iterations allowed for the EM algorithm. The default is \code{5000}.}
 
-\item{em.tol}{a numeric value setting tolerance for the convergence of EM algorithm. Default is 1e-8.}
+\item{em.tol}{a numeric value setting the tolerance for convergence of the EM algorithm. The default is \code{1e-8}.}
 
-\item{nlm.iterlim}{an integer specifying maximum number of iterations allowed for estimation with \code{nlm} function. Default is 1000.}
+\item{nlm.iterlim}{an integer specifying the maximum number of iterations allowed when using the \code{nlm} function for estimation. The default is \code{1000}.}
 
-\item{nlm.tol}{a numeric value setting tolerance for the convergence of \code{nlm} function. Default is 1e-10.}
+\item{nlm.tol}{a numeric value setting the tolerance for convergence of the \code{nlm} function. The default is \code{1e-10}.}
 
-\item{init.param}{initial parameters.}
+\item{init.param}{a numeric vector specifying the initial parameter values for estimation.}
 
-\item{nrep}{number of trials. Default is 1.}
+\item{nrep}{an integer specifying the number of estimation trials. The default is \code{1}.}
 
-\item{test.iter}{an integer specifying maximum number of iterations allowed for testing parameters. Default is 500}
+\item{test.iter}{an integer specifying the maximum number of iterations allowed for parameter testing. The default is \code{500}.}
 
-\item{na.rm}{a logical value indicating whether to remove observations including missing values (NA)}
+\item{na.rm}{a logical value indicating whether to remove observations containing missing values (\code{NA}). The default is \code{FALSE}.}
 
-\item{verbose}{a logical value indicating whether to display progress updates during the estimation process}
-}
-\value{
-a \code{list} with control parameters for slca estimation.
+\item{verbose}{a logical value indicating whether to display progress updates during the estimation process. The default is \code{FALSE}.
+
+A \code{list} containing control parameters for \code{slca} estimation, including the specified iteration limits, tolerances, and additional options.}
 }
 \description{
-Control Parameters for \code{slca} Estimation
+Specifies control parameters for estimating \code{slca} model.
 }
 \seealso{
 \link{slca}

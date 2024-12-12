@@ -3,7 +3,7 @@
 \name{gof}
 \alias{gof}
 \alias{gof.slcafit}
-\title{Goodness of Fit Test for Estimated \code{slca} Model}
+\title{Goodness-of-Fit Test for Fitted \code{slca} Model}
 \usage{
 gof(object, ...)
 
@@ -27,26 +27,26 @@ gof(object, ...)
 \arguments{
 \item{object}{an object of class \code{slcafit}.}
 
-\item{...}{additional objects of class \code{slcafit}.}
+\item{...}{additional objects of class \code{slcafit} for comparison.}
 
 \item{test}{a character string specifying the type of test to be conducted. If \code{"chisq"}, a chi-squared test is conducted. If \code{"boot"}, a bootstrap test is conducted.}
 
 \item{nboot}{an integer specifying the number of bootstrap rounds to be performed.}
 
-\item{plot}{a logical value indicating whether to print histogram of G-squared statistics for boostrap samples, only for \code{test = "boot"}.}
+\item{plot}{a logical value indicating whether to print histogram of G-squared statistics for boostrap samples, only for \code{test = "boot"}. The default is \code{FALSE}.}
 
-\item{maxiter}{an integer specifying maximum number of iterations allowed for the estimation process of each bootstrapping round.}
+\item{maxiter}{an integer specifying the maximum number of iterations allowed for the estimation process during each bootstrap iteration. The default is 100.}
 
-\item{tol}{a numeric value setting tolerance for the convergence of each bootstrapping round.}
+\item{tol}{a numeric value specifying the convergence tolerance for each bootstrap iteration. The default is \code{1e-6}.}
 
 \item{verbose}{a logical value indicating whether to print progress updates on the number of bootstrapping rounds completed.}
 }
 \value{
 A \code{data.frame} containing the number of parameters (Df), loglikelihood, AIC, BIC, G-squared statistics, and the residual degree of freedom for each object.
-Depending on the \code{test} argument, the p-value for the corresponding statistical test may also be included.
+If a statistical test is performed (using \code{test}), the result includes the corresponding p-value.
 }
 \description{
-Provides AIC, BIC and deviance statistic (G-squared) for goodness of fit test for the fitted model. Absolute model fit can be tested with deviance statistics, if \code{test} argument is specified.
+Computes the AIC, BIC, and deviance statistic (G-squared) for assessing the goodness-of-fit of a fitted \code{slca} model. If the \code{test} argument is specified, absolute model fit can be evaluated using deviance statistics.
 }
 \examples{
 library(magrittr)

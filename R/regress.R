@@ -1,6 +1,6 @@
 #' Regress Exogenous Variables on Latent Variables
 #'
-#' This function performs regression analysis to explore the influence of exogenous (external) variables on the latent class variables within an estimated \code{slca} model. It utilizes logistic regression and employs a three-step approach.
+#' Performs regression analysis to examine the influence of exogenous (external) variables on latent class variables in an estimated \code{slca} model. The function uses logistic regression with a three-step approach to account for measurement error.
 #'
 #' @usage
 #' regress(object, ...)
@@ -11,24 +11,30 @@
 #'    method = c("naive", "BCH", "ML"), ...
 #' )
 #' @param object an object of class `slcafit`.
-#' @param formula a formula defining the regression model, including both latent class variables from the estimated model and any exogenous (external) variables.
-#' @param data an optional data frame containing the exogenous variables of interest.
-#' @param imputation the imputation method for imputing (assigning) latent class variables. Possible values are:
-#' - "modal": Assigns each individual to the latent class with the highest posterior probability.
-#' - "prob": Assigns classes to individuals randomly according to the distribution of posterior probabilities.
-#' @param method the method used to adjust bias in the three-step approach, with options including "naive", "BCH", and "ML".
+#' @param formula a formula specifying the regression model, including both latent class variables (from the estimated model) and exogenous variables.
+#' @param data an optional `data.frame` containing the exogenous variables of interest. If omitted, the variables are taken from the parent environment.
+#' @param imputation a character string specifying the imputation method for latent class assignment. Options include:
+#'    \itemize{
+#'       \item `"modal"`: Assigns each individual to the latent class with the highest posterior probability.
+#'       \item `"prob"`: Assigns classes probabilistically based on the posterior probability distribution.
+#'    }
+#' @param method a character string specifying the method to adjust for bias in the three-step approach. Options include:
+#'   \itemize{
+#'     \item `"naive"`: A simple approach without correction for classification error.
+#'     \item `"BCH"`: The bias-adjusted Bolck, Croon, and Hagenaars method.
+#'     \item `"ML"`: A maximum likelihood approach that accounts for classification error.
+#'   }
 #' @param ... additional arguments.
 #'
 #' @returns
-#' A `list` with following components:
+#' A `list` of class `reg.slca` with the following components:
+#' \item{coefficients}{A matrix of regression coefficients representing the odds ratios for each latent class against the baseline class (the last class).}
+#' \item{std.err}{A matrix of standard errors corresponding to the regression coefficients.}
+#' \item{vcov}{The variance-covariance matrix of the regression coefficients.}
+#' \item{dim}{The dimensions of the coefficients matrix.}
+#' \item{ll}{The log-likelihood of the regression model.}
 #'
-#' \item{coefficients}{a matrix of regression coefficients representing the odds ratios of each class against the baseline class (the last class).}
-#' \item{std.err}{a matrix of standard errors corresponding to the regression coefficients.}
-#' \item{vcov}{the calculated variance-covariance matrix for the regression coefficients.}
-#' \item{dim}{the dimensions of the coefficients matrix.}
-#' \item{ll}{the log likelihood of the regression model.}
-#'
-#' Using the `summary` function, you can print coefficients, standard errors, corresponding Wald statistics, and p-values for these statistics.
+#' The `summary` function can be used to display the regression coefficients, standard errors, Wald statistics, and p-values.
 #'
 #' @references Vermunt, J. K. (2010). Latent Class Modeling with Covariates: Two Improved Three-Step Approaches. Political Analysis, 18(4), 450–469. http://www.jstor.org/stable/25792024
 #'

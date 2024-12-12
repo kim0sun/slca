@@ -7,8 +7,8 @@
 \format{
 A data frame with 2061 rows and 18 variables:
 \describe{
-\item{\code{GRADE}}{Respondent's grade level at Wave I}
-\item{\code{SEX}}{Respondent's sex \cr levels: (1)\code{Male}, (2)\code{Female}}
+\item{\code{GRADE}}{Respondent's grade level at Wave I.}
+\item{\code{SEX}}{Respondent's sex \cr levels: (1)\code{Male}, (2)\code{Female}.}
 \item{\code{S1w1}, \code{S1w2}}{I felt that I could not shake off the blues even with help from my family and friends.}
 \item{\code{S2w1}, \code{S2w2}}{I felt depressed.}
 \item{\code{S3w1}, \code{S3w2}}{I felt lonely.}
@@ -26,18 +26,10 @@ A data frame with 2061 rows and 18 variables:
 addhealth
 }
 \description{
-This dataset includes responses from the National Longitudinal Study of Adolescent Health (Add Health),
-focusing on adolescents' experiences with depression. The subjects, who were in Grades 10 and 11 during
-the 1994-1995 academic year, provided data on at least one measure of adolescent delinquency in Wave 1.
-These data can be used to replicate the latent class analysis conducted by Collins and Lanza (2008).\cr
-The dataset includes five covariates, notably grade level and sex of respondents, along with variables
-capturing depressive emotions: sadness (\code{S1-S4}), feeling disliked (\code{D1-D2}), and feelings of failure (\code{F1-F2}).
-}
-\details{
-Responses for these variables were initially categorized as "Never," "Sometimes," "Often," or "Most or All of the Time."
-In this dataset, responses are recoded as "No" for "Never" and "Yes" for all other responses, providing
-a longitudinal perspective on adolescent depression from Waves I and II. Variables with suffix \code{"w1"} are from Wave I,
-and those with suffix \code{"w2"} are from Wave II.
+This dataset contains responses from the National Longitudinal Study of Adolescent Health (Add Health), focusing on adolescents' experiences with depression. The subjects, who were in Grades 10 and 11 during the 1994–1995 academic year, provided data on at least one measure of adolescent delinquency in Wave I. \cr
+These data can be used to replicate the latent class analysis conducted by Collins and Lanza (2009).\cr
+The dataset includes five covariates, notably grade level and sex of respondents, along with variables capturing depressive emotions: sadness (\code{S1-S4}), feeling disliked (\code{D1-D2}), and feelings of failure (\code{F1-F2}). \cr
+Responses for these variables were initially categorized as "Never," "Sometimes," "Often," or "Most or All of the Time." In this dataset, responses have been recoded as "No" for "Never" and "Yes" for all other responses, providing  a longitudinal perspective on adolescent depression across Waves I and II. Variables with the suffix \code{"w1"} are from Wave I, while those with the suffix \code{"w2"} are from Wave II.
 }
 \examples{
 library(magrittr)

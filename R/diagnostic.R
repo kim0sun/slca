@@ -15,10 +15,10 @@ deviance.slcafit <- function(object, ...) {
    2 * (attr(object$mf, "loglik") - sum(object$loglikelihood))
 }
 
-#' Goodness of Fit Test for Estimated `slca` Model
+#' Goodness-of-Fit Test for Fitted `slca` Model
 #'
-#' Provides AIC, BIC and deviance statistic (G-squared) for goodness of fit test for the fitted model. Absolute model fit can be tested with deviance statistics, if `test` argument is specified.
-#'
+#' Computes the AIC, BIC, and deviance statistic (G-squared) for assessing the goodness-of-fit of a fitted `slca` model. If the `test` argument is specified, absolute model fit can be evaluated using deviance statistics.
+##'
 #' @usage
 #' gof(object, ...)
 #'
@@ -29,17 +29,17 @@ deviance.slcafit <- function(object, ...) {
 #' )
 #'
 #' @param object an object of class `slcafit`.
-#' @param ... additional objects of class `slcafit`.
+#' @param ... additional objects of class `slcafit` for comparison.
 #' @param test a character string specifying the type of test to be conducted. If `"chisq"`, a chi-squared test is conducted. If `"boot"`, a bootstrap test is conducted.
 #' @param nboot an integer specifying the number of bootstrap rounds to be performed.
-#' @param plot a logical value indicating whether to print histogram of G-squared statistics for boostrap samples, only for `test = "boot"`.
-#' @param maxiter an integer specifying maximum number of iterations allowed for the estimation process of each bootstrapping round.
-#' @param tol a numeric value setting tolerance for the convergence of each bootstrapping round.
+#' @param plot a logical value indicating whether to print histogram of G-squared statistics for boostrap samples, only for `test = "boot"`. The default is `FALSE`.
+#' @param maxiter an integer specifying the maximum number of iterations allowed for the estimation process during each bootstrap iteration. The default is 100.
+#' @param tol a numeric value specifying the convergence tolerance for each bootstrap iteration. The default is `1e-6`.
 #' @param verbose a logical value indicating whether to print progress updates on the number of bootstrapping rounds completed.
 #'
 #' @returns
 #' A `data.frame` containing the number of parameters (Df), loglikelihood, AIC, BIC, G-squared statistics, and the residual degree of freedom for each object.
-#' Depending on the `test` argument, the p-value for the corresponding statistical test may also be included.
+#' If a statistical test is performed (using `test`), the result includes the corresponding p-value.
 #'
 #' @seealso \link[slca]{compare}
 #'
@@ -133,7 +133,8 @@ gof.slcafit <- function(
          if (plot) {
             graphics::hist(gb, breaks = "FD",
                  main = bquote(.(mn[i]) ~ ": Bootstrap Histogram"),
-                 xlab = bquote("G"^2 ~ "statistic"))
+                 xlab = bquote("G"^2 ~ "statistic"),
+                 xlim = c(min(min(gb), gsq[i]), max(max(gb), gsq[i])))
             graphics::abline(v = gsq[i], col = "red", lwd = 1.5)
          }
       }
@@ -144,23 +145,23 @@ gof.slcafit <- function(
              class = c("anova", "data.frame"))
 }
 
-#' Compare Two Estimated `slca` Models
+#' Compare Two Fitted `slca` Models
 #'
-#' Provides relative model fit test for two fitted SLCM models with deviance statistic.
+#' Conducts a relative model fit test between two fitted SLCM models using the deviance statistic.
 #'
 #' @param model1 an object of class `slcafit`.
-#' @param model2 another object of class `slcafit`.
+#' @param model2 another object of class `slcafit` to be compared with `model1`.
 #' @param test a character string specifying the type of test to be conducted. If `"chisq"`, a chi-squared test is conducted. If `"boot"`, a bootstrap test is conducted.
-#' @param nboot an integer specifying the number of bootstrap rounds to be performed.
-#' @param method estimation method for bootstrapping.
-#' @param plot a logical value indicating whether to print histogram of G-squared statistics for boostrap samples, only for `test = "boot"`.
-#' @param maxiter an integer specifying maximum number of iterations allowed for the estimation process of each bootstrapping round.
-#' @param tol a numeric value setting tolerance for the convergence of each bootstrapping round.
-#' @param verbose a logical value indicating whether to print progress updates on the number of bootstrapping rounds completed.
+#' @param nboot an integer specifying the number of bootstrap iterations to perform (used only when `test = "boot"`). The default is 100.
+#' @param method a character string specifying the estimation method for bootstrapping.
+#' @param plot a logical value indicating whether to display a histogram of G-squared statistics for the bootstrap samples (applicable only for `test = "boot"`). The default is `FALSE`.
+#' @param maxiter an integer specifying the maximum number of iterations allowed during each bootstrap estimation round. The default is 100.
+#' @param tol numeric value setting the convergence tolerance for each bootstrap iteration. The default is `1e-6`.
+#' @param verbose a logical value indicating whether to print progress updates on completed bootstrap iterations. The default is `FALSE`.
 #'
 #' @returns
 #' A `data.frame` containing the number of parameters (Df), loglikelihood, AIC, BIC, G-squared statistics, and the residual degree of freedom for each object.
-#' Depending on the `test` argument, the p-value for the corresponding statistical test may also be included.
+#' If a statistical test is conducted (via `test`), the resulting p-value for the comparison is also included.
 #'
 #' @seealso \link[slca]{gof}
 #'
@@ -269,7 +270,8 @@ compare <- function(
       if (plot) {
          graphics::hist(gb, breaks = "FD",
               main = "Bootstrap Histogram",
-              xlab = bquote("G"^2 ~ "statistic"))
+              xlab = bquote("G"^2 ~ "statistic"),
+              xlim = c(min(min(gb), gsq), max(max(gb), gsq)))
          graphics::abline(v = gsq, col = "red", lwd = 1.5)
       }
    }

@@ -3,7 +3,7 @@
 \name{param}
 \alias{param}
 \alias{param.slcafit}
-\title{Print Estimated Parameters of \code{slcafit} Object}
+\title{Print Estimated Parameters of an \code{slcafit} Object}
 \usage{
 param(object, ...)
 
@@ -15,20 +15,20 @@ param(object, ...)
 \arguments{
 \item{object}{an object of class \code{slcafit}.}
 
-\item{...}{additional arguments.}
+\item{...}{additional arguments passed to other methods.}
 
 \item{type}{a character string specifying the format in which the estimated parameters should be displayed. The options are \code{"probs"} for probability format or \code{"logit"} for log-odds (logit) format. The default setting is \code{"probs"}.}
 
-\item{se}{a logical indicating whether standard errors (TRUE) or parameter estimates (FALSE) should be displayed.}
+\item{se}{a logical value indicating whether to display standard errors (\code{TRUE}) or parameter estimates (\code{FALSE}). The default is \code{FALSE}.}
 
-\item{index}{a logical indicating whether to include (\code{TRUE}) or exclude (\code{FALSE}) the indices of the estimated parameters in the output.}
+\item{index}{a logical value indicating whether to include (\code{TRUE}) or exclude (\code{FALSE}) the indices of the estimated parameters in the output. The default is \code{FALSE}.}
 }
 \value{
-A \code{list} containing the specified estimated parameters or their standard errors if \code{se} is set to \code{TRUE}. The components of the list include:
-\item{pi}{Membership probabilities of the root variable.}
-\item{tau}{Conditional probabilities between latent class variables, represented with uppercase alphabets for considering measurement invariance.}
-\item{rho}{Item response probabilities for each measurement model, represented with lowercase alphabets for considering measurement invariance.}
+A \code{list} containing the requested estimated parameters or their standard errors (if \code{se = TRUE}). The components of the list include:
+\item{pi}{Membership probabilities for the root latent variable.}
+\item{tau}{Conditional probabilities between latent class variables, represented with uppercase letters to account for measurement invariance.}
+\item{rho}{Item response probabilities for each measurement model, represented with lowercase letters to account for measurement invariance.}
 }
 \description{
-This function prints the estimated parameters of the \code{slca} model by accepting an \code{slcafit} object.
+Prints the estimated parameters of an \code{slca} model using an \code{slcafit} object.
 }

@@ -7,20 +7,20 @@
 \format{
 A data frame with 2942 rows and 14 variables:
 \describe{
-\item{\code{YEAR}}{Interview year (1976, 1977)}
-\item{\code{COHORT}}{Respondent's age \cr levels: (1)\code{YOUNG}, (2)\code{YOUNG-MIDDLE}, (4)\code{MIDDLE}, (5)\code{OLD}}
-\item{\code{SEX}}{Respondent's sex \cr levels: (1)\code{MALE}, (2)\code{FEMALE}}
-\item{\code{RACE}}{Respondent's race \cr levels: (1)\code{WHITE} (2)\code{BLACK}, (3)\code{OTHER}}
-\item{\code{DEGREE}}{Respondent's degree \cr levels: (1)\code{LT HS}, (2)\code{HIGH-SCH}, (3)\code{HIGHER}}
-\item{\code{REALRINC}}{Income of respondents}
-\item{\code{PAPRES}}{Father's prestige (occupation) \cr levels: (1)\code{LOW}, (2)\code{MIDIUM}, (2)\code{HIGH}}
-\item{\code{PADEG}}{Father's degree \cr levels: (1)\code{LT HS}, (2)\code{HIGH-SCH}, (3)\code{COLLEGE}, (4) \code{BACHELOR}, (5)\code{GRADUATE}}
-\item{\code{MADEG}}{Mother's degree \cr levels: (1)\code{LT HS}, (2)\code{HIGH-SCH}, (3)\code{COLLEGE}, (4) \code{BACHELOR}, (5)\code{GRADUATE}}
-\item{\code{TOLRAC}}{Tolerance towards racists}
-\item{\code{TOLCOM}}{Tolerance towards communists}
-\item{\code{TOLHOMO}}{Tolerance towards homosexuals}
-\item{\code{TOLATH}}{Tolerance towards atheists}
-\item{\code{TOLMIL}}{Tolerance towards militarists}
+\item{\code{YEAR}}{Interview year (1976, 1977).}
+\item{\code{COHORT}}{Respondent's age cohort.\cr Levels: (1) \code{YOUNG}, (2) \code{YOUNG-MIDDLE}, (4) \code{MIDDLE}, (5) \code{OLD}.}
+\item{\code{SEX}}{Respondent's sex.\cr Levels: (1) \code{MALE}, (2) \code{FEMALE}.}
+\item{\code{RACE}}{Respondent's race.\cr Levels: (1) \code{WHITE}, (2) \code{BLACK}, (3) \code{OTHER}.}
+\item{\code{DEGREE}}{Respondent's education level.\cr Levels: (1) \code{LT HS}, (2) \code{HIGH-SCH}, (3) \code{HIGHER}.}
+\item{\code{REALRINC}}{Respondent's income.}
+\item{\code{PAPRES}}{Father's occupational prestige.\cr Levels: (1) \code{LOW}, (2) \code{MEDIUM}, (3) \code{HIGH}.}
+\item{\code{PADEG}}{Father's education level.\cr Levels: (1) \code{LT HS}, (2) \code{HIGH-SCH}, (3) \code{COLLEGE}, (4) \code{BACHELOR}, (5) \code{GRADUATE}.}
+\item{\code{MADEG}}{Mother's education level.\cr Levels: (1) \code{LT HS}, (2) \code{HIGH-SCH}, (3) \code{COLLEGE}, (4) \code{BACHELOR}, (5) \code{GRADUATE}.}
+\item{\code{TOLRAC}}{Tolerance towards racists.}
+\item{\code{TOLCOM}}{Tolerance towards communists.}
+\item{\code{TOLHOMO}}{Tolerance towards homosexuals.}
+\item{\code{TOLATH}}{Tolerance towards atheists.}
+\item{\code{TOLMIL}}{Tolerance towards militarists.}
 }
 }
 \source{
@@ -30,10 +30,9 @@ General Social Survey (GSS) 1976, 1977
 gss7677
 }
 \description{
-This dataset contains responses from the General Social Survey (GSS) for the years 1976 and 1977, focusing on social status and tolerance towards minorities
-The latent class models can be fitted using this dataset replicate the analysis carried on McCutcheon (1985) and Bakk et al. (2014). \cr
-The data contains some covariates including year of the interview, age, sex, race, degree, and income of respondents.
-The variables associating social status include father's occupation and education level, and mother's education level, while the variables associating tolerance towards minorities are created by agreeing three related questions: (1) allowing public speaking, (2) allowing teaching, and (3) allowing literatures.
+This dataset contains responses from the General Social Survey (GSS) for the years 1976 and 1977, focusing on social status and tolerance towards minorities.
+The dataset can be used to replicate the analyses conducted in McCutcheon (1985) and Bakk et al. (2014). \cr
+It includes covariates such as interview year, age, sex, race, education level, and income. Social status-related variables include father's occupation and education level, as well as mother's education level. Tolerance towards minorities is measured by agreement with three questions: (1) allowing public speaking, (2) allowing teaching, and (3) allowing literature publication.
 }
 \examples{
 library(magrittr)
