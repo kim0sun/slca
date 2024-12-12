@@ -1,16 +1,18 @@
 #' Control Parameters for `slca` Estimation
 #'
-#' @param em.iterlim an integer specifying maximum number of iterations allowed for EM algorithm. Default is 5000.
-#' @param em.tol a numeric value setting tolerance for the convergence of EM algorithm. Default is 1e-8.
-#' @param nlm.iterlim an integer specifying maximum number of iterations allowed for estimation with \code{nlm} function. Default is 1000.
-#' @param nlm.tol a numeric value setting tolerance for the convergence of \code{nlm} function. Default is 1e-10.
-#' @param init.param initial parameters.
-#' @param nrep number of trials. Default is 1.
-#' @param test.iter an integer specifying maximum number of iterations allowed for testing parameters. Default is 500
-#' @param na.rm a logical value indicating whether to remove observations including missing values (NA)
-#' @param verbose a logical value indicating whether to display progress updates during the estimation process
+#' Specifies control parameters for estimating `slca` model.
 #'
-#' @return a \code{list} with control parameters for slca estimation.
+#' @param em.iterlim an integer specifying the maximum number of iterations allowed for the EM algorithm. The default is `5000`.
+#' @param em.tol a numeric value setting the tolerance for convergence of the EM algorithm. The default is `1e-8`.
+#' @param nlm.iterlim an integer specifying the maximum number of iterations allowed when using the \code{nlm} function for estimation. The default is `1000`.
+#' @param nlm.tol a numeric value setting the tolerance for convergence of the \code{nlm} function. The default is `1e-10`.
+#' @param init.param a numeric vector specifying the initial parameter values for estimation.
+#' @param nrep an integer specifying the number of estimation trials. The default is `1`.
+#' @param test.iter an integer specifying the maximum number of iterations allowed for parameter testing. The default is `500`.
+#' @param na.rm a logical value indicating whether to remove observations containing missing values (`NA`). The default is `FALSE`.
+#' @param verbose a logical value indicating whether to display progress updates during the estimation process. The default is `FALSE`.
+#'
+#' A \code{list} containing control parameters for `slca` estimation, including the specified iteration limits, tolerances, and additional options.
 #'
 #' @seealso [slca]
 #'

@@ -1,6 +1,6 @@
-#' Estimate Parameters of `slca` Object
+#' Estimate Parameters of an `slca` Object
 #'
-#' Estimate the parameters of model constructed using the `slca` function.
+#' Estimates the parameters of a model created using the `slca` function.
 #'
 #' @aliases estimate estimate.slca
 #' @usage
@@ -12,31 +12,31 @@
 #'    fix2zero = NULL,
 #'    control = slcaControl(), ...)
 #'
-#' @param x an `slca` object defining SLCM model to be estimated.
-#' @param data a `data.frame` object containing observed categorical variables incorporated in the model.
-#' @param method estimation method for SLCM parameters. The default is `"em"`, which employs expecation-maximization (EM) algorithm for estimation; the alternative `"nlm"`, utilizes `nlm` function for Newton-Raphson algorithm. The `"hybrid"` method begins with the EM algorithm and concludes with the `nlm` function for refined estimation.
-#' @param fix2zero a `vector` of parameters to be restricted to zero. The details of restriction is given under 'Details'
-#' @param control a `list` of control for the estimation procedure. Used to modify default values in [slcaControl].
-#' @param ... additional arguments.
+#' @param x an `slca` object defining the `slca` model to be estimated.
+#' @param data a `data.frame` containing the observed categorical variables included in the model.
+#' @param method a character string specifying the estimation method for SLCM parameters. The default is `"em"`, which uses the expectation-maximization (EM) algorithm. The alternative `"nlm"` employs the Newton-Raphson algorithm via the `nlm` function, while `"hybrid"` combines both approaches, starting with EM and finishing with `nlm` for refined estimates.
+#' @param fix2zero a `vector` specifying parameters to be constrained to zero. See the 'Details' section for further information.
+#' @param control a `list` of control parameters for the estimation procedure. Modify default values using [slcaControl()].
+#' @param ... additional arguments passed to the estimation process.
 #'
 #' @details
-#' To constrain certain parameters to zero, use the `fix2zero` argument. Each parameter is associated with a unique index. You can identify the index of a specific parameter by invoking the \link[slca]{param} function with the `index = TRUE` argument. To apply these constraints, include the relevant parameter indices in the `fix2zero` argument.
+#' The `fix2zero` argument allows you to constrain specific parameters to zero. Each parameter is associated with a unique index, which can be identified using the \link[slca]{param} function with the argument `index = TRUE`. To apply constraints, provide the relevant parameter indices in the `fix2zero` arguments with vector.
 #'
 #' @returns
-#' An object of class `slcafit` with an following elements:
-#' \item{model}{a `list` describing of the model.}
-#' \item{method}{the method used for estimation}
-#' \item{arg}{the brief model description used during the estimation.}
-#' \item{mf}{the data.frame used for estimation.}
+#' An object of class `slcafit` containing the following components:
+#' \item{model}{a `list` describing of the model structure.}
+#' \item{method}{the estimation method used.}
+#' \item{arg}{a brief description of the model used during estimation.}
+#' \item{mf}{the `data.frame` used for estimation.}
 #' \item{par}{the log of the estimated paramters.}
 #' \item{logit}{the log-odds of the estimated parameters.}
 #' \item{score}{the score function for the estimated parameters.}
-#' \item{posterior}{the `list` of posterior probablities for each latent class variable.}
+#' \item{posterior}{a `list` of posterior probablities for each latent class variable.}
 #' \item{convergence}{a logical indicator of whether convergence was achieved.}
-#' \item{loglikelihood}{the loglikelihood of the estimated model.}
-#' \item{control}{the control values used during the estimation process.}
+#' \item{loglikelihood}{the loglikelihood value of the estimated model.}
+#' \item{control}{the control settings used during the estimation process.}
 #'
-#' This returned object can be further processed using the \link[slca]{param} functions to extract the estimated parameters or their respective standard errors. Additionally, the \link[slca]{regress} function enables logistic regression analysis using three-step approach to evaluate the effect of external variables on latent class variables.
+#' The returned object can be further processed using the \link[slca]{param} function to extract the estimated parameters or their standard errors. The \link[slca]{regress} function allows for logistic regression analysis using a three-step approach to evaluate the effects of external variables on latent class variables. Additionally, several other methods are available, including \link[slca]{predict}, \link[slca]{reorder}, \link[slca]{gof}, and others.
 #'
 #' @example man/examples/estimate.R
 #'

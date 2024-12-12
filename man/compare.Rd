@@ -2,7 +2,7 @@
 % Please edit documentation in R/diagnostic.R
 \name{compare}
 \alias{compare}
-\title{Compare Two Estimated \code{slca} Models}
+\title{Compare Two Fitted \code{slca} Models}
 \usage{
 compare(
   model1,
@@ -19,28 +19,28 @@ compare(
 \arguments{
 \item{model1}{an object of class \code{slcafit}.}
 
-\item{model2}{another object of class \code{slcafit}.}
+\item{model2}{another object of class \code{slcafit} to be compared with \code{model1}.}
 
 \item{test}{a character string specifying the type of test to be conducted. If \code{"chisq"}, a chi-squared test is conducted. If \code{"boot"}, a bootstrap test is conducted.}
 
-\item{nboot}{an integer specifying the number of bootstrap rounds to be performed.}
+\item{nboot}{an integer specifying the number of bootstrap iterations to perform (used only when \code{test = "boot"}). The default is 100.}
 
-\item{method}{estimation method for bootstrapping.}
+\item{method}{a character string specifying the estimation method for bootstrapping.}
 
-\item{plot}{a logical value indicating whether to print histogram of G-squared statistics for boostrap samples, only for \code{test = "boot"}.}
+\item{plot}{a logical value indicating whether to display a histogram of G-squared statistics for the bootstrap samples (applicable only for \code{test = "boot"}). The default is \code{FALSE}.}
 
-\item{maxiter}{an integer specifying maximum number of iterations allowed for the estimation process of each bootstrapping round.}
+\item{maxiter}{an integer specifying the maximum number of iterations allowed during each bootstrap estimation round. The default is 100.}
 
-\item{tol}{a numeric value setting tolerance for the convergence of each bootstrapping round.}
+\item{tol}{numeric value setting the convergence tolerance for each bootstrap iteration. The default is \code{1e-6}.}
 
-\item{verbose}{a logical value indicating whether to print progress updates on the number of bootstrapping rounds completed.}
+\item{verbose}{a logical value indicating whether to print progress updates on completed bootstrap iterations. The default is \code{FALSE}.}
 }
 \value{
 A \code{data.frame} containing the number of parameters (Df), loglikelihood, AIC, BIC, G-squared statistics, and the residual degree of freedom for each object.
-Depending on the \code{test} argument, the p-value for the corresponding statistical test may also be included.
+If a statistical test is conducted (via \code{test}), the resulting p-value for the comparison is also included.
 }
 \description{
-Provides relative model fit test for two fitted SLCM models with deviance statistic.
+Conducts a relative model fit test between two fitted SLCM models using the deviance statistic.
 }
 \examples{
 library(magrittr)

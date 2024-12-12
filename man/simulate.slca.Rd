@@ -2,30 +2,30 @@
 % Please edit documentation in R/simulate.R
 \name{simulate.slca}
 \alias{simulate.slca}
-\title{Simulate Data from \code{slca} Model}
+\title{Simulate Data from an \code{slca} Model}
 \usage{
 \method{simulate}{slca}(object, nsim = 500, seed = NULL, parm, nlevel, ...)
 }
 \arguments{
-\item{object}{a \code{slca} object representing the model from which data will be simulated.}
+\item{object}{an \code{slca} object representing the model from which data will be simulated.}
 
-\item{nsim}{the number of response observations to simulate. Defaults to 500.}
+\item{nsim}{an integer specifying the number of response observations to simulate. The default is 500.}
 
-\item{seed}{a random seed for reproducibility of the}
+\item{seed}{an integer specifying the random seed for reproducibility. If not provided, results will vary across runs.}
 
-\item{parm}{a set of parameters provided by the user to guide the simulation, if the model has not been estimated.}
+\item{parm}{a user-specified set of parameters to guide the simulation. This is required if the model has not been previously estimated.}
 
-\item{nlevel}{the number of levels for each manifest item declared in the model. If not provided, the default is 2.}
+\item{nlevel}{an integer or integer vector specifying the number of levels for each manifest item in the model. If a single integer is provided, all manifest items will have the same number of levels. The default is 2.}
 
-\item{...}{additional arguments.}
+\item{...}{Additional arguments passed to other methods.}
 }
 \value{
-A \code{list} of two components:
-\item{class}{A \code{data.frame} providing the assigned latent class for each individual across different latent class variables.}
-\item{response}{A \code{data.frame} containing the manifest items that were simulated.}
+A \code{list} with the following components:
+\item{class}{A \code{data.frame} containing the assigned latent class for each individual across all latent class variables.}
+\item{response}{A \code{data.frame} containing the simulated manifest item responses.}
 }
 \description{
-This function simulates data from a constructed \code{slca} model. If the model is not already estimated, parameters can be specified by the user or generated randomly.
+Simulates data based on a specified \code{slca} model. If the model parameters are not already estimated, they can either be provided by the user or generated randomly.
 }
 \examples{
 m1 <- slca(lc1[3] ~ x1 + x2 + x3 + x4 + x5,

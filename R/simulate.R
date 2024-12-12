@@ -1,18 +1,18 @@
-#' Simulate Data from \code{slca} Model
+#' Simulate Data from an \code{slca} Model
 #'
-#' This function simulates data from a constructed \code{slca} model. If the model is not already estimated, parameters can be specified by the user or generated randomly.
-#'
-#' @param object a \code{slca} object representing the model from which data will be simulated.
-#' @param nsim the number of response observations to simulate. Defaults to 500.
-#' @param seed a random seed for reproducibility of the
-#' @param parm a set of parameters provided by the user to guide the simulation, if the model has not been estimated.
-#' @param nlevel the number of levels for each manifest item declared in the model. If not provided, the default is 2.
-#' @param ... additional arguments.
+#' Simulates data based on a specified \code{slca} model. If the model parameters are not already estimated, they can either be provided by the user or generated randomly.
+##'
+#' @param object an \code{slca} object representing the model from which data will be simulated.
+#' @param nsim an integer specifying the number of response observations to simulate. The default is 500.
+#' @param seed an integer specifying the random seed for reproducibility. If not provided, results will vary across runs.
+#' @param parm a user-specified set of parameters to guide the simulation. This is required if the model has not been previously estimated.
+#' @param nlevel an integer or integer vector specifying the number of levels for each manifest item in the model. If a single integer is provided, all manifest items will have the same number of levels. The default is 2.
+#' @param ... Additional arguments passed to other methods.
 #'
 #' @returns
-#' A `list` of two components:
-#' \item{class}{A `data.frame` providing the assigned latent class for each individual across different latent class variables.}
-#' \item{response}{A `data.frame` containing the manifest items that were simulated.}
+#' A `list` with the following components:
+#' \item{class}{A `data.frame` containing the assigned latent class for each individual across all latent class variables.}
+#' \item{response}{A `data.frame` containing the simulated manifest item responses.}
 #'
 #' @example man/examples/simulate.R
 #'
@@ -20,6 +20,7 @@
 simulate.slca <- function(
    object, nsim = 500, seed = NULL, parm, nlevel, ...
 ) {
+   if (!is.nulll(seed)) set.seed(seed)
    model <- object$model
    arg <- object$arg
    arg$nobs <- nsim

@@ -3,7 +3,7 @@
 \name{estimate}
 \alias{estimate}
 \alias{estimate.slca}
-\title{Estimate Parameters of \code{slca} Object}
+\title{Estimate Parameters of an \code{slca} Object}
 \usage{
 estimate(x, ...)
 
@@ -14,39 +14,39 @@ estimate(x, ...)
    control = slcaControl(), ...)
 }
 \arguments{
-\item{x}{an \code{slca} object defining SLCM model to be estimated.}
+\item{x}{an \code{slca} object defining the \code{slca} model to be estimated.}
 
-\item{...}{additional arguments.}
+\item{...}{additional arguments passed to the estimation process.}
 
-\item{data}{a \code{data.frame} object containing observed categorical variables incorporated in the model.}
+\item{data}{a \code{data.frame} containing the observed categorical variables included in the model.}
 
-\item{method}{estimation method for SLCM parameters. The default is \code{"em"}, which employs expecation-maximization (EM) algorithm for estimation; the alternative \code{"nlm"}, utilizes \code{nlm} function for Newton-Raphson algorithm. The \code{"hybrid"} method begins with the EM algorithm and concludes with the \code{nlm} function for refined estimation.}
+\item{method}{a character string specifying the estimation method for SLCM parameters. The default is \code{"em"}, which uses the expectation-maximization (EM) algorithm. The alternative \code{"nlm"} employs the Newton-Raphson algorithm via the \code{nlm} function, while \code{"hybrid"} combines both approaches, starting with EM and finishing with \code{nlm} for refined estimates.}
 
-\item{fix2zero}{a \code{vector} of parameters to be restricted to zero. The details of restriction is given under 'Details'}
+\item{fix2zero}{a \code{vector} specifying parameters to be constrained to zero. See the 'Details' section for further information.}
 
-\item{control}{a \code{list} of control for the estimation procedure. Used to modify default values in \link{slcaControl}.}
+\item{control}{a \code{list} of control parameters for the estimation procedure. Modify default values using \code{\link[=slcaControl]{slcaControl()}}.}
 }
 \value{
-An object of class \code{slcafit} with an following elements:
-\item{model}{a \code{list} describing of the model.}
-\item{method}{the method used for estimation}
-\item{arg}{the brief model description used during the estimation.}
-\item{mf}{the data.frame used for estimation.}
+An object of class \code{slcafit} containing the following components:
+\item{model}{a \code{list} describing of the model structure.}
+\item{method}{the estimation method used.}
+\item{arg}{a brief description of the model used during estimation.}
+\item{mf}{the \code{data.frame} used for estimation.}
 \item{par}{the log of the estimated paramters.}
 \item{logit}{the log-odds of the estimated parameters.}
 \item{score}{the score function for the estimated parameters.}
-\item{posterior}{the \code{list} of posterior probablities for each latent class variable.}
+\item{posterior}{a \code{list} of posterior probablities for each latent class variable.}
 \item{convergence}{a logical indicator of whether convergence was achieved.}
-\item{loglikelihood}{the loglikelihood of the estimated model.}
-\item{control}{the control values used during the estimation process.}
+\item{loglikelihood}{the loglikelihood value of the estimated model.}
+\item{control}{the control settings used during the estimation process.}
 
-This returned object can be further processed using the \link[slca]{param} functions to extract the estimated parameters or their respective standard errors. Additionally, the \link[slca]{regress} function enables logistic regression analysis using three-step approach to evaluate the effect of external variables on latent class variables.
+The returned object can be further processed using the \link[slca]{param} function to extract the estimated parameters or their standard errors. The \link[slca]{regress} function allows for logistic regression analysis using a three-step approach to evaluate the effects of external variables on latent class variables. Additionally, several other methods are available, including \link[slca]{predict}, \link[slca]{reorder}, \link[slca]{gof}, and others.
 }
 \description{
-Estimate the parameters of model constructed using the \code{slca} function.
+Estimates the parameters of a model created using the \code{slca} function.
 }
 \details{
-To constrain certain parameters to zero, use the \code{fix2zero} argument. Each parameter is associated with a unique index. You can identify the index of a specific parameter by invoking the \link[slca]{param} function with the \code{index = TRUE} argument. To apply these constraints, include the relevant parameter indices in the \code{fix2zero} argument.
+The \code{fix2zero} argument allows you to constrain specific parameters to zero. Each parameter is associated with a unique index, which can be identified using the \link[slca]{param} function with the argument \code{index = TRUE}. To apply constraints, provide the relevant parameter indices in the \code{fix2zero} arguments with vector.
 }
 \examples{
 m <- slca(lc[3] ~ y1 + y2 + y3 + y4)
@@ -54,7 +54,7 @@ pi <- rep(1 / 3, 3)
 rho <- c(.9, .1, .9, .1, .9, .1, .9, .1, # class 1
          .9, .1, .9, .1, .1, .9, .1, .9, # class 2
          .1, .9, .1, .9, .1, .9, .1, .9) # class 3
-dt <- simulate(m, parm = c(pi, rho))
+dt <- simulate(m, 200, parm = c(pi, rho))
 estimate(m, dt$response)
 
 # Several estimation methods
@@ -72,7 +72,7 @@ mf0 <- estimate(mf, fix2zero = c(4, 6, 8, 10))
 param(mf0)
 
 # Estimation control
-estimate(m, dt$response, control = slcaControl(nrep = 10, verbose = TRUE))
+estimate(m, dt$response, control = slcaControl(nrep = 3, verbose = TRUE))
 estimate(m, dt$response, control = slcaControl(init.param = c(pi, rho)))
 }
 \seealso{

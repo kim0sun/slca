@@ -7,58 +7,73 @@
 slca(formula = NULL, ..., constraints = NULL)
 }
 \arguments{
-\item{formula}{a formula specifying the latent structure. Detailed model specification is provided under 'Details'.}
+\item{formula}{a formula specifying the latent structure. Detailed model specifications are provided under 'Details'.}
 
 \item{...}{additional formulae for defining the model structure.}
 
-\item{constraints}{a list of constraints for maintaining measurement invariance. Detailed explanation of applying constraints is available under 'Details'.}
+\item{constraints}{a list of constraints to enforce measurement invariance. Detailed explanations of applying constraints are available under 'Details'.}
 }
 \value{
-An object of class \code{slca} containing various components of the model:
-\itemize{
-\item \code{tree}: A \code{data.frame} that details the parent-child relationships among latent class and manifest variables.
-\item \code{latent}: A \code{data.frame} listing all latent class variables with details on each.
-\item \code{measure}: A \code{data.frame} that describes the measurement model.
-\item \code{struct}: A \code{data.frame} that details the structural model.
-}
+An object of class \code{slca} with the following components:
+\item{tree}{A \code{data.frame} describing the parent-child relationships among latent class and manifest variables.}
+\item{latent}{A \code{data.frame} listing all latent class variables with details such as the number of classes.}
+\item{measure}{A \code{data.frame} describing the measurement model.}
+\item{struct}{A \code{data.frame} detailing the structural model.}
 
-The object prints model description with four part.
+The printed model description is divided into four parts:
 \enumerate{
-\item Latent variables: lists the latent class variables incorporated in the model, along with the number of classes for each variable. The root variable is marked by asterisk (\code{*}).
-\item Measurement model: Shows manifest indicators for each latent class variable and indicates measurement constraints (lowercase letters signify consistency).
-\item Structural model: Describes conditional dependencies between latent class variables.
-\item Dependency constraints: Outlines the constraints applied to the conditional dependencies between latent class variables. Each column marked with an uppercase alphabet symbolizes a consistent dependency structure.
+\item \strong{Latent variables}: Lists the latent class variables and the number of classes for each variable. The root variable is marked with an asterisk (\code{*}).
+\item \strong{Measurement model}: Displays manifest indicators for each latent class variable and any applied measurement constraints (lowercase letters indicate consistency).
+\item \strong{Structural model}: Describes the conditional relationships between latent class variables.
+\item \strong{Dependency constraints}: Outlines constraints applied to conditional dependencies, where uppercase letters represent consistent dependency structures.
 }
 }
 \description{
-This function constructs a structural latent class model (SLCM) for specified latent class variables.
+Constructs a latent structure with multiple latent class variables.
 }
 \details{
-The \strong{\code{formula}} can be broadly categorized into three main types, each serving a distinct purpose:
+The \strong{\code{formula}} can be categorized into three types, each serving a distinct purpose:
 \enumerate{
-\item \strong{Defining Latent Class Variables with Manifest Indicators}: Specify the relationship between a latent class variable and its manifest indicators. For example:
-\item \strong{Defining Latent Class Variables with Manifest Indicators}: Specify the relationship between a latent class variable and its manifest indicators. In these formulas, the latent class variable, denoted with square brackets or parentheses indicating the number of classes, is on the left-hand-side (lhs) and its manifest indicators are specified on right-hand-side (rhs). For example,
-\preformatted{LC1[k] ~ x1 + x2 + x3
+\item \strong{Defining Latent Class Variables with Manifest Indicators}:
+Specify the relationship between a latent class variable and its manifest indicators. The latent class variable is on the left-hand side (lhs), denoted with square brackets \code{[]} or parentheses \code{()} to indicate the number of classes, and manifest indicators are listed on the right-hand side (rhs). For example:
+\preformatted{
+LC1[k] ~ x1 + x2 + x3
 LC2[k] ~ y1 + y2 + y3
-LC3(k) ~ z1 + z2 + z3}
-In these formulas, \code{k} denotes the number of latent classes for the variable.
-\item \strong{Relating Latent Class Variables to Each Other}: Define relationships where one latent class variable is influenced by another. The subsequent example implies that \code{LC2} is conditionally affected based on \code{LC1}.
-\preformatted{LC1 ~ LC2}
-\item \strong{Defining higher-level latent class variable}: Identify latent class variables by other latent class variables rather than manifest indicators. Following example suggests that the \code{P} is measured by \code{LC1}, \code{LC2}, and \code{LC3} -- all of which are latent class variables.
-\preformatted{P[k] ~ LC1 + LC2 + LC3}
+LC3(k) ~ z1 + z2 + z3
+   }
+Here, \code{k} denotes the number of latent classes for the variable.
+\item \strong{Relating Latent Class Variables to Each Other}:
+Define relationships where one latent class variable influences another. For example:
+\preformatted{
+LC2 ~ LC1
+   }
+This formula implies that \code{LC2} is conditionally dependent on \code{LC1}.
+\item \strong{Defining Higher-Level Latent Class Variables}:
+Specify relationships where a latent class variable is measured by other latent class variables instead of manifest indicators. For example:
+\preformatted{
+P[k] ~ LC1 + LC2 + LC3
+   }
+This indicates that the latent variable \code{P} is measured by the latent class variables \code{LC1}, \code{LC2}, and \code{LC3}.
 }
 
-In all types of the formula, variables specified on the left-hand side (lhs) influence those on the right-hand side (rhs).
+In all formulas, variables on the lhs influence those on the rhs.
 
-The \code{constraints} parameter allows you to enforce specific conditions on the model to ensure precise inference. For instance, in Longitudinal Latent Class Analysis (LTA), it's imperative that latent class variables across various time-points convey identical meanings. With the \code{constraints} option, users can uphold measurement invariance in both the measurement and structural components of the model.
+The \code{constraints} argument enforces specific conditions to ensure precise inference, such as measurement invariance. This is particularly useful for longitudinal analysis (eg. LTA or LCPA), where consistent meanings of latent classes across time are essential.
 \enumerate{
-\item \strong{Measurement Invariance for Measurement Model}: Ensures that probabilities associated with latent class variables are consistent, thus maintaining semantic meaning across classes.
-\preformatted{c("LC1", "LC2", "LC3")}
-This command ensures that variables \code{LC1}, \code{LC2}, and \code{LC3} are semantically consistent.
-\item \strong{Measurement invariance for structural model}: Applies constraints within the structural model to ensure consistent interpretations of transition probabilities.
-\preformatted{c("P ~ LC1", "P -> LC2")}
-This command implies that the transition probabilities from \code{P} to \code{LC1} and from \code{P} to \code{LC2} are consistent.
+\item \strong{Measurement Invariance for the Measurement Model}:
+Ensures probabilities associated with latent class variables remain consistent. For example:
+\preformatted{
+c("LC1", "LC2", "LC3")
+   }
+This ensures that \code{LC1}, \code{LC2}, and \code{LC3} have semantically consistent measurement probabilities.
 }
+
+' 2. \strong{Measurement Invariance for the Structural Model}:
+Applies constraints to ensure consistent interpretations of transition probabilities between latent class variables. For example:
+\preformatted{
+c("P ~ LC1", "P -> LC2")
+   }
+This ensures that the transitions from \code{P} to \code{LC1} and \code{P} to \code{LC2} are consistent.
 }
 \examples{
 # Standard LCA

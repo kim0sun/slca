@@ -2,7 +2,7 @@
 % Please edit documentation in R/methods.R
 \name{reorder.slcafit}
 \alias{reorder.slcafit}
-\title{Reorder Latent Class Membership of Class Variables}
+\title{Reorder Latent Class Membership of Latent Class Variables}
 \usage{
 \method{reorder}{slcafit}(x, ...)
 }
@@ -12,10 +12,10 @@
 \item{...}{additional arguments specifying the new order for the latent class variables.}
 }
 \value{
-Returns the modified \code{slcafit} object with the reordered latent classes.
+A modified \code{slcafit} object with the latent classes reordered according to the specified order.
 }
 \description{
-This function reorders the latent class membership for specified latent class variables.
+Reorders the latent class membership for specified latent class variables in an \code{slcafit} object.
 }
 \examples{
 library(magrittr)
