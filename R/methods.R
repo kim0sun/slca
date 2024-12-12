@@ -347,6 +347,15 @@ vcov.slcafit <- function(object, type = c("probs", "logit"), ...) {
    vcov
 }
 
+#' Model Predictions for estimated `slca` object
+#'
+#' Provides predicted class membership or posterior probabilities of new data under estimated `slca` model.
+#'
+#' @param object aa
+#' @param newdata aa
+#' @param type aa
+#' @param ... further arguments for other methods.
+#'
 #' @exportS3Method stats::predict slcafit
 predict.slcafit <- function(
    object, newdata, type = c("class", "posterior"), ...
@@ -354,7 +363,7 @@ predict.slcafit <- function(
    type <- match.arg(type)
    if (missing(newdata)) post <- object$posterior
    else {
-      mf <- proc_data(newdata, object$model, FALSE)
+      mf <- proc_data2(newdata, object$model, FALSE)
       arg <- arg_mf(object$model, object$arg, mf, object$fix2zero)
 
       post <- calcModel(
@@ -366,13 +375,13 @@ predict.slcafit <- function(
          arg$nc_pi, arg$nk_tau, arg$nl_tau, arg$nc_rho, arg$nr_rho
       )$post
       skeleton <- get_frame(object$model, arg, mf)
-      post <- utils::relist(post, skeleton$post)
+      post <- utils::relist(exp(post), skeleton$post)
    }
    impute <- function(x) apply(x, 2, which.max)
 
    switch(
       type,
-      class = sapply(post, impute),
+      class = as.data.frame(lapply(post, impute)),
       posterior = lapply(post, t)
    )
 }

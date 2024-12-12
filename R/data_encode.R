@@ -96,3 +96,31 @@ proc_data <- function(data, model, na.rm) {
    mf
 }
 
+
+proc_data2 <- function(data, model, na.rm) {
+   child <- model$measure$indicator
+   f <- paste("~", paste(unlist(child), collapse = "+"))
+   if (na.rm)
+      mf <- stats::model.frame(stats::formula(f), data)
+   else
+      mf <- stats::model.frame(stats::formula(f), data, na.action = NULL)
+
+   mf[] <- lapply(mf, function(x)
+      if (is.factor(x)) x else factor(x))
+   lev <- lapply(mf, levels)
+   nlev <- sapply(mf, nlevels)
+   mf[] <- lapply(mf, as.numeric)
+   if (any(nlev < 2))
+      stop("wrong indicator variable(s) (< 2 level):\n",
+           paste0("`", unlist(child)[nlev < 2], "`", collapse = " "))
+
+   nmf <- mf
+   nmf[] <- lapply(mf, as.numeric)
+   nmf[is.na(nmf)] <- 0
+   attr(mf, "y") <- unlist(lapply(child, function(x) t(nmf[x])),
+                           use.names = FALSE)
+   attr(mf, "levels") <- lev
+
+   mf
+}
+

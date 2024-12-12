@@ -22,6 +22,7 @@ simulate.slca <- function(
 ) {
    model <- object$model
    arg <- object$arg
+   arg$nobs <- nsim
 
    vars <- unlist(arg$vars)
    nvar <- length(vars)
