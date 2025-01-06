@@ -11,7 +11,7 @@ It includes covariates such as interview year, age, sex, race, education level, 
 
     <a class="navbar-brand me-2" href="../index.html">slca</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -108,80 +108,11 @@ It includes covariates such as interview year, age, sex, race, education level, 
 <span class="r-in"><span><span class="va">gss500</span> <span class="op">&lt;-</span> <span class="va">gss7677</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">500</span>,<span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="va">na.omit</span></span></span>
 <span class="r-in"><span><span class="va">model_stat</span> <span class="op">&lt;-</span> <span class="fu"><a href="slca.html">slca</a></span><span class="op">(</span><span class="fu">status</span><span class="op">(</span><span class="fl">3</span><span class="op">)</span> <span class="op">~</span> <span class="va">PAPRES</span> <span class="op">+</span> <span class="va">PADEG</span> <span class="op">+</span> <span class="va">MADEG</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>   <span class="fu"><a href="estimate.html">estimate</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">gss500</span>, control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>em.tol <span class="op">=</span> <span class="fl">1e-6</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in stats::nlm(llf, logit[-c(fix0, fix1, arg$ref_idx)], fix0, fix1,     arg$ref_idx, arg$id, y = attr(mf, "y"), nobs = arg$nobs,     nvar = arg$nvar, nlev = unlist(arg$nlev), nlv = arg$nlv,     nrl = arg$nrl, nlf = arg$nlf, npi = arg$npi, ntau = arg$ntau,     nrho = arg$nrho, ul = arg$ul, vl = arg$vl, lf = arg$lf, tr = arg$tr,     rt = arg$rt, eqrl = arg$eqrl, eqlf = arg$eqlf, nc = arg$nc,     nk = arg$nk, nl = arg$nl, ncl = arg$ncl, nc_pi = arg$nc_pi,     nk_tau = arg$nk_tau, nl_tau = arg$nl_tau, nc_rho = arg$nc_rho,     nr_rho = arg$nr_rho, iterlim = 1, hessian = TRUE):</span> missing value in parameter</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">model_stat</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Structural Latent Class Model</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Summary of model structure</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Number of manifest variables     3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Number of latent class variables 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Latent variables (Root*):                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Label: status*</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  nclass: 3      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Measurement model:                                       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   status -&gt; { PAPRES, PADEG, MADEG }  a</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Summary of manifest variables</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Categories for each variable:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          response</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>            1      2         3        4         5       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    PAPRES  LOW    MIDIUM    HIGH                       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    PADEG   LT-HS  HIGH-SCH  COLLEGE  BACHELOR  GRADUATE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    MADEG   LT-HS  HIGH-SCH  COLLEGE  BACHELOR  GRADUATE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Frequencies for each categories:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          response</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>              1    2   3   4  5  &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    PAPRES   62  102  19            0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    PADEG   104   63      11  5     0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    MADEG    86   84   4   8  1     0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Summary of model fit</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                            </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Number of observations                 183</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Number of free parameters               32</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Log-likelihood                    -475.869</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Information criteria                      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Akaike (AIC)                    1015.738</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Bayesian (BIC)                  1118.442</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Chi-squared Tests                         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Residual degree of freedom (df)       42</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Pearson Chi-squared (X-squared)   21.078</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      P(&gt;Chi)                          0.997</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Likelihood Ratio (G-squared)      19.658</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      P(&gt;Chi)                          0.999</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'model_stat' not found</span>
 <span class="r-in"><span><span class="fu"><a href="param.html">param</a></span><span class="op">(</span><span class="va">model_stat</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> PI :</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (status)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   class</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          1       2       3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     0.6010  0.0965  0.3024</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> RHO :</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (a)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         class</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> response       1       2       3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    1(V1)  0.4309  0.0000  0.2638</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    2      0.5350  0.3506  0.6679</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    3      0.0341  0.6494  0.0683</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    1(V2)  0.9073  0.2381  0.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    2      0.0927  0.1729  0.8989</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    3      0.0000  0.0000  0.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    4      0.0000  0.3060  0.1011</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    5      0.0000  0.2830  0.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    1(V3)  0.7264  0.3456  0.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    2      0.2542  0.6544  0.8037</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    3      0.0000  0.0000  0.0723</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    4      0.0194  0.0000  0.1060</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    5      0.0000  0.0000  0.0181</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        V1     V2    V3   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> status PAPRES PADEG MADEG</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'model_stat' not found</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">model_tol</span> <span class="op">&lt;-</span> <span class="fu"><a href="slca.html">slca</a></span><span class="op">(</span><span class="fu">tol</span><span class="op">(</span><span class="fl">4</span><span class="op">)</span> <span class="op">~</span> <span class="va">TOLRAC</span> <span class="op">+</span> <span class="va">TOLCOM</span> <span class="op">+</span> <span class="va">TOLHOMO</span> <span class="op">+</span> <span class="va">TOLATH</span> <span class="op">+</span> <span class="va">TOLMIL</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>   <span class="fu"><a href="estimate.html">estimate</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">gss500</span>, control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>em.tol <span class="op">=</span> <span class="fl">1e-6</span><span class="op">)</span><span class="op">)</span></span></span>
@@ -226,37 +157,37 @@ It includes covariates such as interview year, age, sex, race, education level, 
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                            </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Number of observations                 183</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Number of free parameters               23</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Log-likelihood                    -439.750</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Log-likelihood                    -442.330</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Information criteria                      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Akaike (AIC)                     925.500</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Bayesian (BIC)                   999.318</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Akaike (AIC)                     930.659</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Bayesian (BIC)                  1004.477</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Chi-squared Tests                         </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    Residual degree of freedom (df)        8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Pearson Chi-squared (X-squared)   10.766</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      P(&gt;Chi)                          0.215</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Likelihood Ratio (G-squared)      11.299</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      P(&gt;Chi)                          0.185</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Pearson Chi-squared (X-squared)   13.697</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      P(&gt;Chi)                          0.090</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Likelihood Ratio (G-squared)      16.458</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      P(&gt;Chi)                          0.036</span>
 <span class="r-in"><span><span class="fu"><a href="param.html">param</a></span><span class="op">(</span><span class="va">model_tol</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> PI :</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (tol)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   class</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          1       2       3       4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     0.3569  0.3590  0.2059  0.0782</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     0.2610  0.1405  0.2596  0.3390</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> RHO :</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (a)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         class</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> response       1       2       3       4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    1(V1)  0.0000  1.0000  0.0000  0.9999</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    2      1.0000  0.0000  1.0000  0.0001</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    1(V2)  0.0541  0.8620  0.3839  0.2359</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    2      0.9459  0.1380  0.6161  0.7641</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    1(V3)  0.0191  0.8924  0.7365  0.3059</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    2      0.9809  0.1076  0.2635  0.6941</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    1(V4)  0.0114  0.9536  0.4846  0.4442</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    2      0.9886  0.0464  0.5154  0.5558</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    1(V5)  0.0889  0.9894  0.3237  0.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    2      0.9111  0.0106  0.6763  1.0000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    1(V1)  0.0598  0.0000  0.3234  0.9959</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    2      0.9402  1.0000  0.6766  0.0041</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    1(V2)  0.0000  0.2233  0.3765  0.8766</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    2      1.0000  0.7767  0.6235  0.1234</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    1(V3)  0.0001  0.2613  0.6087  0.9086</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    2      0.9999  0.7387  0.3913  0.0914</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    1(V4)  0.0000  0.0000  0.5896  0.9671</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    2      1.0000  1.0000  0.4104  0.0329</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    1(V5)  0.0000  0.3416  0.2565  1.0000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    2      1.0000  0.6584  0.7435  0.0000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     V1     V2     V3      V4     V5    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> tol TOLRAC TOLCOM TOLHOMO TOLATH TOLMIL</span>
@@ -266,146 +197,19 @@ It includes covariates such as interview year, age, sex, race, education level, 
 <span class="r-in"><span>   <span class="fu">tol</span><span class="op">(</span><span class="fl">4</span><span class="op">)</span> <span class="op">~</span> <span class="va">TOLRAC</span> <span class="op">+</span> <span class="va">TOLCOM</span> <span class="op">+</span> <span class="va">TOLHOMO</span> <span class="op">+</span> <span class="va">TOLATH</span> <span class="op">+</span> <span class="va">TOLMIL</span>,</span></span>
 <span class="r-in"><span>   <span class="va">status</span> <span class="op">~</span> <span class="va">tol</span></span></span>
 <span class="r-in"><span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="estimate.html">estimate</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">gss500</span>, control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>em.tol <span class="op">=</span> <span class="fl">1e-6</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in stats::nlm(llf, logit[-c(fix0, fix1, arg$ref_idx)], fix0, fix1,     arg$ref_idx, arg$id, y = attr(mf, "y"), nobs = arg$nobs,     nvar = arg$nvar, nlev = unlist(arg$nlev), nlv = arg$nlv,     nrl = arg$nrl, nlf = arg$nlf, npi = arg$npi, ntau = arg$ntau,     nrho = arg$nrho, ul = arg$ul, vl = arg$vl, lf = arg$lf, tr = arg$tr,     rt = arg$rt, eqrl = arg$eqrl, eqlf = arg$eqlf, nc = arg$nc,     nk = arg$nk, nl = arg$nl, ncl = arg$ncl, nc_pi = arg$nc_pi,     nk_tau = arg$nk_tau, nl_tau = arg$nl_tau, nc_rho = arg$nc_rho,     nr_rho = arg$nr_rho, iterlim = 1, hessian = TRUE):</span> missing value in parameter</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">model_lta</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Structural Latent Class Model</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Summary of model structure</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Number of manifest variables     8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Number of latent class variables 2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Latent variables (Root*):                    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Label: status* tol</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  nclass: 3       4  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Measurement model:                                                          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   status -&gt; { PAPRES, PADEG, MADEG }                     a</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   tol    -&gt; { TOLRAC, TOLCOM, TOLHOMO, TOLATH, TOLMIL }  b</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Structural model:                   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   status -&gt; { tol }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Dependency constraints:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   A            </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   status -&gt; tol</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Tree of structural model:                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   status  -&gt; tol</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Summary of manifest variables</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Categories for each variable:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           response</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             1         2           3        4         5       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    PAPRES   LOW       MIDIUM      HIGH                       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    PADEG    LT-HS     HIGH-SCH    COLLEGE  BACHELOR  GRADUATE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    MADEG    LT-HS     HIGH-SCH    COLLEGE  BACHELOR  GRADUATE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    TOLRAC   TOLERANT  INTOLERANT                             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    TOLCOM   TOLERANT  INTOLERANT                             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    TOLHOMO  TOLERANT  INTOLERANT                             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    TOLATH   TOLERANT  INTOLERANT                             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    TOLMIL   TOLERANT  INTOLERANT                             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Frequencies for each categories:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           response</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>               1    2   3   4  5  &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    PAPRES    62  102  19            0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    PADEG    104   63      11  5     0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    MADEG     86   84   4   8  1     0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    TOLRAC    80  103                0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    TOLCOM    78  105                0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    TOLHOMO   92   91                0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    TOLATH    88   95                0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    TOLMIL    83  100                0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Summary of model fit</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                            </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Number of observations                 183</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Number of free parameters               61</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Log-likelihood                    -897.906</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Information criteria                      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Akaike (AIC)                    1917.812</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Bayesian (BIC)                  2113.590</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Chi-squared Tests                         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Residual degree of freedom (df)     2338</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Pearson Chi-squared (X-squared)  641.038</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      P(&gt;Chi)                          1.000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Likelihood Ratio (G-squared)     276.662</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      P(&gt;Chi)                          1.000</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'model_lta' not found</span>
 <span class="r-in"><span><span class="fu"><a href="param.html">param</a></span><span class="op">(</span><span class="va">model_lta</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> PI :</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (status)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   class</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          1       2       3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     0.4194  0.2801  0.3005</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> TAU :</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (A)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      parent</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> child       1       2       3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     1  0.0000  0.1307  0.2879</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     2  0.1907  0.2814  0.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     3  0.2134  0.5880  0.2933</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     4  0.5959  0.0000  0.4188</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>              </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> parent status</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> child  tol   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> RHO :</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (a)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         class</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> response       1       2       3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    1(V1)  0.3404  0.1527  0.5100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    2      0.6596  0.7158  0.2669</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    3      0.0000  0.1314  0.2230</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    1(V2)  0.9861  0.0000  0.5149</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    2      0.0000  0.7876  0.4115</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    3      0.0000  0.0000  0.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    4      0.0139  0.1937  0.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    5      0.0000  0.0187  0.0735</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    1(V3)  0.8134  0.0000  0.4287</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    2      0.1664  0.8062  0.5438</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    3      0.0000  0.0780  0.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    4      0.0202  0.0962  0.0276</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    5      0.0000  0.0195  0.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        V1     V2    V3   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> status PAPRES PADEG MADEG</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (b)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         class</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> response       1       2       3       4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    1(V1)  0.3644  0.2036  0.9901  0.0560</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    2      0.6356  0.7964  0.0099  0.9440</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    1(V2)  0.2640  0.5740  0.8766  0.0067</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    2      0.7360  0.4260  0.1234  0.9933</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    1(V3)  0.6506  0.5053  0.9074  0.0846</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    2      0.3494  0.4947  0.0926  0.9154</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    1(V4)  1.0000  0.1669  0.9677  0.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    2      0.0000  0.8331  0.0323  1.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    1(V5)  0.2232  0.3475  1.0000  0.0760</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    2      0.7768  0.6525  0.0000  0.9240</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     V1     V2     V3      V4     V5    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> tol TOLRAC TOLCOM TOLHOMO TOLATH TOLMIL</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'model_lta' not found</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="regress.html">regress</a></span><span class="op">(</span><span class="va">model_lta</span>, <span class="va">status</span> <span class="op">~</span> <span class="va">SEX</span>, <span class="va">gss500</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> class  (Intercept)  SEXFEMALE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1/3  0.4700       0.2231   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   2/3  0.0953       0.1160   </span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'model_lta' not found</span>
 <span class="r-in"><span><span class="fu"><a href="regress.html">regress</a></span><span class="op">(</span><span class="va">model_lta</span>, <span class="va">status</span> <span class="op">~</span> <span class="va">SEX</span>, <span class="va">gss500</span>, method <span class="op">=</span> <span class="st">"BCH"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> class  (Intercept)  SEXFEMALE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1/3  0.556        0.361    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   2/3  0.179        0.246    </span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'model_lta' not found</span>
 <span class="r-in"><span><span class="fu"><a href="regress.html">regress</a></span><span class="op">(</span><span class="va">model_lta</span>, <span class="va">status</span> <span class="op">~</span> <span class="va">SEX</span>, <span class="va">gss500</span>, method <span class="op">=</span> <span class="st">"ML"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> class  (Intercept)  SEXFEMALE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1/3  1.112        0.449    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   2/3  0.701        0.338    </span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'model_lta' not found</span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
