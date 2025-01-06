@@ -65,13 +65,22 @@ simulate.slca <- function(
       arg$nlv, arg$nrl, arg$nlf, arg$npi, arg$ntau, arg$nrho,
       arg$ul, arg$vl, arg$lf, arg$rt, arg$eqrl, arg$eqlf,
       arg$nc, arg$nk, arg$nl, arg$ncl,
-      arg$nc_pi, arg$nk_tau, arg$nl_tau, arg$nc_rho, arg$nr_rho
+      arg$nc_pi, arg$nk_tau, arg$nl_tau,
+      arg$nc_rho, arg$nr_rho
    )
    class <- data.frame(sim$class)
    names(class) <- model$latent$label
 
    # data.name
-   y <- data.frame(do.call(cbind, sim$y))
+   yy <- do.call(cbind, sim$y)
+   llik <- fll(
+      t(yy + 1), par, nsim, arg$nvar, unlist(arg$nlev), arg$nlv, arg$nrl, arg$nlf,
+      arg$npi, arg$ntau, arg$nrho, arg$ul, arg$vl, arg$lf, arg$tr, arg$rt,
+      arg$eqrl, arg$eqlf, arg$nc, arg$nk, arg$nl, arg$ncl,
+      arg$nc_pi, arg$nk_tau, arg$nl_tau, arg$nc_rho, arg$nr_rho
+   )
+
+   y <- data.frame(yy)
    child <- model$latent[model$latent$leaf, "children"]
    items <- setdiff(unlist(child), names(child))
    colnames(y) <- items
@@ -86,5 +95,5 @@ simulate.slca <- function(
    skeleton <- get_frame(model, arg, mf)
    param <- utils::relist(exp(par), skeleton$par)
 
-   list(class = class, response = mf, parm = param)
+   list(class = class, response = mf, parm = param, llik = -llik)
 }

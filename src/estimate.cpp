@@ -210,20 +210,22 @@ List em_est(
    }
 
    // Final estimates
-   _fix0_ = fix0.begin();
-   for (int r = 0; r < npi; r ++) {
-      updatePi(_pi_[r], _pi_ss_[r], _pi_d_[r], nc_pi[r]);
-      _fix0_ += nc_pi[r];
-   }
-   for (int d = 0; d < ntau; d ++) {
-      updateTau(_tau_[d], _tau_ss_[d], _tau_d_[d],
-                nk_tau[d], nl_tau[d], _fix0_);
-      _fix0_ += nk_tau[d] * nl_tau[d];
-   }
-   for (int v = 0; v < nrho; v ++) {
-      updateRho(_rho_[v], _rho_ss_[v], _rho_d_[v], nobs,
-                nc_rho[v], nvar[v], _nlev_[v], _fix0_);
-      _fix0_ += nc_rho[v] * nr_rho[v];
+   if (iter > 0) {
+      _fix0_ = fix0.begin();
+      for (int r = 0; r < npi; r ++) {
+         updatePi(_pi_[r], _pi_ss_[r], _pi_d_[r], nc_pi[r]);
+         _fix0_ += nc_pi[r];
+      }
+      for (int d = 0; d < ntau; d ++) {
+         updateTau(_tau_[d], _tau_ss_[d], _tau_d_[d],
+                   nk_tau[d], nl_tau[d], _fix0_);
+         _fix0_ += nk_tau[d] * nl_tau[d];
+      }
+      for (int v = 0; v < nrho; v ++) {
+         updateRho(_rho_[v], _rho_ss_[v], _rho_d_[v], nobs,
+                   nc_rho[v], nvar[v], _nlev_[v], _fix0_);
+         _fix0_ += nc_rho[v] * nr_rho[v];
+      }
    }
 
    res["param"] = par;

@@ -270,7 +270,7 @@ param.slcafit <- function(
    type <- match.arg(type)
 
    if (se) {
-      vcov <- vcov.slcafit(object, type)
+      vcov <- vcov.slcafit(object, type, ...)
       var <- diag(vcov)
       est <- numeric(length(var))
       est[var >= 0] <- sqrt(var[var >= 0])
@@ -281,7 +281,6 @@ param.slcafit <- function(
          logit = object$logit,
       )
    }
-
    skeleton <- object$skeleton$par
 
    res <- utils::relist(est, skeleton)
@@ -330,20 +329,31 @@ print.slcapar <- function(
 
 
 #' @exportS3Method stats::vcov slcafit
-vcov.slcafit <- function(object, type = c("probs", "logit"), ...) {
+vcov.slcafit <- function(
+   object, type = c("probs", "logit"), method = c("hessian", "score"), ...
+) {
    type <- match.arg(type)
+   method <- match.arg(method)
    id <- object$arg$id
-   score <- object$score
-   fi <- crossprod(score)
-   vcov <- matrix(0, nrow(fi), ncol(fi), dimnames = dimnames(fi))
-   nan <- apply(score, 2, anyNA)
-   vcov[!nan, !nan] <- MASS::ginv(fi[!nan, !nan])
+   dm <- length(id)
+   dn <- paste0("(", seq_len(dm), ")")
+   vcov <- matrix(0, dm, dm, dimnames = list(dn, dn))
+
+   if (method == "hessian") {
+      hess <- object$hess
+      nan <- is.na(diag(hess))
+      vcov[!nan, !nan] <- MASS::ginv(hess[!nan, !nan])
+   } else if (method == "score") {
+      score <- object$score
+      fi <- crossprod(score)
+      nan <- apply(score, 2, anyNA)
+      vcov[!nan, !nan] <- MASS::ginv(fi[!nan, !nan])
+   }
 
    if (type == "probs") {
       jac <- bdiag(tapply(object$par, id, jmat))
       vcov <- jac %*% vcov %*% t(jac)
    }
-
    vcov
 }
 
@@ -432,7 +442,7 @@ confint.slcafit <- function(
    type <- match.arg(type)
 
    logit <- object$logit
-   vcov <- stats::vcov(object, "logit")
+   vcov <- vcov.slcafit(object, "logit", ...)
    vars <- diag(vcov)
    se <- vars
    se[] <- 0
@@ -454,6 +464,7 @@ confint.slcafit <- function(
 
 format_pc <- function(perc, digits)
    paste(format(100 * perc, trim = TRUE, scientific = FALSE, digits = digits), "%")
+
 
 #' Reorder Latent Class Membership of Latent Class Variables
 #'
@@ -574,6 +585,5 @@ reorder.slcafit <- function(x, ...) {
    x$posterior <- list(
       marginal = lapply(post, t), joint = joint
    )
-
    x
 }

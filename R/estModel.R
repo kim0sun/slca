@@ -1,18 +1,25 @@
 estModel <- function(method, control, par, mf, arg) {
    llf <- function(
-      logit, fix0, ref, id, y, nobs, nvar, nlev, nlv, nrl, nlf,
+      logit, fix0, fix1, ref, id, y, nobs, nvar, nlev, nlv, nrl, nlf,
       npi, ntau, nrho, ul, vl, lf, tr, rt, eqrl, eqlf,
       nc, nk, nl, ncl, nc_pi, nk_tau, nl_tau, nc_rho, nr_rho
    ) {
       logits <- numeric(length(id))
-      logits[-c(fix0, ref)] <- logit
+      logits[-c(fix0, fix1, ref)] <- logit
       logits[fix0] <- -Inf
+      logits[fix1] <- Inf
       logits[ref] <- 0
       par <- unlist(tapply(logits, id, norm2))
 
       fll(y, par, nobs, nvar, nlev, nlv, nrl, nlf,
           npi, ntau, nrho, ul, vl, lf, tr, rt, eqrl, eqlf,
           nc, nk, nl, ncl, nc_pi, nk_tau, nl_tau, nc_rho, nr_rho)
+   }
+   fix0 <- union(which(arg$fix0), par == -Inf)
+   fix1 <- which(par == Inf)
+   while (any(cond <- arg$ref_idx %in% c(fix0, fix1))) {
+      arg$ref[cond] <- arg$ref[cond] - 1
+      arg$ref_idx[cond] <- arg$ref_idx[cond] - 1
    }
 
    if (method == "em") {
@@ -33,16 +40,10 @@ estModel <- function(method, control, par, mf, arg) {
       if (control$verbose) cat(".. done.\n")
    } else if (method == "nlm") {
       if (control$verbose) cat("nlm iteration begin.\n")
-      fix0 <- union(which(arg$fix0), which(is.infinite(par)))
-      while (any(cond <- arg$ref_idx %in% fix0)) {
-         arg$ref[cond] <- arg$ref[cond] - 1
-         arg$ref_idx[cond] <- arg$ref_idx[cond] - 1
-      }
-
       logit <- par - par[arg$ref_idx[arg$id]]
       nonlm <- stats::nlm(
-         llf, logit[-c(which(arg$fix0), arg$ref_idx)],
-         which(arg$fix0), arg$ref_idx, arg$id, y = attr(mf, "y"),
+         llf, logit[-c(fix0, fix1, arg$ref_idx)],
+         fix0, fix1, arg$ref_idx, arg$id, y = attr(mf, "y"),
          nobs = arg$nobs, nvar = arg$nvar, nlev = unlist(arg$nlev),
          nlv = arg$nlv, nrl = arg$nrl, nlf = arg$nlf,
          npi = arg$npi, ntau = arg$ntau, nrho = arg$nrho,
@@ -54,7 +55,7 @@ estModel <- function(method, control, par, mf, arg) {
          iterlim = control$nlm.iterlim,
          gradtol = control$nlm.tol, steptol = control$nlm.tol
       )
-      logit[-c(fix0, arg$ref_idx)] <- nonlm$estimate
+      logit[-c(fix0, fix1, arg$ref_idx)] <- nonlm$estimate
       par <- unlist(tapply(logit, arg$id, norm2))
       em.conv <- NA
       nlm.conv <- nonlm$code < 3
@@ -71,17 +72,11 @@ estModel <- function(method, control, par, mf, arg) {
       )
       par <- em$param
       if (control$verbose) cat(".. done. \nnlm iteration begin.\n")
-      fix0 <- union(which(arg$fix0), which(is.infinite(par)))
-      while (any(cond <- arg$ref_idx %in% fix0)) {
-         arg$ref[cond] <- arg$ref[cond] - 1
-         arg$ref_idx[cond] <- arg$ref_idx[cond] - 1
-      }
-
       logit <- par - par[arg$ref_idx[arg$id]]
 
       nonlm <- stats::nlm(
-         llf, logit[-c(fix0, arg$ref_idx)],
-         fix0, arg$ref_idx, arg$id, y = attr(mf, "y"),
+         llf, logit[-c(fix0, fix1, arg$ref_idx)],
+         fix0, fix1, arg$ref_idx, arg$id, y = attr(mf, "y"),
          nobs = arg$nobs, nvar = arg$nvar, nlev = unlist(arg$nlev),
          nlv = arg$nlv, nrl = arg$nrl, nlf = arg$nlf,
          npi = arg$npi, ntau = arg$ntau, nrho = arg$nrho,
@@ -93,7 +88,7 @@ estModel <- function(method, control, par, mf, arg) {
          iterlim = control$nlm.iterlim,
          gradtol = control$nlm.tol, steptol = control$nlm.tol
       )
-      logit[-c(fix0, arg$ref_idx)] <- nonlm$estimate
+      logit[-c(fix0, fix1, arg$ref_idx)] <- nonlm$estimate
       par <- unlist(tapply(logit, arg$id, norm2))
 
       em.conv  <- em$converged
@@ -101,5 +96,23 @@ estModel <- function(method, control, par, mf, arg) {
       if (control$verbose) cat(".. done.\n")
    }
 
-   list(par = par, logit = logit, conv = c(EM = em.conv, nlm = nlm.conv))
+   nonlm <- stats::nlm(
+      llf, logit[-c(fix0, fix1, arg$ref_idx)],
+      fix0, fix1, arg$ref_idx, arg$id, y = attr(mf, "y"),
+      nobs = arg$nobs, nvar = arg$nvar, nlev = unlist(arg$nlev),
+      nlv = arg$nlv, nrl = arg$nrl, nlf = arg$nlf,
+      npi = arg$npi, ntau = arg$ntau, nrho = arg$nrho,
+      ul = arg$ul, vl = arg$vl, lf = arg$lf, tr = arg$tr, rt = arg$rt,
+      eqrl = arg$eqrl, eqlf = arg$eqlf,
+      nc = arg$nc, nk = arg$nk, nl = arg$nl, ncl = arg$ncl,
+      nc_pi = arg$nc_pi, nk_tau = arg$nk_tau, nl_tau = arg$nl_tau,
+      nc_rho = arg$nc_rho, nr_rho = arg$nr_rho,
+      iterlim = 1, hessian = TRUE
+   )
+   hess <- matrix(NA, length(par), length(par))
+   ind <- c(fix0, fix1, arg$ref_idx)
+   hess[-ind, -ind] <- nonlm$hessian
+
+   list(par = par, logit = logit, hess = hess,
+        conv = c(EM = em.conv, nlm = nlm.conv))
 }

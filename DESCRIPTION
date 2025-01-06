@@ -1,7 +1,7 @@
 Package: slca
 Type: Package
 Title: Structural Modeling for Multiple Latent Class Variables
-Version: 1.3.0
+Version: 1.3.1
 Authors@R: 
    c(person(given = "Youngsun", family = "Kim",
             email = "yskstat@gmail.com",
