@@ -453,6 +453,7 @@ confint.slcafit <- function(
    cn <- format_pc(c(lower, upper), 3)
 
    ci <- val + se %o% stats::qnorm(c(lower, upper))
+   ci <- ci[parm,]
    colnames(ci) <- cn
    rownames(ci) <- paste0("(", parm, ")")
    ci
