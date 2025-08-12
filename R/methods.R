@@ -330,7 +330,7 @@ print.slcapar <- function(
 
 #' @exportS3Method stats::vcov slcafit
 vcov.slcafit <- function(
-   object, type = c("probs", "logit"), method = c("hessian", "score"), ...
+   object, type = c("probs", "logit"), method = c("score", "hessian"), ...
 ) {
    type <- match.arg(type)
    method <- match.arg(method)
@@ -436,13 +436,13 @@ predict.slcafit <- function(
 #'
 #' @exportS3Method stats::confint slcafit
 confint.slcafit <- function(
-   object, parm, level = 0.95, type = c("param", "logit"), ...
+   object, parm, level = 0.95, type = c("probs", "logit"), ...
 ) {
    if (missing(parm)) parm <- seq_along(object$par)
    type <- match.arg(type)
 
-   logit <- object$logit
-   vcov <- vcov.slcafit(object, "logit", ...)
+   val <- switch(type, probs = exp(object$par), logit = object$logit)
+   vcov <- vcov.slcafit(object, type, ...)
    vars <- diag(vcov)
    se <- vars
    se[] <- 0
@@ -452,11 +452,7 @@ confint.slcafit <- function(
    upper <- 1 - lower
    cn <- format_pc(c(lower, upper), 3)
 
-   ci_logit <- logit + se %o% stats::qnorm(c(lower, upper))
-   ci_par <- ci_logit
-   ci_par[] <- exp(unlist(apply(ci_logit, 2, tapply, object$arg$id, norm2)))
-
-   ci <- switch(type, param = ci_par[parm,], logit = ci_logit[parm,])
+   ci <- val + se %o% stats::qnorm(c(lower, upper))
    colnames(ci) <- cn
    rownames(ci) <- paste0("(", parm, ")")
    ci

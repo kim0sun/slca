@@ -35,6 +35,52 @@ plot.slca <- function(
    DiagrammeR::grViz(text, ...)
 }
 
+
+#' @exportS3Method base::plot reg.slca
+plot.reg.slca <- function(
+      x, dir = "TD", font = "Helvetica", ...
+) {
+   msr <- x$model$measure
+   str <- x$model$struct
+   xx <- x$model$reg$x
+
+   pa <- c(as.character(str$parent), row.names(msr))
+   ind <- match(x$model$reg$y, pa)
+   ch <- c(as.character(str$child),
+           unname(sapply(msr$indicator, paste0, collapse = "', '")))
+   xx <- paste0(xx, collapse = "', '")
+   pa <- ifelse(
+      is.na(msr[pa, "constraint"]),
+      pa, paste0(pa, " (", msr[pa, "constraint"], ")")
+   )
+   ch <- ifelse(
+      is.na(msr[ch, "constraint"]),
+      ch, paste0(ch, " (", msr[ch, "constraint"], ")")
+   )
+   y <- pa[ind]
+   lb <- c(str$constraint, rep(NA, nrow(msr)))
+
+   node <- paste0(
+      "node [shape = box]\n",
+      paste0(paste0("'", c(setdiff(ch, pa), xx), "'", collapse = ", ")),
+      "\n\n node [shape = oval]\n",
+      paste0(paste0("'", pa, "'"), collapse = ", ")
+   )
+   path <- paste0("'", pa, "' -> { '", ch, "' }",
+                  ifelse(is.na(lb), "", paste0(" [label = '", lb, " 'fontname = '", font, "']")))
+
+   regr <- paste0("{ '", xx, "' } -> '", y, "'")
+
+   text <- paste0(
+      "digraph { \n  rankdir = '", dir, "';",
+      "node[fontname = '", font, "']\n\n",
+      node, "\n\n", paste0(path, collapse = "\n"),
+      regr, "\n}"
+   )
+
+   DiagrammeR::grViz(text, ...)
+}
+
 # plot.slcapar <- function(x, ...) {
 #    pi <- x$pi
 #    tau <- x$tau

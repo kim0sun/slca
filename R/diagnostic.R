@@ -118,6 +118,7 @@ gof.slcafit <- function(
             con$em.iterlim <- maxiter; con$nlm.iterlim <- maxiter
             con$em.tol <- tol; con$nlm.tol <- tol
             est <- estModel(obj$method, con, par, mf, arg)
+            if (inherits(est, "error")) return(est)
             etc <- calcModel(
                attr(mf, "y"), arg$nobs, arg$nvar, unlist(arg$nlev),
                est$par, arg$fix0, arg$ref - 1, arg$nlv, arg$nrl, arg$nlf,

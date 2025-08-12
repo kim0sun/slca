@@ -27,11 +27,11 @@ slcaControl(
 
 \item{init.param}{a numeric vector specifying the initial parameter values for estimation.}
 
-\item{nrep}{an integer specifying the number of estimation trials. The default is \code{1}.}
+\item{nrep}{an integer specifying the number of estimation trials. The default is \code{1}. Details for generating initial parameter set is described below.}
 
 \item{test.iter}{an integer specifying the maximum number of iterations allowed for parameter testing. The default is \code{500}.}
 
-\item{na.rm}{a logical value indicating whether to remove observations containing missing values (\code{NA}). The default is \code{FALSE}.}
+\item{na.rm}{a logical value indicating whether to remove observations containing missing values (\code{NA}). The default is \code{FALSE}. Details for treating missing data is described below.}
 
 \item{verbose}{a logical value indicating whether to display progress updates during the estimation process. The default is \code{FALSE}.
 
@@ -39,6 +39,18 @@ A \code{list} containing control parameters for \code{slca} estimation, includin
 }
 \description{
 Specifies control parameters for estimating \code{slca} model.
+}
+\details{
+\strong{Missing data:}
+Missing data are handled in two ways. If all manifest variables for an observation are missing, the case is excluded (listwise deletion).
+For partially missing data, the model assumes Missing At Random (MAR) and uses following algorithm to integrate over the missing values.
+In the E-step, posterior probabilities are computed using only the observed items.
+In the M-step, parameter updates use these posterior probabilities, with expected counts for missing responses distributed according to current parameter estimates.
+
+\strong{Local maxima and multiple starting values:}
+The EM algorithm may converge to a local rather than a global maximum.
+To reduce this risk, the \code{nrep} option allows multiple repetitions with different initial values. PI parameters are initialized equally (e.g., 0.5 for two classes), while TAU and RHO parameters are given small random perturbations to uniform probabilities, normalized within each parent state.
+The \code{test.iter} option runs a limited number of iterations for each initial set, and the best-performing set is then used for full convergence, improving the chance of reaching the global maximum.
 }
 \seealso{
 \link{slca}

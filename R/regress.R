@@ -34,7 +34,7 @@
 #' \item{dim}{The dimensions of the coefficients matrix.}
 #' \item{ll}{The log-likelihood of the regression model.}
 #'
-#' The `summary` function can be used to display the regression coefficients, standard errors, Wald statistics, and p-values.
+#' The `summary` function can be used to display the regression coefficients, standard errors, Wald statistics, and p-values. The standard errors are derived by numerically calculated Hessian matrix from `nlm` function.
 #'
 #' @references Vermunt, J. K. (2010). Latent Class Modeling with Covariates: Two Improved Three-Step Approaches. Political Analysis, 18(4), 450–469. http://www.jstor.org/stable/25792024
 #'
@@ -51,10 +51,14 @@ regress.slcafit <- function(
       method = c("naive", "BCH", "ML"), ...
 ) {
    # Import
+   model <- object$model
    labels <- all.vars(formula)
-   latent <- labels[labels %in% row.names(object$model$latent)]
+   latent <- labels[labels %in% row.names(model$latent)]
    imputation <- match.arg(imputation)
    method <- match.arg(method)
+
+   model$reg$x <- setdiff(labels, latent)
+   model$reg$y <- latent
 
    # Imputation
    impute <- function(x, imputation) {
@@ -212,6 +216,7 @@ regress.slcafit <- function(
    )
 
    res <- list()
+   res$model <- model
    res$coefficients <- coef
    res$std.err <- se
    res$vcov <- vcov

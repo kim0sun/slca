@@ -42,6 +42,8 @@ jmat <- function(x, simplify = TRUE) {
    ex <- exp(x)
    a <- diag(ex)
    b <- ex %o% ex
-   a - b
+   ret <- a - b
+   ret[, ncol(ret)] <- 0
+   ret
 }
 

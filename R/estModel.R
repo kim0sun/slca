@@ -15,9 +15,7 @@ estModel <- function(method, control, par, mf, arg) {
           npi, ntau, nrho, ul, vl, lf, tr, rt, eqrl, eqlf,
           nc, nk, nl, ncl, nc_pi, nk_tau, nl_tau, nc_rho, nr_rho)
    }
-   fix0 <- union(which(arg$fix0), par == -Inf)
-   fix1 <- which(par == Inf)
-   while (any(cond <- arg$ref_idx %in% c(fix0, fix1))) {
+   while (any(cond <- arg$ref_idx %in% which(arg$fix0))) {
       arg$ref[cond] <- arg$ref[cond] - 1
       arg$ref_idx[cond] <- arg$ref_idx[cond] - 1
    }
@@ -34,6 +32,8 @@ estModel <- function(method, control, par, mf, arg) {
       )
       par <- em$param
       logit <- par - par[arg$ref_idx[arg$id]]
+      fix0 <- which(logit == -Inf)
+      fix1 <- which(logit == Inf)
       em.conv <- em$converged
       em.niter <- em$niter
       nlm.conv <- NA
@@ -41,6 +41,9 @@ estModel <- function(method, control, par, mf, arg) {
    } else if (method == "nlm") {
       if (control$verbose) cat("nlm iteration begin.\n")
       logit <- par - par[arg$ref_idx[arg$id]]
+      fix0 <- which(logit == -Inf)
+      fix1 <- which(logit == Inf)
+
       nonlm <- stats::nlm(
          llf, logit[-c(fix0, fix1, arg$ref_idx)],
          fix0, fix1, arg$ref_idx, arg$id, y = attr(mf, "y"),
@@ -73,10 +76,13 @@ estModel <- function(method, control, par, mf, arg) {
       par <- em$param
       if (control$verbose) cat(".. done. \nnlm iteration begin.\n")
       logit <- par - par[arg$ref_idx[arg$id]]
+      fix0 <- which(logit == -Inf)
+      fix1 <- which(logit == Inf)
 
       nonlm <- stats::nlm(
          llf, logit[-c(fix0, fix1, arg$ref_idx)],
-         fix0, fix1, arg$ref_idx, arg$id, y = attr(mf, "y"),
+         fix0 = fix0, fix1 = fix1, ref = arg$ref_idx,
+         id = arg$id, y = attr(mf, "y"),
          nobs = arg$nobs, nvar = arg$nvar, nlev = unlist(arg$nlev),
          nlv = arg$nlv, nrl = arg$nrl, nlf = arg$nlf,
          npi = arg$npi, ntau = arg$ntau, nrho = arg$nrho,

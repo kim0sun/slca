@@ -4,7 +4,7 @@
 \alias{confint.slcafit}
 \title{Confidence Intervals for Model Parameters}
 \usage{
-\method{confint}{slcafit}(object, parm, level = 0.95, type = c("param", "logit"), ...)
+\method{confint}{slcafit}(object, parm, level = 0.95, type = c("probs", "logit"), ...)
 }
 \arguments{
 \item{object}{an object of class \code{slcafit}.}
