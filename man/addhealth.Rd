@@ -33,7 +33,7 @@ Responses for these variables were initially categorized as "Never," "Sometimes,
 }
 \examples{
 library(magrittr)
-data <- addhealth[1:300,]
+data <- addhealth[1:200,]
 lta5 <- slca(
    DEP1(5) ~ S1w1 + S2w1 + S3w1 + S4w1 + D1w1 + D2w1 + F1w1 + F2w1,
    DEP2(5) ~ S1w2 + S2w2 + S3w2 + S4w2 + D1w2 + D2w2 + F1w2 + F2w2,

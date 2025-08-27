@@ -87,7 +87,12 @@ regress.slcafit <- function(
       denom <- rowSums(exb)
       xb - log(denom)
    }
-
+   p <- object$posterior$marginal[[latent]][rownames(mf),]
+   w <- switch(
+      imputation,
+      modal = apply(p, 1, function(x) as.numeric(x == max(x))),
+      prob  = t(p)
+   )
    y <- stats::model.response(mf)
    X <- stats::model.matrix(formula, mf, ...)
    nr <- nlevels(y) - 1
@@ -96,10 +101,10 @@ regress.slcafit <- function(
 
    if (method == "naive") {
       # naive (biased)
-      naive_ll <- function(par, X, y, ref) {
+      naive_ll <- function(par, X, w, ref) {
          b <- matrix(par, nrow = ncol(X))
          prob <- cprobs(X, b, ref)
-         - sum(prob[cbind(1:nrow(prob), y)])
+         - sum(prob * t(w))
       }
       fit1 <- try(suppressWarnings(stats::nlm(
          naive_ll, init, X = X, y = y, ref = nlevels(y), hessian = TRUE
@@ -123,12 +128,6 @@ regress.slcafit <- function(
       hess <- c(hess, lapply(fit2, "[[", "hessian"))
    } else {
       # bias_adjusted
-      p <- object$posterior$marginal[[latent]][rownames(mf),]
-      w <- switch(
-         imputation,
-         modal = apply(p, 1, function(x) as.numeric(x == max(x))),
-         prob  = t(p)
-      )
       d <- (w %*% p) / colSums(p)
 
       if (method == "BCH") {
