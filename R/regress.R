@@ -62,12 +62,7 @@ regress.slcafit <- function(
 
    # Imputation
    impute <- function(x, imputation) {
-      if (imputation == "modal")
-         imputed <- as.factor(apply(x, 1, which.max))
-      else
-         imputed <- as.factor(apply(x, 1, function(y)
-            sample(seq_len(ncol(x)), 1, prob = y)))
-      return(imputed)
+      as.factor(apply(x, 1, which.max))
    }
 
    if (missing(data)) data <- object$mf
@@ -107,7 +102,7 @@ regress.slcafit <- function(
          - sum(prob * t(w))
       }
       fit1 <- try(suppressWarnings(stats::nlm(
-         naive_ll, init, X = X, y = y, ref = nlevels(y), hessian = TRUE
+         naive_ll, init, X = X, w = w, ref = nlevels(y), hessian = TRUE
          )), TRUE)
       if (!inherits(fit1, "try-error")) {
          ll <- fit1$minimum
@@ -120,7 +115,7 @@ regress.slcafit <- function(
       }
       fit2 <- lapply(c("Nelder-Mead", "BFGS", "CG", "L-BFGS-B", "SANN"), function(x)
          try(suppressWarnings(stats::optim(
-            init, naive_ll, X = X, y = y, method = x, ref = nlevels(y), hessian = TRUE
+            init, naive_ll, X = X, w = w, method = x, ref = nlevels(y), hessian = TRUE
             )), TRUE))
       fit2 <- fit2[sapply(fit2, class) != "try-error"]
       ll <- c(ll, sapply(fit2, "[[", "value"))
@@ -161,13 +156,10 @@ regress.slcafit <- function(
          hess <- c(hess, lapply(fit2, "[[", "hessian"))
       } else if (method == "ML") {
          # ML
-         w_ <- log(sapply(y, function(x) d[, x]))
-
          ml_ll <- function(par, X, w_, ref) {
             b <- matrix(par, ncol(X))
             prob <- t(cprobs(X, b, ref))
-            ll <- colSums(exp(prob + w_))
-            -sum(log(ll))
+            - sum(w * log(d %*% exp(prob)))
          }
 
          fit1 <- try(suppressWarnings(stats::nlm(
