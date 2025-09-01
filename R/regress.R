@@ -7,7 +7,7 @@
 #'
 #' \method{regress}{slcafit}(
 #'    object, formula, data = parent.frame(),
-#'    imputation = c("modal", "prob"),
+#'    imputation = c("modal", "prop"),
 #'    method = c("naive", "BCH", "ML"), ...
 #' )
 #' @param object an object of class `slcafit`.
@@ -16,7 +16,7 @@
 #' @param imputation a character string specifying the imputation method for latent class assignment. Options include:
 #'    \itemize{
 #'       \item `"modal"`: Assigns each individual to the latent class with the highest posterior probability.
-#'       \item `"prob"`: Assigns classes probabilistically based on the posterior probability distribution.
+#'       \item `"prop"`: Assigns classes probabilistically based on the posterior probability distribution.
 #'    }
 #' @param method a character string specifying the method to adjust for bias in the three-step approach. Options include:
 #'   \itemize{
@@ -47,7 +47,7 @@ regress <- function(object, ...) UseMethod("regress")
 #' @exportS3Method slca::regress slcafit
 regress.slcafit <- function(
       object, formula, data = parent.frame(),
-      imputation = c("modal", "prob"),
+      imputation = c("modal", "prop"),
       method = c("naive", "BCH", "ML"), ...
 ) {
    # Import
@@ -86,7 +86,7 @@ regress.slcafit <- function(
    w <- switch(
       imputation,
       modal = apply(p, 1, function(x) as.numeric(x == max(x))),
-      prob  = t(p)
+      prop  = t(p)
    )
    y <- stats::model.response(mf)
    X <- stats::model.matrix(formula, mf, ...)
