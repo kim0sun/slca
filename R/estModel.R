@@ -103,7 +103,7 @@ estModel <- function(method, control, par, mf, arg) {
    }
 
    hess <- matrix(NA, length(par), length(par))
-   if (control$nlm.hess) {
+   if (control$hessian) {
       nonlm <- stats::nlm(
          llf, logit[-c(fix0, fix1, arg$ref_idx)],
          fix0, fix1, arg$ref_idx, arg$id, y = attr(mf, "y"),
