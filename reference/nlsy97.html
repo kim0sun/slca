@@ -103,55 +103,9 @@ The dataset focuses on youth born in 1984 and tracks three types of substance us
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://magrittr.tidyverse.org" class="external-link">magrittr</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">nlsy_smoke</span> <span class="op">&lt;-</span> <span class="fu"><a href="slca.html">slca</a></span><span class="op">(</span><span class="fu">SMK_98</span><span class="op">(</span><span class="fl">3</span><span class="op">)</span> <span class="op">~</span> <span class="va">ESMK_98</span> <span class="op">+</span> <span class="va">FSMK_98</span> <span class="op">+</span> <span class="va">DSMK_98</span> <span class="op">+</span> <span class="va">HSMK_98</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>   <span class="fu"><a href="estimate.html">estimate</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">nlsy97</span>, control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in if (control$nlm.hess) {    nonlm &lt;- stats::nlm(llf, logit[-c(fix0, fix1, arg$ref_idx)],         fix0, fix1, arg$ref_idx, arg$id, y = attr(mf, "y"), nobs = arg$nobs,         nvar = arg$nvar, nlev = unlist(arg$nlev), nlv = arg$nlv,         nrl = arg$nrl, nlf = arg$nlf, npi = arg$npi, ntau = arg$ntau,         nrho = arg$nrho, ul = arg$ul, vl = arg$vl, lf = arg$lf,         tr = arg$tr, rt = arg$rt, eqrl = arg$eqrl, eqlf = arg$eqlf,         nc = arg$nc, nk = arg$nk, nl = arg$nl, ncl = arg$ncl,         nc_pi = arg$nc_pi, nk_tau = arg$nk_tau, nl_tau = arg$nl_tau,         nc_rho = arg$nc_rho, nr_rho = arg$nr_rho, iterlim = 1,         hessian = TRUE)    ind &lt;- c(fix0, fix1, arg$ref_idx)    hess[-ind, -ind] &lt;- nonlm$hessian}:</span> argument is of length zero</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">nlsy_smoke</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Structural Latent Class Model</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Summary of model structure</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Number of manifest variables     4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Number of latent class variables 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Latent variables (Root*):                </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Label: SMK_98*</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  nclass: 3      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Measurement model:                                                     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   SMK_98 -&gt; { ESMK_98, FSMK_98, DSMK_98, HSMK_98 }  a</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Summary of manifest variables</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Categories for each variable:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           response</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             1    2 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    ESMK_98  Yes  No</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    FSMK_98  Yes  No</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    DSMK_98  Yes  No</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    HSMK_98  Yes  No</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Frequencies for each categories:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           response</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>               1    2  &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    ESMK_98  558  446     0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    FSMK_98  413  591     0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    DSMK_98  179  825     0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    HSMK_98  115  889     0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Summary of model fit</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Number of observations                 1004</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Number of free parameters                14</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Log-likelihood                    -1473.365</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Information criteria                       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Akaike (AIC)                     2974.731</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Bayesian (BIC)                   3043.495</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Chi-squared Tests                          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Residual degree of freedom (df)         1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Pearson Chi-squared (X-squared)     0.000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      P(&gt;Chi)                           1.000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Likelihood Ratio (G-squared)        0.000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      P(&gt;Chi)                           1.000</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'nlsy_smoke' not found</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="co"># JLCA</span></span></span>
@@ -161,164 +115,11 @@ The dataset focuses on youth born in 1984 and tracks three types of substance us
 <span class="r-in"><span>   <span class="fu">MRJ_98</span><span class="op">(</span><span class="fl">3</span><span class="op">)</span> <span class="op">~</span> <span class="va">EMRJ_98</span> <span class="op">+</span> <span class="va">CMRJ_98</span> <span class="op">+</span> <span class="va">OMRJ_98</span> <span class="op">+</span> <span class="va">SMRJ_98</span>,</span></span>
 <span class="r-in"><span>   <span class="fu">SUB_98</span><span class="op">(</span><span class="fl">4</span><span class="op">)</span> <span class="op">~</span> <span class="va">SMK_98</span> <span class="op">+</span> <span class="va">DRK_98</span> <span class="op">+</span> <span class="va">MRJ_98</span></span></span>
 <span class="r-in"><span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="estimate.html">estimate</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">nlsy97</span>, control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in if (control$nlm.hess) {    nonlm &lt;- stats::nlm(llf, logit[-c(fix0, fix1, arg$ref_idx)],         fix0, fix1, arg$ref_idx, arg$id, y = attr(mf, "y"), nobs = arg$nobs,         nvar = arg$nvar, nlev = unlist(arg$nlev), nlv = arg$nlv,         nrl = arg$nrl, nlf = arg$nlf, npi = arg$npi, ntau = arg$ntau,         nrho = arg$nrho, ul = arg$ul, vl = arg$vl, lf = arg$lf,         tr = arg$tr, rt = arg$rt, eqrl = arg$eqrl, eqlf = arg$eqlf,         nc = arg$nc, nk = arg$nk, nl = arg$nl, ncl = arg$ncl,         nc_pi = arg$nc_pi, nk_tau = arg$nk_tau, nl_tau = arg$nl_tau,         nc_rho = arg$nc_rho, nr_rho = arg$nr_rho, iterlim = 1,         hessian = TRUE)    ind &lt;- c(fix0, fix1, arg$ref_idx)    hess[-ind, -ind] &lt;- nonlm$hessian}:</span> argument is of length zero</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">model_jlca</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Structural Latent Class Model</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Summary of model structure</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Number of manifest variables     12</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Number of latent class variables  4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Latent variables (Root*):                                     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Label: SMK_98 DRK_98 MRJ_98 SUB_98*</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  nclass: 3      3      3      4      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Measurement model:                                                     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   SMK_98 -&gt; { ESMK_98, FSMK_98, DSMK_98, HSMK_98 }  a</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   DRK_98 -&gt; { EDRK_98, CDRK_98, WDRK_98, BDRK_98 }  b</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   MRJ_98 -&gt; { EMRJ_98, CMRJ_98, OMRJ_98, SMRJ_98 }  c</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Structural model:                                      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   SUB_98 -&gt; { SMK_98, DRK_98, MRJ_98 }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Dependency constraints:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   A                B                C               </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   SUB_98 -&gt; SMK_98 SUB_98 -&gt; DRK_98 SUB_98 -&gt; MRJ_98</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Tree of structural model:                   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   SUB_98  -&gt; SMK_98</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           -&gt; DRK_98</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           -&gt; MRJ_98</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Summary of manifest variables</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Categories for each variable:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           response</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             1    2 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    ESMK_98  Yes  No</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    FSMK_98  Yes  No</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    DSMK_98  Yes  No</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    HSMK_98  Yes  No</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    EDRK_98  Yes  No</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    CDRK_98  Yes  No</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    WDRK_98  Yes  No</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    BDRK_98  Yes  No</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    EMRJ_98  Yes  No</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    CMRJ_98  Yes  No</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    OMRJ_98  Yes  No</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    SMRJ_98  Yes  No</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Frequencies for each categories:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           response</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>               1    2  &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    ESMK_98  558  446     0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    FSMK_98  413  591     0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    DSMK_98  179  825     0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    HSMK_98  115  889     0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    EDRK_98  735  269     0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    CDRK_98  521  483     0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    WDRK_98  218  786     0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    BDRK_98  288  716     0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    EMRJ_98  383  621     0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    CMRJ_98  226  778     0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    OMRJ_98   92  912     0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    SMRJ_98   98  906     0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Summary of model fit</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Number of observations                 1004</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Number of free parameters                63</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Log-likelihood                    -4095.382</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Information criteria                       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Akaike (AIC)                     8316.765</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Bayesian (BIC)                   8626.205</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Chi-squared Tests                          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Residual degree of freedom (df)      4032</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Pearson Chi-squared (X-squared)   370.887</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      P(&gt;Chi)                           1.000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Likelihood Ratio (G-squared)      355.584</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      P(&gt;Chi)                           1.000</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'model_jlca' not found</span>
 <span class="r-in"><span><span class="fu"><a href="param.html">param</a></span><span class="op">(</span><span class="va">model_jlca</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> PI :</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (SUB_98)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   class</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          1       2       3       4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     0.2845  0.1390  0.2013  0.3753</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> TAU :</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (A)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      parent</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> child       1       2       3       4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     1  0.3736  0.6967  0.4835  0.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     2  0.0896  0.3033  0.3216  0.9567</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     3  0.5368  0.0000  0.1949  0.0433</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>              </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> parent SUB_98</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> child  SMK_98</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (B)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      parent</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> child       1       2       3       4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     1  0.6984  0.1098  0.0000  0.0236</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     2  0.0826  0.0680  0.6678  0.8360</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     3  0.2190  0.8222  0.3322  0.1403</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>              </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> parent SUB_98</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> child  DRK_98</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (C)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      parent</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> child       1       2       3       4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     1  0.2440  0.0000  0.7996  0.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     2  0.1061  0.8043  0.1616  0.9862</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     3  0.6499  0.1957  0.0388  0.0138</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>              </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> parent SUB_98</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> child  MRJ_98</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> RHO :</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (a)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         class</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> response       1       2       3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    1(V1)  1.0000  0.0960  1.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    2      0.0000  0.9040  0.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    1(V2)  0.6763  0.0000  1.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    2      0.3237  1.0000  0.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    1(V3)  0.0000  0.0000  0.8564</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    2      1.0000  1.0000  0.1436</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    1(V4)  0.0000  0.0000  0.5502</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    2      1.0000  1.0000  0.4498</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        V1      V2      V3      V4     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> SMK_98 ESMK_98 FSMK_98 DSMK_98 HSMK_98</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (b)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         class</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> response       1       2       3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    1(V1)  1.0000  0.4431  1.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    2      0.0000  0.5569  0.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    1(V2)  1.0000  0.0000  1.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    2      0.0000  1.0000  0.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    1(V3)  0.8023  0.0000  0.1296</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    2      0.1977  1.0000  0.8704</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    1(V4)  0.9098  0.0000  0.2841</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    2      0.0902  1.0000  0.7159</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        V1      V2      V3      V4     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> DRK_98 EDRK_98 CDRK_98 WDRK_98 BDRK_98</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (c)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         class</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> response       1       2       3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    1(V1)  0.6789  0.0000  1.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    2      0.3211  1.0000  0.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    1(V2)  0.0000  0.0000  1.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    2      1.0000  1.0000  0.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    1(V3)  0.0000  0.0000  0.4071</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    2      1.0000  1.0000  0.5929</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    1(V4)  0.0000  0.0000  0.4336</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    2      1.0000  1.0000  0.5664</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        V1      V2      V3      V4     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> MRJ_98 EMRJ_98 CMRJ_98 OMRJ_98 SMRJ_98</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'model_jlca' not found</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># JLCPA</span></span></span>
 <span class="r-in"><span><span class="va">nlsy_jlcpa</span> <span class="op">&lt;-</span> <span class="fu"><a href="slca.html">slca</a></span><span class="op">(</span></span></span>
@@ -344,6 +145,7 @@ The dataset focuses on youth born in 1984 and tracks three types of substance us
 <span class="r-in"><span>      <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SUB_98 ~ MRJ_98"</span>, <span class="st">"SUB_03 ~ MRJ_03"</span>, <span class="st">"SUB_08 ~ MRJ_08"</span><span class="op">)</span></span></span>
 <span class="r-in"><span>   <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="estimate.html">estimate</a></span><span class="op">(</span><span class="va">nlsy97</span>, control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in if (control$nlm.hess) {    nonlm &lt;- stats::nlm(llf, logit[-c(fix0, fix1, arg$ref_idx)],         fix0, fix1, arg$ref_idx, arg$id, y = attr(mf, "y"), nobs = arg$nobs,         nvar = arg$nvar, nlev = unlist(arg$nlev), nlv = arg$nlv,         nrl = arg$nrl, nlf = arg$nlf, npi = arg$npi, ntau = arg$ntau,         nrho = arg$nrho, ul = arg$ul, vl = arg$vl, lf = arg$lf,         tr = arg$tr, rt = arg$rt, eqrl = arg$eqrl, eqlf = arg$eqlf,         nc = arg$nc, nk = arg$nk, nl = arg$nl, ncl = arg$ncl,         nc_pi = arg$nc_pi, nk_tau = arg$nk_tau, nl_tau = arg$nl_tau,         nc_rho = arg$nc_rho, nr_rho = arg$nr_rho, iterlim = 1,         hessian = TRUE)    ind &lt;- c(fix0, fix1, arg$ref_idx)    hess[-ind, -ind] &lt;- nonlm$hessian}:</span> argument is of length zero</span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
