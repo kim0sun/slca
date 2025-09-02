@@ -41,7 +41,7 @@ slcaControl <- function(
       nlm.iterlim = nlm.iterlim, nlm.tol = nlm.tol,
       init.param = init.param,
       nrep = nrep, test.iter = test.iter,
-      na.rm = na.rm, verbose = verbose
+      hessian = hessian, na.rm = na.rm, verbose = verbose
    )
 
    class(ctrl) <- "slcaControl"
