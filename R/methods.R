@@ -330,7 +330,7 @@ print.slcapar <- function(
 
 #' @exportS3Method stats::vcov slcafit
 vcov.slcafit <- function(
-   object, type = c("probs", "logit"), method = c("score", "hessian"), ...
+   object, type = c("probs", "logit"), hessian = FALSE, ...
 ) {
    type <- match.arg(type)
    method <- match.arg(method)
@@ -339,11 +339,11 @@ vcov.slcafit <- function(
    dn <- paste0("(", seq_len(dm), ")")
    vcov <- matrix(0, dm, dm, dimnames = list(dn, dn))
 
-   if (method == "hessian") {
+   if (hessian && all(is.na(object$hessian))) {
       hess <- object$hess
       nan <- is.na(diag(hess))
       vcov[!nan, !nan] <- MASS::ginv(hess[!nan, !nan])
-   } else if (method == "score") {
+   } else {
       score <- object$score
       fi <- crossprod(score)
       nan <- apply(score, 2, anyNA)
