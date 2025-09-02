@@ -9,6 +9,7 @@
 #' @param init.param a numeric vector specifying the initial parameter values for estimation.
 #' @param nrep an integer specifying the number of estimation trials. The default is `1`. Details for generating initial parameter set is described below.
 #' @param test.iter an integer specifying the maximum number of iterations allowed for parameter testing. The default is `500`.
+#' @param hessian a logical value indicating whether to calculate Hessian via `nlm` function numerically, if so, \code{vcov} method can provide variance-covariance matrix with Hessian instead of outer-product-of-gradients (OPG). The default is `FALSE`.
 #' @param na.rm a logical value indicating whether to remove observations containing missing values (`NA`). The default is `FALSE`. Details for treating missing data is described below.
 #' @param verbose a logical value indicating whether to display progress updates during the estimation process. The default is `FALSE`.
 #'
@@ -33,7 +34,7 @@ slcaControl <- function(
    em.iterlim = 5000, em.tol = 1e-8,
    nlm.iterlim = 1000, nlm.tol = 1e-10,
    init.param = NULL, nrep = 1, test.iter = 500,
-   na.rm = FALSE, verbose = FALSE
+   hessian = FALSE, na.rm = FALSE, verbose = FALSE
 ) {
    ctrl <- list(
       em.iterlim = em.iterlim, em.tol = em.tol,

@@ -152,7 +152,7 @@ estimate.slca <- function(
    x$logit <- logit
    x$fix2zero <- which(arg$fix0)
    x$score <- score
-   x$hess <- est$hess
+   x$hessian <- est$hess
    x$posterior <- list(
       marginal = lapply(post, t), joint = joint
    )
