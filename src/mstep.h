@@ -17,12 +17,5 @@ void updateRho(
    int nobs, int nclass, int nvar, int *ncat,
    int* restr
 );
-void updateA(double *pi, double *post, int nobs, int nclass);
-void updateB(double *tau, double *ntau, int nk, int nl, int* restr);
-void updateC(
-      double *rho, double *numer, double *denom,
-      int nobs, int nclass, int nvar, int *ncat,
-      int* restr
-);
 
 #endif

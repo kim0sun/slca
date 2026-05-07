@@ -10,11 +10,6 @@ match_row <- function(x, y) {
    which(!colSums(t(y[,nna, drop = FALSE]) != x[nna]))
 }
 
-expand_row <- function(x, y) {
-   nna <- !is.na(x)
-   nna
-}
-
 count_row <- function(mf, nlev, na.rm) {
    y_sort <- mf[do.call(order, mf), ]
    if (!sum(is.na(mf))) na.rm = TRUE

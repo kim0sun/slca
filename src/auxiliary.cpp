@@ -33,13 +33,3 @@ double log_sum_exp(NumericVector x) {
    return log(sum) + max_x;
 }
 
-NumericVector elogdiri(NumericVector a) {
-   return digamma(a) - R::digamma(sum(a));
-}
-
-NumericVector plogdiri(
-      NumericVector a, NumericVector b
-) {
-   return lgammaf(sum(a)) - lgamma(a) +
-      sum( (a - 1) * elogdiri(b) );;
-}
