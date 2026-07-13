@@ -113,3 +113,26 @@ test_that("simulate and re-estimate use zero-based encoded responses", {
    expect_true(any(grepl("1\\(V1\\)", param_out)))
    expect_false(any(grepl("0\\(V1\\)", param_out)))
 })
+
+test_that("predict uses stored marginal posterior without new data", {
+   m <- slca(l[2] ~ y1 + y2 + y3)
+   par <- c(
+      .6, .4,
+      .8, .2, .7, .3, .6, .4,
+      .3, .7, .4, .6, .5, .5
+   )
+   sim <- simulate(m, nsim = 60, seed = 7, parm = par)
+   fit <- estimate(
+      m, sim$response,
+      control = slcaControl(em.iterlim = 50, em.tol = 1e-6)
+   )
+
+   pred <- predict(fit)
+   post <- predict(fit, type = "posterior")
+
+   expect_s3_class(pred, "data.frame")
+   expect_equal(nrow(pred), nrow(sim$response))
+   expect_named(pred, "l")
+   expect_true(all(pred$l %in% 1:2))
+   expect_equal(post, fit$posterior$marginal)
+})

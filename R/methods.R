@@ -378,7 +378,7 @@ predict.slcafit <- function(
    dims <- dim(object$mf)
    levs <- levels(object$mf)
    type <- match.arg(type)
-   if (missing(newdata)) post <- object$posterior
+   if (missing(newdata)) post <- lapply(object$posterior$marginal, t)
    else {
       if (!is.data.frame(newdata)) {
          mat <- matrix(newdata, ncol = dims[2])
