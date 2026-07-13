@@ -121,6 +121,9 @@ estModel <- function(method, control, par, mf, arg) {
       hess[-ind, -ind] <- nonlm$hessian
    }
 
+   conv <- c(em.conv, nlm.conv)
+   conv <- all(conv[!is.na(conv)])
+
    list(par = par, logit = logit, hess = hess,
-        conv = c(EM = em.conv, nlm = nlm.conv))
+        conv = conv)
 }
