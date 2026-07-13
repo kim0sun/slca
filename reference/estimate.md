@@ -88,7 +88,9 @@ An object of class `slcafit` containing the following components:
 
 - convergence:
 
-  a logical indicator of whether convergence was achieved.
+  a named logical vector indicating whether convergence was achieved for
+  the EM and `nlm` steps. Steps not used by the selected method are
+  returned as `NA`.
 
 - loglikelihood:
 
