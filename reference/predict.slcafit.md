@@ -19,8 +19,9 @@ predict(object, newdata, type = c("class", "posterior"), ...)
 
 - newdata:
 
-  A `data.frame` containing the same variables as those used to estimate
-  the `object`.
+  A `data.frame`, matrix, or vector containing the same manifest
+  variables as those used to estimate the `object`. Unknown response
+  levels are not allowed.
 
 - type:
 

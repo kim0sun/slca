@@ -44,7 +44,7 @@ slcaControl(
 - init.param:
 
   a numeric vector specifying the initial parameter values for
-  estimation.
+  estimation. Its length must match the number of model parameters.
 
 - nrep:
 

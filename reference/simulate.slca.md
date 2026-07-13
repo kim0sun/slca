@@ -31,13 +31,17 @@ simulate(object, nsim = 500, seed = NULL, parm, nlevel, ...)
 - parm:
 
   a user-specified set of parameters to guide the simulation. This is
-  required if the model has not been previously estimated.
+  required if the model has not been previously estimated. If the
+  supplied length does not match the model, random parameters are used
+  with a warning.
 
 - nlevel:
 
   an integer or integer vector specifying the number of levels for each
   manifest item in the model. If a single integer is provided, all
-  manifest items will have the same number of levels. The default is 2.
+  manifest items use that number of levels. Named vectors may specify a
+  subset of manifest items, with unspecified items using the default of
+  2.
 
 - ...:
 
@@ -86,28 +90,28 @@ sapply(d, table)
 #> 2 169 107  86 210
 #> 3 197 245 306 207
 
-sim <- simulate(m2, nlevel = c(x1 = 2, x3 = 3, x4 = 4, x5 = 5))
+sim <- simulate(m2, nlevel = c(x1 = 2, x3 = 3, x4 = 4))
 d <- sim$response
 sapply(d, table)
 #> $x1
 #> 
 #>   1   2 
-#> 263 237 
+#> 180 320 
 #> 
 #> $x2
 #> 
-#>   1   2   3 
-#> 184  94 222 
+#>   1   2 
+#> 237 263 
 #> 
 #> $x3
 #> 
-#>   1   2   3   4 
-#> 131 100 121 148 
+#>   1   2   3 
+#> 226 182  92 
 #> 
 #> $x4
 #> 
-#>   1   2   3   4   5 
-#> 117  85 105 142  51 
+#>   1   2   3   4 
+#> 101 196  91 112 
 #> 
 
 # simulate data with user-defined parameters
@@ -124,20 +128,20 @@ param(mf)
 #> (lc)
 #>   class
 #>          1       2       3
-#>     0.3487  0.3534  0.2979
+#>     0.2774  0.3115  0.4110
 #> 
 #> RHO :
 #> (a)
 #>         class
 #> response       1       2       3
-#>    1(V1)  0.8867  0.0252  1.0000
-#>    2      0.1133  0.9748  0.0000
-#>    1(V2)  0.9303  0.1494  0.8956
-#>    2      0.0697  0.8506  0.1044
-#>    1(V3)  0.8081  0.1047  0.2592
-#>    2      0.1919  0.8953  0.7408
-#>    1(V4)  1.0000  0.1056  0.0000
-#>    2      0.0000  0.8944  1.0000
+#>    1(V1)  0.8900  0.0000  0.8980
+#>    2      0.1100  1.0000  0.1020
+#>    1(V2)  0.7723  0.1051  0.9075
+#>    2      0.2277  0.8949  0.0925
+#>    1(V3)  0.0606  0.0992  0.8035
+#>    2      0.9394  0.9008  0.1965
+#>    1(V4)  0.0000  0.1169  0.8310
+#>    2      1.0000  0.8831  0.1690
 #> 
 #>    V1 V2 V3 V4
 #> lc y1 y2 y3 y4

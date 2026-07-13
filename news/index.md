@@ -11,6 +11,11 @@
 - Fixed
   [`predict.slcafit()`](https://kim0sun.github.io/slca/reference/predict.slcafit.md)
   when `newdata` is omitted.
+- Added validation for
+  [`predict()`](https://rdrr.io/r/stats/predict.html) inputs, simulation
+  levels, and initial parameter lengths.
+- Fixed simulated factor responses when some generated categories are
+  absent in a sample.
 - Clarified the documented structure of `convergence`,
   [`predict()`](https://rdrr.io/r/stats/predict.html), and simulated
   responses.
