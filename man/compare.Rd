@@ -23,7 +23,7 @@ compare(
 
 \item{test}{a character string specifying the type of test to be conducted. If \code{"chisq"}, a chi-squared test is conducted. If \code{"boot"}, a bootstrap test is conducted.}
 
-\item{nboot}{an integer specifying the number of bootstrap iterations to perform (used only when \code{test = "boot"}). The default is 100.}
+\item{nboot}{a positive number specifying the number of bootstrap iterations to perform (used only when \code{test = "boot"}). Non-integer values are rounded up. The default is 50.}
 
 \item{method}{a character string specifying the estimation method for bootstrapping.}
 

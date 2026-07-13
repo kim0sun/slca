@@ -74,7 +74,12 @@ slca <- function(
 ) {
    if (!is.list(formula)) formulae <- list(formula, ...)
    else formulae <- formula
-   formulae <- formulae[sapply(formulae, inherits, "formula")]
+   is_formula <- sapply(formulae, inherits, "formula")
+   if (!length(formulae) || !any(is_formula))
+      stop("at least one model formula must be supplied.", call. = FALSE)
+   if (!all(is_formula))
+      stop("all model specifications must be formulas.", call. = FALSE)
+   formulae <- formulae[is_formula]
    model <- proc_formula(formulae, constraints)
    arg <- arguments(model)
 

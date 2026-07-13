@@ -338,11 +338,14 @@ vcov.slcafit <- function(
    dn <- paste0("(", seq_len(dm), ")")
    vcov <- matrix(0, dm, dm, dimnames = list(dn, dn))
 
-   if (hessian && all(is.na(object$hessian))) {
-      hess <- object$hess
+   if (hessian && !all(is.na(object$hessian))) {
+      hess <- object$hessian
       nan <- is.na(diag(hess))
       vcov[!nan, !nan] <- MASS::ginv(hess[!nan, !nan])
    } else {
+      if (hessian)
+         warning("Hessian is unavailable; using the score covariance.",
+                 call. = FALSE)
       score <- object$score
       fi <- crossprod(score)
       nan <- apply(score, 2, anyNA)
@@ -514,6 +517,11 @@ format_pc <- function(perc, digits)
 reorder.slcafit <- function(x, ...) {
    m <- match.call(expand.dots = FALSE)
    orders <- lapply(list(...), rank, ties.method = "first")
+   requested <- names(orders)
+   unknown <- setdiff(requested, row.names(x$model$latent))
+   if (length(unknown) > 0)
+      warning("Ignoring unknown latent variable(s): ",
+              paste(unknown, collapse = ", "), call. = FALSE)
    name <- intersect(names(orders), row.names(x$model$latent))
 
    id <- utils::relist(seq_along(x$par), x$skeleton$par)
@@ -528,20 +536,32 @@ reorder.slcafit <- function(x, ...) {
       for (i in names(parent)) {
          if (nm %in% child[[i]]) {
             name <- union(name, child[[i]])
-            for (j in child[[i]])
+            for (j in child[[i]]) {
+               if (j %in% requested && !identical(orders[[j]], orders[[nm]]))
+                  warning("Conflicting reorder specifications for linked latent variables; using the propagated order.",
+                          call. = FALSE)
                orders[[j]] <- orders[[nm]]
+            }
          }
          if (nm %in% parent[[i]]) {
             name <- union(name, parent[[i]])
-            for (j in parent[[i]])
+            for (j in parent[[i]]) {
+               if (j %in% requested && !identical(orders[[j]], orders[[nm]]))
+                  warning("Conflicting reorder specifications for linked latent variables; using the propagated order.",
+                          call. = FALSE)
                orders[[j]] <- orders[[nm]]
+            }
          }
       }
       for (i in names(rho_name)) {
          if (nm %in% rho_name[[i]]) {
             name <- union(name, rho_name[[i]])
-            for (j in rho_name[[i]])
+            for (j in rho_name[[i]]) {
+               if (j %in% requested && !identical(orders[[j]], orders[[nm]]))
+                  warning("Conflicting reorder specifications for linked latent variables; using the propagated order.",
+                          call. = FALSE)
                orders[[j]] <- orders[[nm]]
+            }
          }
       }
    }

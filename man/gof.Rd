@@ -31,7 +31,7 @@ gof(object, ...)
 
 \item{test}{a character string specifying the type of test to be conducted. If \code{"chisq"}, a chi-squared test is conducted. If \code{"boot"}, a bootstrap test is conducted.}
 
-\item{nboot}{an integer specifying the number of bootstrap rounds to be performed.}
+\item{nboot}{a positive number specifying the number of bootstrap rounds to be performed. Non-integer values are rounded up.}
 
 \item{plot}{a logical value indicating whether to print histogram of G-squared statistics for boostrap samples, only for \code{test = "boot"}. The default is \code{FALSE}.}
 

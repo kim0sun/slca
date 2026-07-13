@@ -11,7 +11,7 @@
 #'    method = c("naive", "BCH", "ML"), ...
 #' )
 #' @param object an object of class `slcafit`.
-#' @param formula a formula specifying the regression model, including both latent class variables (from the estimated model) and exogenous variables.
+#' @param formula a formula specifying the regression model. The left-hand side must be a single latent class variable from the estimated model.
 #' @param data an optional `data.frame` containing the exogenous variables of interest. If omitted, the variables are taken from the parent environment.
 #' @param imputation a character string specifying the imputation method for latent class assignment. Options include:
 #'    \itemize{
@@ -52,8 +52,14 @@ regress.slcafit <- function(
 ) {
    # Import
    model <- object$model
+   if (missing(formula) || length(formula) < 3 || !is.symbol(formula[[2]]))
+      stop("`formula` must have a single latent class variable on the left-hand side.",
+           call. = FALSE)
    labels <- all.vars(formula)
-   latent <- labels[labels %in% row.names(model$latent)]
+   latent <- as.character(formula[[2]])
+   if (!latent %in% row.names(model$latent))
+      stop("`formula` must have a single latent class variable on the left-hand side.",
+           call. = FALSE)
    imputation <- match.arg(imputation)
    method <- match.arg(method)
 
@@ -286,7 +292,7 @@ confint.reg.slca <- function(
       cat(rn[i], ":\n")
       print.default(ci[[i]])
    }
-   invisible(ci[, parm])
+   invisible(ci)
 }
 
 logit2ll <- function(x) {

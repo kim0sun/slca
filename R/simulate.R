@@ -3,7 +3,7 @@
 #' Simulates data based on a specified \code{slca} model. If the model parameters are not already estimated, they can either be provided by the user or generated randomly.
 ##'
 #' @param object an \code{slca} object representing the model from which data will be simulated.
-#' @param nsim an integer specifying the number of response observations to simulate. The default is 500.
+#' @param nsim a positive number specifying the number of response observations to simulate. Non-integer values are rounded up. The default is 500.
 #' @param seed an integer specifying the random seed for reproducibility. If not provided, results will vary across runs.
 #' @param parm a user-specified set of parameters to guide the simulation. This is required if the model has not been previously estimated. If the supplied length does not match the model, random parameters are used with a warning.
 #' @param nlevel an integer or integer vector specifying the number of levels for each manifest item in the model. If a single integer is provided, all manifest items use that number of levels. Named vectors may specify a subset of manifest items, with unspecified items using the default of 2.
@@ -21,6 +21,7 @@ simulate.slca <- function(
    object, nsim = 500, seed = NULL, parm, nlevel, ...
 ) {
    if (!is.null(seed)) set.seed(seed)
+   nsim <- positive_count(nsim, "nsim")
    model <- object$model
    arg <- object$arg
    arg$nobs <- nsim

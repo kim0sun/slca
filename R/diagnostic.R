@@ -38,7 +38,7 @@ add_boot_attrs <- function(x, fail, msg) {
 #' @param object an object of class `slcafit`.
 #' @param ... additional objects of class `slcafit` for comparison.
 #' @param test a character string specifying the type of test to be conducted. If `"chisq"`, a chi-squared test is conducted. If `"boot"`, a bootstrap test is conducted.
-#' @param nboot an integer specifying the number of bootstrap rounds to be performed.
+#' @param nboot a positive number specifying the number of bootstrap rounds to be performed. Non-integer values are rounded up.
 #' @param plot a logical value indicating whether to print histogram of G-squared statistics for boostrap samples, only for `test = "boot"`. The default is `FALSE`.
 #' @param maxiter an integer specifying the maximum number of iterations allowed for the estimation process during each bootstrap iteration. The default is 100.
 #' @param tol a numeric value specifying the convergence tolerance for each bootstrap iteration. The default is `1e-6`.
@@ -73,6 +73,7 @@ gof.slcafit <- function(
    nmodel <- length(mn)
 
    test <- match.arg(test)
+   if (test == "boot") nboot <- positive_count(nboot, "nboot")
 
    df <- sapply(objects, function(x) x$arg$df)
    aic <- sapply(objects, stats::AIC)
@@ -177,7 +178,7 @@ gof.slcafit <- function(
 #' @param model1 an object of class `slcafit`.
 #' @param model2 another object of class `slcafit` to be compared with `model1`.
 #' @param test a character string specifying the type of test to be conducted. If `"chisq"`, a chi-squared test is conducted. If `"boot"`, a bootstrap test is conducted.
-#' @param nboot an integer specifying the number of bootstrap iterations to perform (used only when `test = "boot"`). The default is 100.
+#' @param nboot a positive number specifying the number of bootstrap iterations to perform (used only when `test = "boot"`). Non-integer values are rounded up. The default is 50.
 #' @param method a character string specifying the estimation method for bootstrapping.
 #' @param plot a logical value indicating whether to display a histogram of G-squared statistics for the bootstrap samples (applicable only for `test = "boot"`). The default is `FALSE`.
 #' @param maxiter an integer specifying the maximum number of iterations allowed during each bootstrap estimation round. The default is 100.
@@ -203,6 +204,7 @@ compare <- function(
    cl <- match.call()
    test <- match.arg(test)
    method <- match.arg(method)
+   if (test == "boot") nboot <- positive_count(nboot, "nboot")
    name <- c(cl[["model1"]], cl[["model2"]])
    if (any(!sapply(models, inherits, "slcafit")))
       stop("both model should be estimated")

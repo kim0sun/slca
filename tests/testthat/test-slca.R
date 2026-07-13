@@ -180,6 +180,10 @@ test_that("simulate validates nlevel and warns on mismatched parameters", {
    expect_error(simulate(m, nsim = 20, nlevel = c(2, 3)), "nlevel")
    expect_error(simulate(m, nsim = 20, nlevel = 1), "greater than or equal")
    expect_warning(simulate(m, nsim = 20, seed = 1, parm = 1:3), "parm")
+   expect_error(simulate(m, nsim = 0), "positive")
+   expect_warning(sim_round <- simulate(m, nsim = 2.5, seed = 1),
+                  "rounded up")
+   expect_equal(nrow(sim_round$response), 3)
 })
 
 test_that("estimate validates initial parameter length", {
@@ -280,6 +284,90 @@ test_that("variance methods handle missing responses", {
 
    expect_true(all(is.finite(vcov(fit)[!is.na(vcov(fit))])))
    expect_true(all(is.finite(confint(fit, parm = 1:2))))
+})
+
+test_that("hessian covariance falls back or uses stored Hessian", {
+   m <- slca(l[2] ~ y1 + y2 + y3)
+   par <- c(
+      .6, .4,
+      .8, .2, .7, .3, .6, .4,
+      .3, .7, .4, .6, .5, .5
+   )
+   sim <- simulate(m, nsim = 60, seed = 7, parm = par)
+   fit_score <- estimate(
+      m, sim$response,
+      control = slcaControl(em.iterlim = 50, em.tol = 1e-6)
+   )
+   fit_hess <- estimate(
+      m, sim$response,
+      control = slcaControl(em.iterlim = 50, em.tol = 1e-6, hessian = TRUE)
+   )
+
+   expect_warning(v_score <- vcov(fit_score, hessian = TRUE), "Hessian")
+   expect_true(all(is.finite(v_score[!is.na(v_score)])))
+   v_hess <- vcov(fit_hess, hessian = TRUE)
+   expect_true(all(is.finite(v_hess[!is.na(v_hess)])))
+})
+
+test_that("regression validates latent outcome and confidence intervals", {
+   m <- slca(l[2] ~ y1 + y2 + y3)
+   par <- c(
+      .6, .4,
+      .8, .2, .7, .3, .6, .4,
+      .3, .7, .4, .6, .5, .5
+   )
+   sim <- simulate(m, nsim = 60, seed = 7, parm = par)
+   fit <- estimate(
+      m, sim$response,
+      control = slcaControl(em.iterlim = 50, em.tol = 1e-6)
+   )
+   covar <- data.frame(x = seq_len(nrow(sim$response)) %% 2)
+
+   expect_error(regress(fit, y1 ~ x, data = covar), "single latent")
+   expect_error(regress(fit, l + l ~ x, data = covar), "single latent")
+
+   reg <- regress(fit, l ~ x, data = covar)
+   expect_silent(out <- capture.output(ci <- confint(reg)))
+   expect_true(length(out) > 0)
+   expect_true(is.list(ci))
+})
+
+test_that("model and diagnostic count inputs are validated", {
+   expect_error(slca(), "model formula")
+   expect_error(slca(l[x] ~ y1 + y2), "number of classes")
+   expect_s3_class(slca(l[2] ~ y1 + y2), "slca")
+
+   m <- slca(l[2] ~ y1 + y2 + y3)
+   par <- c(
+      .6, .4,
+      .8, .2, .7, .3, .6, .4,
+      .3, .7, .4, .6, .5, .5
+   )
+   sim <- simulate(m, nsim = 40, seed = 7, parm = par)
+   fit <- estimate(
+      m, sim$response,
+      control = slcaControl(em.iterlim = 50, em.tol = 1e-6)
+   )
+
+   expect_error(gof(fit, test = "boot", nboot = 0), "positive")
+   expect_warning(gof(fit, test = "boot", nboot = 1.5,
+                      maxiter = 5, tol = 1e-5), "rounded up")
+   expect_error(compare(fit, fit, test = "boot", nboot = 0), "positive")
+})
+
+test_that("reorder warns on ignored or conflicting specifications", {
+   m <- slca(lx[2] ~ x1 + x2 + x3,
+             ly[2] ~ y1 + y2 + y3,
+             constraints = list(c("lx", "ly")))
+   sim <- simulate(m, nsim = 50, seed = 5)
+   fit <- estimate(
+      m, sim$response,
+      control = slcaControl(em.iterlim = 50, em.tol = 1e-6)
+   )
+
+   expect_warning(reorder(fit, nope = c(2, 1)), "Ignoring unknown")
+   expect_warning(reorder(fit, lx = c(2, 1), ly = c(1, 2)),
+                  "Conflicting")
 })
 
 test_that("bootstrap diagnostics keep failure metadata", {

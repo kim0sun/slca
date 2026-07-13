@@ -20,6 +20,16 @@ get_se <- function(vcov) {
    sqrt(var)
 }
 
+positive_count <- function(x, name) {
+   if (length(x) != 1 || !is.numeric(x) || !is.finite(x) || x <= 0)
+      stop("`", name, "` must be a positive number.", call. = FALSE)
+   count <- ceiling(x)
+   if (count != x)
+      warning("`", name, "` is not an integer; rounded up to ", count, ".",
+              call. = FALSE)
+   as.integer(count)
+}
+
 bdiag <- function(x) {
    nr <- sum(sapply(x, nrow))
    nc <- sum(sapply(x, ncol))
@@ -46,4 +56,3 @@ jmat <- function(x, simplify = TRUE) {
    ret[, ncol(ret)] <- 0
    ret
 }
-

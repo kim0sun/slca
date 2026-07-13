@@ -27,7 +27,7 @@ regress(object, ...)
 
 \item{...}{additional arguments.}
 
-\item{formula}{a formula specifying the regression model, including both latent class variables (from the estimated model) and exogenous variables.}
+\item{formula}{a formula specifying the regression model. The left-hand side must be a single latent class variable from the estimated model.}
 
 \item{data}{an optional \code{data.frame} containing the exogenous variables of interest. If omitted, the variables are taken from the parent environment.}
 

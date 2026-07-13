@@ -9,7 +9,7 @@
 \arguments{
 \item{object}{an \code{slca} object representing the model from which data will be simulated.}
 
-\item{nsim}{an integer specifying the number of response observations to simulate. The default is 500.}
+\item{nsim}{a positive number specifying the number of response observations to simulate. Non-integer values are rounded up. The default is 500.}
 
 \item{seed}{an integer specifying the random seed for reproducibility. If not provided, results will vary across runs.}
 
