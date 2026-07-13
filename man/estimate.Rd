@@ -36,7 +36,7 @@ An object of class \code{slcafit} containing the following components:
 \item{logit}{the log-odds of the estimated parameters.}
 \item{score}{the score function for the estimated parameters.}
 \item{posterior}{a \code{list} of posterior probablities for each latent class variable.}
-\item{convergence}{a logical indicator of whether convergence was achieved.}
+\item{convergence}{a named logical vector indicating whether convergence was achieved for the EM and \code{nlm} steps. Steps not used by the selected method are returned as \code{NA}.}
 \item{loglikelihood}{the loglikelihood value of the estimated model.}
 \item{control}{the control settings used during the estimation process.}
 

@@ -43,8 +43,8 @@ void cumRho(
       for (int k = 0; k < nk; k ++) {
          denom[k] = log_add_exp(denom[k], post[k]);
          for (int m = 0; m < nvar; m ++) {
-            if (y[m] > 0) {
-               nmr[y[m] - 1] = log_add_exp(nmr[y[m] - 1], post[k]);
+            if (y[m] >= 0) {
+               nmr[y[m]] = log_add_exp(nmr[y[m]], post[k]);
             } else {
                for (int r = 0; r < ncat[m]; r ++) {
                   nmr[r] = log_add_exp(nmr[r], post[k] + rho[r]);

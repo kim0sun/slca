@@ -44,7 +44,8 @@ count_row <- function(mf, nlev, na.rm) {
       ymis <- y_sort[miss, ]
       umis <- !duplicated(ymis)
       mis_uniq <- ymis[umis, ]
-      misobs <- apply(mis_uniq, 1, match_row, obs_uniq)
+      misobs <- lapply(seq_len(nrow(mis_uniq)), function(i)
+         match_row(mis_uniq[i, ], obs_uniq))
       rmis <- sapply(misobs, length)
       nmis <- length(misobs)
       imis <- unlist(misobs) - 1
@@ -78,14 +79,14 @@ proc_data <- function(data, model, na.rm) {
    res <- count_row(mf, nlev, na.rm)
 
    nmf <- mf
-   nmf[] <- lapply(mf, as.numeric)
-   nmf[is.na(nmf)] <- 0
+   nmf[] <- lapply(mf, function(x) as.numeric(x) - 1)
+   nmf[is.na(nmf)] <- -1
    attr(mf, "y") <- unlist(lapply(child, function(x) t(nmf[x])),
                            use.names = FALSE)
    attr(mf, "levels") <- lev
    attr(mf, "y_unique") <- res$y_unique
    nyu <- res$y_unique
-   nyu[] <- lapply(nyu, as.numeric)
+   nyu[] <- lapply(nyu, function(x) as.numeric(x) - 1)
    attr(mf, "yu") <- unlist(lapply(child, function(x)
       t(nyu[x])), use.names = FALSE)
    attr(mf, "freq") <- res$freq
@@ -111,11 +112,10 @@ proc_data2 <- function(data, model, na.rm) {
    nlev <- sapply(mf, nlevels)
    mf[] <- lapply(mf, as.numeric)
    nmf <- mf
-   nmf[] <- lapply(mf, as.numeric)
-   nmf[is.na(nmf)] <- 0
+   nmf[] <- lapply(mf, function(x) as.numeric(x) - 1)
+   nmf[is.na(nmf)] <- -1
    attr(mf, "y") <- unlist(lapply(child, function(x) t(nmf[x])),
                            use.names = FALSE)
    attr(mf, "levels") <- lev
    mf
 }
-

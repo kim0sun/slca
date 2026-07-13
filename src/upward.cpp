@@ -10,8 +10,8 @@ void upInit(
       double *rho = (double *) ptr_rho;
       for (int k = 0; k < nk; k ++) {
          for (int m = 0; m < nvar; m ++) {
-            if (y[m] > 0)
-               lambda[k] += rho[y[m] - 1];
+            if (y[m] >= 0)
+               lambda[k] += rho[y[m]];
             rho += ncat[m];
          }
       }
@@ -64,5 +64,4 @@ void upRec2(
       lambda  += nl;
    }
 }
-
 
