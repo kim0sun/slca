@@ -72,6 +72,9 @@ estimate.slca <- function(
    if (inherits(x, "slcafit")) par <- x$par
    if (!is.null(control$init.param)) {
       init.param <- unlist(control$init.param)
+      if (length(init.param) != length(arg$id))
+         stop("`control$init.param` must have length ", length(arg$id),
+              ".", call. = FALSE)
       if (all(init.param >= 0))
          par <- unlist(tapply(init.param, arg$id, norm1), use.names = FALSE)
       else
@@ -164,4 +167,3 @@ estimate.slca <- function(
    class(x) <- c("slcafit", "slca")
    x
 }
-

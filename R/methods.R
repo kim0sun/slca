@@ -362,7 +362,7 @@ vcov.slcafit <- function(
 #' If `newdata` is omitted, predictions are computed from the posterior probabilities stored in `object`.
 #'
 #' @param object An object of class `slcafit`, representing a fitted `slca` model.
-#' @param newdata A `data.frame` containing the same variables as those used to estimate the `object`.
+#' @param newdata A `data.frame`, matrix, or vector containing the same manifest variables as those used to estimate the `object`. Unknown response levels are not allowed.
 #' @param type A character string indicating the type of prediction. Use `"class"` to obtain the predicted class membership for each observation and latent class variable, or `"posterior"` to retrieve posterior probabilities for each class. The default is `"class"`.
 #' @param ... Additional arguments passed to other methods.
 #'
@@ -376,17 +376,52 @@ vcov.slcafit <- function(
 predict.slcafit <- function(
    object, newdata, type = c("class", "posterior"), ...
 ) {
-   dims <- dim(object$mf)
    levs <- levels(object$mf)
+   vars <- names(object$mf)
    type <- match.arg(type)
    if (missing(newdata)) post <- lapply(object$posterior$marginal, t)
    else {
+      nvar <- length(vars)
       if (!is.data.frame(newdata)) {
-         mat <- matrix(newdata, ncol = dims[2])
-         colnames(mat) <- names(object$mf)
+         if (is.null(dim(newdata))) {
+            if (length(newdata) %% nvar != 0)
+               stop("`newdata` length must be a multiple of the number of manifest variables.",
+                    call. = FALSE)
+            mat <- matrix(newdata, ncol = nvar, byrow = TRUE)
+         } else {
+            mat <- as.matrix(newdata)
+            if (ncol(mat) != nvar)
+               stop("`newdata` must have the same number of columns as the manifest variables.",
+                    call. = FALSE)
+         }
+         if (!is.null(colnames(mat)) && all(vars %in% colnames(mat))) {
+            mat <- mat[, vars, drop = FALSE]
+         } else {
+            colnames(mat) <- vars
+         }
          newdata <- data.frame(mat)
+      } else {
+         missing_vars <- setdiff(vars, names(newdata))
+         if (length(missing_vars) > 0)
+            stop("`newdata` is missing manifest variable(s): ",
+                 paste(missing_vars, collapse = ", "), call. = FALSE)
+         newdata <- newdata[vars]
       }
-      newdata[] <- lapply(names(object$mf), function(x) {
+      unknown <- lapply(vars, function(x) {
+         val <- as.character(newdata[[x]])
+         setdiff(unique(val[!is.na(val)]), levs[[x]])
+      })
+      names(unknown) <- vars
+      unknown <- unknown[lengths(unknown) > 0]
+      if (length(unknown) > 0) {
+         msg <- paste(
+            sprintf("%s: %s", names(unknown),
+                    vapply(unknown, paste, character(1), collapse = ", ")),
+            collapse = "; "
+         )
+         stop("`newdata` contains unknown levels: ", msg, call. = FALSE)
+      }
+      newdata[] <- lapply(vars, function(x) {
          newdata[[x]] <- factor(newdata[[x]], levels = levs[[x]])
       })
       mf <- proc_data2(newdata, object$model, FALSE)

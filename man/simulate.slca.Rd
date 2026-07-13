@@ -13,9 +13,9 @@
 
 \item{seed}{an integer specifying the random seed for reproducibility. If not provided, results will vary across runs.}
 
-\item{parm}{a user-specified set of parameters to guide the simulation. This is required if the model has not been previously estimated.}
+\item{parm}{a user-specified set of parameters to guide the simulation. This is required if the model has not been previously estimated. If the supplied length does not match the model, random parameters are used with a warning.}
 
-\item{nlevel}{an integer or integer vector specifying the number of levels for each manifest item in the model. If a single integer is provided, all manifest items will have the same number of levels. The default is 2.}
+\item{nlevel}{an integer or integer vector specifying the number of levels for each manifest item in the model. If a single integer is provided, all manifest items use that number of levels. Named vectors may specify a subset of manifest items, with unspecified items using the default of 2.}
 
 \item{...}{Additional arguments passed to other methods.}
 }
@@ -39,7 +39,7 @@ sim <- simulate(m2, nlevel = c(3, 3, 3, 3))
 d <- sim$response
 sapply(d, table)
 
-sim <- simulate(m2, nlevel = c(x1 = 2, x3 = 3, x4 = 4, x5 = 5))
+sim <- simulate(m2, nlevel = c(x1 = 2, x3 = 3, x4 = 4))
 d <- sim$response
 sapply(d, table)
 

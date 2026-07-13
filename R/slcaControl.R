@@ -6,7 +6,7 @@
 #' @param em.tol a numeric value setting the tolerance for convergence of the EM algorithm. The default is `1e-8`.
 #' @param nlm.iterlim an integer specifying the maximum number of iterations allowed when using the \code{nlm} function for estimation. The default is `1000`.
 #' @param nlm.tol a numeric value setting the tolerance for convergence of the \code{nlm} function. The default is `1e-10`.
-#' @param init.param a numeric vector specifying the initial parameter values for estimation.
+#' @param init.param a numeric vector specifying the initial parameter values for estimation. Its length must match the number of model parameters.
 #' @param nrep an integer specifying the number of estimation trials. The default is `1`. Details for generating initial parameter set is described below.
 #' @param test.iter an integer specifying the maximum number of iterations allowed for parameter testing. The default is `500`.
 #' @param hessian a logical value indicating whether to calculate Hessian via `nlm` function numerically, if so, \code{vcov} method can provide variance-covariance matrix with Hessian instead of outer-product-of-gradients (OPG). The default is `FALSE`.

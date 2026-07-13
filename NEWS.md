@@ -4,4 +4,6 @@
 * Updated internal response encoding to use `-1` for missing values and zero-based category indices for C++ calculations.
 * Kept simulated manifest responses as plain factor data frames without internal encoding attributes.
 * Fixed `predict.slcafit()` when `newdata` is omitted.
+* Added validation for `predict()` inputs, simulation levels, and initial parameter lengths.
+* Fixed simulated factor responses when some generated categories are absent in a sample.
 * Clarified the documented structure of `convergence`, `predict()`, and simulated responses.

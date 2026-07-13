@@ -26,7 +26,7 @@ slcaControl(
 
 \item{nlm.tol}{a numeric value setting the tolerance for convergence of the \code{nlm} function. The default is \code{1e-10}.}
 
-\item{init.param}{a numeric vector specifying the initial parameter values for estimation.}
+\item{init.param}{a numeric vector specifying the initial parameter values for estimation. Its length must match the number of model parameters.}
 
 \item{nrep}{an integer specifying the number of estimation trials. The default is \code{1}. Details for generating initial parameter set is described below.}
 

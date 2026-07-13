@@ -135,4 +135,83 @@ test_that("predict uses stored marginal posterior without new data", {
    expect_named(pred, "l")
    expect_true(all(pred$l %in% 1:2))
    expect_equal(post, fit$posterior$marginal)
+   expect_equal(row.names(pred), row.names(sim$response))
+})
+
+test_that("predict validates and accepts supported new data formats", {
+   m <- slca(l[2] ~ y1 + y2 + y3)
+   par <- c(
+      .6, .4,
+      .8, .2, .7, .3, .6, .4,
+      .3, .7, .4, .6, .5, .5
+   )
+   sim <- simulate(m, nsim = 60, seed = 7, parm = par)
+   fit <- estimate(
+      m, sim$response,
+      control = slcaControl(em.iterlim = 50, em.tol = 1e-6)
+   )
+
+   mat <- as.matrix(sim$response[1:3, ])
+   vec <- as.vector(t(mat))
+
+   expect_equal(nrow(predict(fit, newdata = mat)), 3)
+   expect_equal(nrow(predict(fit, newdata = vec)), 3)
+   expect_error(predict(fit, newdata = vec[-1]), "multiple")
+   expect_error(predict(fit, newdata = sim$response[1:3, -1]),
+                "missing manifest")
+
+   unknown <- sim$response[1:3, ]
+   unknown$y1 <- as.character(unknown$y1)
+   unknown$y1[1] <- "new"
+   expect_error(predict(fit, newdata = unknown), "unknown levels")
+})
+
+test_that("simulate validates nlevel and warns on mismatched parameters", {
+   m <- slca(l[2] ~ y1 + y2 + y3)
+
+   sim <- simulate(m, nsim = 20, seed = 1, nlevel = 3)
+   expect_equal(vapply(sim$response, nlevels, integer(1)), c(y1 = 3, y2 = 3, y3 = 3))
+
+   sim_named <- simulate(m, nsim = 20, seed = 1, nlevel = c(y2 = 4))
+   expect_equal(vapply(sim_named$response, nlevels, integer(1)),
+                c(y1 = 2, y2 = 4, y3 = 2))
+
+   expect_error(simulate(m, nsim = 20, nlevel = c(y4 = 3)), "unknown")
+   expect_error(simulate(m, nsim = 20, nlevel = c(2, 3)), "nlevel")
+   expect_error(simulate(m, nsim = 20, nlevel = 1), "greater than or equal")
+   expect_warning(simulate(m, nsim = 20, seed = 1, parm = 1:3), "parm")
+})
+
+test_that("estimate validates initial parameter length", {
+   m <- slca(l[2] ~ y1 + y2 + y3)
+   dat <- data.frame(
+      y1 = factor(c(1, 1, 2, 2)),
+      y2 = factor(c(1, 2, 1, 2)),
+      y3 = factor(c(1, 2, 2, 1))
+   )
+
+   expect_error(
+      estimate(m, dat, control = slcaControl(init.param = 1:3)),
+      "init.param"
+   )
+})
+
+test_that("regress uses marginal posterior after prediction changes", {
+   m <- slca(l[2] ~ y1 + y2 + y3)
+   par <- c(
+      .6, .4,
+      .8, .2, .7, .3, .6, .4,
+      .3, .7, .4, .6, .5, .5
+   )
+   sim <- simulate(m, nsim = 60, seed = 7, parm = par)
+   fit <- estimate(
+      m, sim$response,
+      control = slcaControl(em.iterlim = 50, em.tol = 1e-6)
+   )
+   covar <- data.frame(x = seq_len(nrow(sim$response)) %% 2)
+
+   reg <- regress(fit, l ~ x, data = covar,
+                  imputation = "modal", method = "naive")
+
+   expect_s3_class(reg, "reg.slca")
 })

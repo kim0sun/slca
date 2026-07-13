@@ -9,7 +9,7 @@
 \arguments{
 \item{object}{An object of class \code{slcafit}, representing a fitted \code{slca} model.}
 
-\item{newdata}{A \code{data.frame} containing the same variables as those used to estimate the \code{object}.}
+\item{newdata}{A \code{data.frame}, matrix, or vector containing the same manifest variables as those used to estimate the \code{object}. Unknown response levels are not allowed.}
 
 \item{type}{A character string indicating the type of prediction. Use \code{"class"} to obtain the predicted class membership for each observation and latent class variable, or \code{"posterior"} to retrieve posterior probabilities for each class. The default is \code{"class"}.}
 

@@ -5,8 +5,8 @@
 #' @param object an \code{slca} object representing the model from which data will be simulated.
 #' @param nsim an integer specifying the number of response observations to simulate. The default is 500.
 #' @param seed an integer specifying the random seed for reproducibility. If not provided, results will vary across runs.
-#' @param parm a user-specified set of parameters to guide the simulation. This is required if the model has not been previously estimated.
-#' @param nlevel an integer or integer vector specifying the number of levels for each manifest item in the model. If a single integer is provided, all manifest items will have the same number of levels. The default is 2.
+#' @param parm a user-specified set of parameters to guide the simulation. This is required if the model has not been previously estimated. If the supplied length does not match the model, random parameters are used with a warning.
+#' @param nlevel an integer or integer vector specifying the number of levels for each manifest item in the model. If a single integer is provided, all manifest items use that number of levels. Named vectors may specify a subset of manifest items, with unspecified items using the default of 2.
 #' @param ... Additional arguments passed to other methods.
 #'
 #' @returns
@@ -29,14 +29,30 @@ simulate.slca <- function(
    nvar <- length(vars)
    if (missing(nlevel)) {
       nlevel <- rep(2, nvar)
-   } else if (length(nlevel) != nvar) {
-      nlev <- rep(2, nvar)
-      j <- 1
-      for (i in match(names(nlevel), vars)) {
-         nlev[i] <- nlevel[j]
-         j = j + 1
+   } else {
+      nlevel <- unlist(nlevel)
+      if (is.null(names(nlevel))) {
+         if (length(nlevel) == 1) {
+            nlevel <- rep(nlevel, nvar)
+         } else if (length(nlevel) != nvar) {
+            stop("`nlevel` must have length 1, length equal to the number of manifest variables, or names matching manifest variables.",
+                 call. = FALSE)
+         }
+      } else {
+         unknown <- setdiff(names(nlevel), vars)
+         if (length(unknown) > 0)
+            stop("`nlevel` contains unknown manifest variable(s): ",
+                 paste(unknown, collapse = ", "), call. = FALSE)
+         if (anyDuplicated(names(nlevel)))
+            stop("`nlevel` names must be unique.", call. = FALSE)
+         nlev <- rep(2, nvar)
+         nlev[match(names(nlevel), vars)] <- nlevel
+         nlevel <- nlev
       }
-      nlevel <- nlev
+      if (any(!is.finite(nlevel)) || any(nlevel != floor(nlevel)) ||
+          any(nlevel < 2))
+         stop("`nlevel` must contain integers greater than or equal to 2.",
+              call. = FALSE)
    }
    names(nlevel) <- vars
 
@@ -56,6 +72,8 @@ simulate.slca <- function(
       if (length(unlist(parm)) == length(arg$id)) {
          par <- unlist(tapply(parm, arg$id, norm1), use.names = FALSE)
       } else {
+         warning("`parm` length does not match the model; random parameters are used.",
+                 call. = FALSE)
          par <- stats::runif(length(arg$id))
          par <- unlist(tapply(par, arg$id, norm1), use.names = FALSE)
       }
@@ -85,7 +103,8 @@ simulate.slca <- function(
    items <- setdiff(unlist(child), names(child))
    colnames(y) <- items
    y[] <- lapply(items, function(x)
-      factor(y[[x]], labels = level[[x]]))
+      factor(y[[x]], levels = seq_along(level[[x]]) - 1,
+             labels = level[[x]]))
    mf <- proc_data(y, model, FALSE)
    rownames(y) <- row.names(mf)
 

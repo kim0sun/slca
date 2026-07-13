@@ -9,7 +9,7 @@ sim <- simulate(m2, nlevel = c(3, 3, 3, 3))
 d <- sim$response
 sapply(d, table)
 
-sim <- simulate(m2, nlevel = c(x1 = 2, x3 = 3, x4 = 4, x5 = 5))
+sim <- simulate(m2, nlevel = c(x1 = 2, x3 = 3, x4 = 4))
 d <- sim$response
 sapply(d, table)
 
