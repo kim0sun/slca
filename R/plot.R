@@ -24,7 +24,7 @@ plot.slca <- function(
       paste0(paste0("'", pa, "'"), collapse = ", ")
    )
    path <- paste0("'", pa, "' -> { '", ch, "' }",
-                  ifelse(is.na(lb), "", paste0(" [label = '", lb, "', fontname = '", font, "']")))
+                  ifelse(is.na(lb), "", paste0(" [label = '", lb, " 'fontname = '", font, "']")))
 
    text <- paste0(
       "digraph { \n  rankdir = '", dir, "';",
@@ -67,7 +67,7 @@ plot.reg.slca <- function(
       paste0(paste0("'", pa, "'"), collapse = ", ")
    )
    path <- paste0("'", pa, "' -> { '", ch, "' }",
-                  ifelse(is.na(lb), "", paste0(" [label = '", lb, "', fontname = '", font, "']")))
+                  ifelse(is.na(lb), "", paste0(" [label = '", lb, " 'fontname = '", font, "']")))
 
    regr <- paste0("{ '", xx, "' } -> '", y, "'")
 

@@ -9,7 +9,7 @@ regress(object, ...)
 
 \method{regress}{slcafit}(
    object, formula, data = parent.frame(),
-   imputation = c("modal", "prob"),
+   imputation = c("modal", "prop"),
    method = c("naive", "BCH", "ML"), ...
 )
 
@@ -17,7 +17,7 @@ regress(object, ...)
   object,
   formula,
   data = parent.frame(),
-  imputation = c("modal", "prob"),
+  imputation = c("modal", "prop"),
   method = c("naive", "BCH", "ML"),
   ...
 )
@@ -34,7 +34,7 @@ regress(object, ...)
 \item{imputation}{a character string specifying the imputation method for latent class assignment. Options include:
 \itemize{
 \item \code{"modal"}: Assigns each individual to the latent class with the highest posterior probability.
-\item \code{"prob"}: Assigns classes probabilistically based on the posterior probability distribution.
+\item \code{"prop"}: Assigns classes probabilistically based on the posterior probability distribution.
 }}
 
 \item{method}{a character string specifying the method to adjust for bias in the three-step approach. Options include:

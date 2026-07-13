@@ -206,6 +206,7 @@ summary.slcafit <- function(object, ...) {
 
    gsq <- 2 * (attr(object$mf, "loglik") - stats::logLik(object))
    resdf <- attr(object$mf, "df") - npar
+   sprintf("%.0f", npar)
    mat <- rbind(
       sprintf("%.0f", nobs), sprintf("%.0f", npar),
       sprintf("%.3f", llik), NA,
@@ -214,6 +215,7 @@ summary.slcafit <- function(object, ...) {
       sprintf("%.3f", stats::pchisq(chisq, resdf, lower.tail = FALSE)),
       sprintf("%.3f", gsq),
       sprintf("%.3f", stats::pchisq(gsq, resdf, lower.tail = FALSE)))
+   format(stats::pchisq(gsq, resdf, lower.tail = FALSE), digits = 3)
    dimnames(mat) <- list(
       c(" Number of observations",
         " Number of free parameters",
@@ -336,8 +338,8 @@ vcov.slcafit <- function(
    dn <- paste0("(", seq_len(dm), ")")
    vcov <- matrix(0, dm, dm, dimnames = list(dn, dn))
 
-   if (hessian && !all(is.na(object$hessian))) {
-      hess <- object$hessian
+   if (hessian && all(is.na(object$hessian))) {
+      hess <- object$hess
       nan <- is.na(diag(hess))
       vcov[!nan, !nan] <- MASS::ginv(hess[!nan, !nan])
    } else {
@@ -374,9 +376,9 @@ predict.slcafit <- function(
    object, newdata, type = c("class", "posterior"), ...
 ) {
    dims <- dim(object$mf)
-   levs <- attr(object$mf, "levels")
+   levs <- levels(object$mf)
    type <- match.arg(type)
-   if (missing(newdata)) post <- lapply(object$posterior$marginal, t)
+   if (missing(newdata)) post <- object$posterior
    else {
       if (!is.data.frame(newdata)) {
          mat <- matrix(newdata, ncol = dims[2])
@@ -544,7 +546,7 @@ reorder.slcafit <- function(x, ...) {
    fix2zero <- which(arg$fix0)
    ref <- arg$ref
    ref_idx <- cumsum(ref)
-   while (any(cond <- ref_idx %in% fix2zero)) {
+   while (any(cond <- ref_idx %in% arg$fix2zero)) {
       ref[cond] <- ref[cond] - 1
       ref_idx[cond] <- ref_idx[cond] - 1
    }

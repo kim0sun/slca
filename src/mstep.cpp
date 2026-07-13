@@ -120,3 +120,58 @@ void updateRho(
 }
 
 
+void updateA(
+   double *pi, double *post, int nobs, int nclass
+) {
+   NumericVector npi(nclass);
+   for (int i = 0; i < nobs; i ++) {
+      for (int k = 0; k < nclass; k ++)
+         npi[k] += exp(post[k]);
+      post += nclass;
+   }
+   for (int k = 0; k < nclass; k ++)
+      pi[k] = R::digamma(npi[k]) - R::digamma(sum(npi));
+}
+
+
+void updateB(
+   double *tau, double *ntau, int nk, int nl,
+   int *restr
+) {
+   for (int l = 0; l < nl; l ++) {
+      double stau = 0;
+      for (int k = 0; k < nk; k ++) {
+         if (restr[k]) continue;
+         stau += ntau[k];
+      }
+      for (int k = 0; k < nk; k ++) {
+         if (restr[k]) tau[k] = R_NegInf;
+         else if (stau == 0) tau[k] = -log(nk);
+         else tau[k] = R::digamma(ntau[k]) - R::digamma(stau);
+      }
+      ntau += nk;
+      tau  += nk;
+      restr += nk;
+   }
+}
+
+
+void updateC(
+      double *rho, double *numer, double *denom,
+      int nobs, int nclass, int nvar, int *ncat,
+      int *restr
+) {
+   for (int k = 0; k < nclass; k ++) {
+      for (int m = 0; m < nvar; m ++) {
+         for (int r = 0; r < ncat[m]; r ++) {
+            if (restr[r]) rho[r] = R_NegInf;
+            else
+               rho[r] = R::digamma(numer[r]) - R::digamma(denom[m]);
+         }
+         rho   += ncat[m];
+         numer += ncat[m];
+         restr += ncat[m];
+      }
+      denom += nvar;
+   }
+}

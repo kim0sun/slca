@@ -20,20 +20,18 @@ Description: Provides comprehensive tools for the implementation of Structural L
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
-Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
-LinkingTo: 
-    Rcpp
-Imports: 
-    DiagrammeR,
-    magrittr,
-    MASS,
-    Rcpp,
-    stats
-Depends: 
-    R (>= 2.10)
+LinkingTo: Rcpp
+Imports: DiagrammeR, magrittr, MASS, Rcpp, stats
+Depends: R (>= 2.10)
 URL: https://kim0sun.github.io/slca/
 BugReports: https://github.com/kim0sun/slca/issues
-Suggests: 
-    testthat (>= 3.0.0)
+Suggests: testthat (>= 3.0.0)
 Config/testthat/edition: 3
+NeedsCompilation: yes
+Packaged: 2025-09-02 07:37:35 UTC; kim0sun
+Author: Youngsun Kim [aut, cre] (ORCID:
+    <https://orcid.org/0000-0001-8003-1939>),
+  Hwan Chung [aut] (ORCID: <https://orcid.org/0000-0002-8969-9086>)
+Repository: CRAN
+Date/Publication: 2025-09-02 17:00:02 UTC

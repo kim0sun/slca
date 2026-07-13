@@ -68,6 +68,9 @@ simulate.slca <- function(
       arg$nc_pi, arg$nk_tau, arg$nl_tau,
       arg$nc_rho, arg$nr_rho
    )
+   class <- data.frame(sim$class)
+   names(class) <- model$latent$label
+
    # data.name
    yy <- do.call(cbind, sim$y)
    llik <- fll(

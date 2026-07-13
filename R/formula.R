@@ -19,11 +19,7 @@ proc_tree <- function(nc, iv) {
    for (i in seq_len(nrow(tree))) {
       par <- tree$parent[i]
       rank <- 1
-      visited <- character(0)
       while (par %in% tree$child) {
-         if (par %in% visited)
-            stop("cyclic dependency detected in model formula: ", par)
-         visited <- c(visited, par)
          rank <- rank + 1
          par <- tree$parent[tree$child == par]
       }
@@ -79,11 +75,9 @@ identify_constr <- function(constr, model) {
    label <- row.names(lt)
    leaf <- row.names(mr)
 
-   make_ids <- function(n, short)
-      if (n <= 26) letters[seq_len(n)] else paste0(short, seq_len(n))
-   const_leaf <- make_ids(nrow(mr), "l")
+   const_leaf <- letters[seq_len(nrow(mr))]
    names(const_leaf) <- leaf
-   const_edge <- make_ids(nrow(st), "L")
+   const_edge <- LETTERS[seq_len(nrow(st))]
 
    if (!is.null(constr) && !is.list(constr))
       constr <- list(constr)
@@ -130,9 +124,9 @@ identify_constr <- function(constr, model) {
       }
    }
 
-   reval <- function(x, vals) vals[factor(x, unique(x))]
-   mr$constraint <- reval(const_leaf, make_ids(length(unique(const_leaf)), "l"))
-   st$constraint <- reval(const_edge, make_ids(length(unique(const_edge)), "L"))
+   reval <- function(x, c) c[factor(x, unique(x))]
+   mr$constraint <- reval(const_leaf, letters)
+   st$constraint <- reval(const_edge, LETTERS)
 
    list(tree = model$tree,
         latent = lt,

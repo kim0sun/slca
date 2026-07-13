@@ -156,14 +156,14 @@ regress.slcafit <- function(
          hess <- c(hess, lapply(fit2, "[[", "hessian"))
       } else if (method == "ML") {
          # ML
-         ml_ll <- function(par, X, ref) {
+         ml_ll <- function(par, X, w_, ref) {
             b <- matrix(par, ncol(X))
             prob <- t(cprobs(X, b, ref))
             - sum(w * log(d %*% exp(prob)))
          }
 
          fit1 <- try(suppressWarnings(stats::nlm(
-            ml_ll, init, X = X, ref = nlevels(y), hessian = TRUE
+            ml_ll, init, X = X, w_ = w_, ref = nlevels(y), hessian = TRUE
             )), silent = TRUE)
          if (!inherits(fit1, "try-error")) {
             ll <- fit1$minimum
@@ -176,7 +176,7 @@ regress.slcafit <- function(
          }
          fit2 <- lapply(c("Nelder-Mead", "BFGS", "CG", "L-BFGS-B", "SANN"), function(x)
             try(suppressWarnings(stats::optim(
-               init, ml_ll, X = X, method = x, ref = nlevels(y), hessian = TRUE
+               init, ml_ll, X = X, w_ = w_, method = x, ref = nlevels(y), hessian = TRUE
                )), TRUE))
          fit2 <- fit2[sapply(fit2, class) != "try-error"]
          ll <- c(ll, sapply(fit2, "[[", "value"))
@@ -202,7 +202,7 @@ regress.slcafit <- function(
    )
 
    se <- matrix(
-      sqrt(diag(vcov)), nr, nc, byrow = TRUE,
+      diag(vcov), nr, nc, byrow = TRUE,
       dimnames = list(class = rn, cn)
    )
 
@@ -246,7 +246,7 @@ summary.reg.slca <- function(
    }
    if (wald) {
       wald <- object$coefficients / object$std.err
-      pval <- 2 * stats::pnorm(-abs(wald))
+      pval <- stats::pnorm(abs(wald), 1, lower.tail = FALSE)
       cat("\nValue/SE (Wald statistics):")
       print.default(format(wald, digits = digits),
                     print.gap = 2L, quote = FALSE)
@@ -260,7 +260,7 @@ summary.reg.slca <- function(
 
 #' @exportS3Method stats::confint reg.slca
 confint.reg.slca <- function(
-   object, parm, level = 0.95, ...
+   object, parm, level = 0.95, odds.ratio = FALSE, ...
 ) {
    fci <- function(cf, se) {
       a <- (1 - level)/2
@@ -269,7 +269,7 @@ confint.reg.slca <- function(
       fac <- stats::qnorm(a)
       ci <- array(NA, dim = c(length(parm), 2L),
                   dimnames = list(parm, pct))
-      ci[] <- cf[parm] + se[parm] %o% fac
+      ci[] <- cf[parm] + se %o% fac
       ci
    }
    cf <- object$coefficients
@@ -286,7 +286,7 @@ confint.reg.slca <- function(
       cat(rn[i], ":\n")
       print.default(ci[[i]])
    }
-   invisible(ci)
+   invisible(ci[, parm])
 }
 
 logit2ll <- function(x) {

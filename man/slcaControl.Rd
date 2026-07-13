@@ -12,6 +12,7 @@ slcaControl(
   init.param = NULL,
   nrep = 1,
   test.iter = 500,
+  hessian = FALSE,
   na.rm = FALSE,
   verbose = FALSE
 )
@@ -30,6 +31,8 @@ slcaControl(
 \item{nrep}{an integer specifying the number of estimation trials. The default is \code{1}. Details for generating initial parameter set is described below.}
 
 \item{test.iter}{an integer specifying the maximum number of iterations allowed for parameter testing. The default is \code{500}.}
+
+\item{hessian}{a logical value indicating whether to calculate Hessian via \code{nlm} function numerically, if so, \code{vcov} method can provide variance-covariance matrix with Hessian instead of outer-product-of-gradients (OPG). The default is \code{FALSE}.}
 
 \item{na.rm}{a logical value indicating whether to remove observations containing missing values (\code{NA}). The default is \code{FALSE}. Details for treating missing data is described below.}
 
