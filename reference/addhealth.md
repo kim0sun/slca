@@ -4,13 +4,13 @@ This dataset contains responses from the National Longitudinal Study of
 Adolescent Health (Add Health), focusing on adolescents' experiences
 with depression. The subjects, who were in Grades 10 and 11 during the
 1994–1995 academic year, provided data on at least one measure of
-adolescent delinquency in Wave I.\
+adolescent delinquency in Wave I.  
 These data can be used to replicate the latent class analysis conducted
-by Collins and Lanza (2009).\
+by Collins and Lanza (2009).  
 The dataset includes five covariates, notably grade level and sex of
 respondents, along with variables capturing depressive emotions: sadness
 (`S1-S4`), feeling disliked (`D1-D2`), and feelings of failure
-(`F1-F2`).\
+(`F1-F2`).  
 Responses for these variables were initially categorized as "Never,"
 "Sometimes," "Often," or "Most or All of the Time." In this dataset,
 responses have been recoded as "No" for "Never" and "Yes" for all other
@@ -34,7 +34,7 @@ A data frame with 2061 rows and 18 variables:
 
 - `SEX`:
 
-  Respondent's sex\
+  Respondent's sex  
   levels: (1)`Male`, (2)`Female`.
 
 - `S1w1`, `S1w2`:
@@ -88,7 +88,6 @@ of North Carolina at Chapel Hill, Chapel Hill, NC, 2003.
 
 ``` r
 library(magrittr)
-#> Warning: package ‘magrittr’ was built under R version 4.5.2
 data <- addhealth[1:200,]
 lta5 <- slca(
    DEP1(5) ~ S1w1 + S2w1 + S3w1 + S4w1 + D1w1 + D2w1 + F1w1 + F2w1,
