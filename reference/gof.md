@@ -77,7 +77,10 @@ gof(
 A `data.frame` containing the number of parameters (Df), loglikelihood,
 AIC, BIC, G-squared statistics, and the residual degree of freedom for
 each object. If a statistical test is performed (using `test`), the
-result includes the corresponding p-value.
+result includes the corresponding p-value. For `test = "boot"`, failed
+bootstrap replicates are omitted from the p-value calculation and
+recorded in the `bootFail`, `boot.fail.msgs`, and `boot.all.msgs`
+attributes.
 
 ## See also
 

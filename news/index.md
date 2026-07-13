@@ -16,6 +16,8 @@
   levels, and initial parameter lengths.
 - Fixed simulated factor responses when some generated categories are
   absent in a sample.
+- Recorded bootstrap replicate failures in model-fit diagnostics instead
+  of returning error objects.
 - Clarified the documented structure of `convergence`,
   [`predict()`](https://rdrr.io/r/stats/predict.html), and simulated
   responses.
