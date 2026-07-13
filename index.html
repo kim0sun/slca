@@ -12,8 +12,8 @@
 <link rel="icon" sizes="any" href="favicon.ico">
 <link rel="manifest" href="site.webmanifest">
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
-<script src="deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
+<script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Structural Modeling for Multiple Latent Class Variables">
 <meta name="description" content="Provides comprehensive tools for the implementation of Structural Latent Class Models (SLCM), including Latent Transition Analysis (LTA; Linda M. Collins and Stephanie T. Lanza, 2009) &lt;doi:10.1002/9780470567333&gt;, Latent Class Profile Analysis (LCPA; Hwan Chung et al., 2010) &lt;doi:10.1111/j.1467-985x.2010.00674.x&gt;, and Joint Latent Class Analysis (JLCA; Saebom Jeon et al., 2017) &lt;doi:10.1080/10705511.2017.1340844&gt;, and any other extended models involving multiple latent class variables.">
@@ -38,6 +38,7 @@
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
 <li class="nav-item"><a class="nav-link" href="reference/index.html">Reference</a></li>
+<li class="nav-item"><a class="nav-link" href="news/index.html">Changelog</a></li>
       </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><form class="form-inline" role="search">
@@ -69,7 +70,7 @@
 <p>And the development version from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"kim0sun/slca"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/install-deprecated.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"kim0sun/slca"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="syntax">Syntax<a class="anchor" aria-label="anchor" href="#syntax"></a>
@@ -86,18 +87,24 @@
 <code class="sourceCode R"><span><span class="fu">L1</span><span class="op">(</span><span class="fl">3</span><span class="op">)</span> <span class="op">~</span> <span class="va">x1</span> <span class="op">+</span> <span class="va">x2</span> <span class="op">+</span> <span class="va">x3</span></span>
 <span><span class="va">L2</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">~</span> <span class="va">y1</span> <span class="op">+</span> <span class="va">y2</span> <span class="op">+</span> <span class="va">y3</span></span>
 <span><span class="fu">L3</span><span class="op">(</span><span class="fl">3</span><span class="op">)</span> <span class="op">~</span> <span class="va">z1</span> <span class="op">+</span> <span class="va">z2</span> <span class="op">+</span> <span class="va">z3</span></span></code></pre></div>
-<p><img src="reference/figures/syn1.png"></p>
+<div class="float">
+<img src="reference/figures/syn1.png" alt="Three latent class variables measured by manifest indicators"><div class="figcaption">Three latent class variables measured by manifest indicators</div>
+</div>
 <div class="section level4">
 <h4 id="structural-model-specification">Structural model specification<a class="anchor" aria-label="anchor" href="#structural-model-specification"></a>
 </h4>
 <p>This part focuses on establishing relationships between different latent class variables. For example, <code>L1 ~ L2</code> indicates a relationship where <code>L1</code> have impact on or related to <code>L2</code>, as shown below:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">L1</span> <span class="op">~</span> <span class="va">L2</span></span></code></pre></div>
-<p><img src="reference/figures/syn2.png"></p>
+<div class="float">
+<img src="reference/figures/syn2.png" alt="Structural relationship between latent class variables"><div class="figcaption">Structural relationship between latent class variables</div>
+</div>
 <p>In some cases, you might need to define higher-level latent class variables that are influenced by or comprise several other latent class variables. For example, a higher-level variable <code>P</code> could be a composite of <code>L1</code>, <code>L2</code>, and <code>L3</code>. Here, note that you should define the number of latent classes for <code>P</code>. This relationship can be represented as follows:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">P</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span> <span class="op">~</span> <span class="va">L1</span> <span class="op">+</span> <span class="va">L2</span> <span class="op">+</span> <span class="va">L3</span></span></code></pre></div>
-<p><img src="reference/figures/syn3.png"></p>
+<div class="float">
+<img src="reference/figures/syn3.png" alt="Higher-level latent class variable measured by lower-level latent class variables"><div class="figcaption">Higher-level latent class variable measured by lower-level latent class variables</div>
+</div>
 </div>
 <div class="section level4">
 <h4 id="parameter-constraints">Parameter constraints<a class="anchor" aria-label="anchor" href="#parameter-constraints"></a>
@@ -126,18 +133,24 @@
 <span><span class="va">lta</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/slca.html">slca</a></span><span class="op">(</span><span class="va">L1</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">~</span> <span class="va">x1</span> <span class="op">+</span> <span class="va">y1</span> <span class="op">+</span> <span class="va">z1</span>, <span class="va">L2</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">~</span> <span class="va">x2</span> <span class="op">+</span> <span class="va">y2</span> <span class="op">+</span> <span class="va">z2</span>, <span class="va">L3</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">~</span> <span class="va">x3</span> <span class="op">+</span> <span class="va">y3</span> <span class="op">+</span> <span class="va">z3</span>,</span>
 <span>            <span class="va">L1</span> <span class="op">~</span> <span class="va">L2</span>, <span class="va">L2</span> <span class="op">~</span> <span class="va">L3</span>, constraints <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"L1"</span>, <span class="st">"L2"</span>, <span class="st">"L3"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">lta</span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/lta.png"></p>
+<div class="float">
+<img src="reference/figures/lta.png" alt="Latent transition analysis model structure"><div class="figcaption">Latent transition analysis model structure</div>
+</div>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">jlca</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/slca.html">slca</a></span><span class="op">(</span><span class="va">L1</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">~</span> <span class="va">x1</span> <span class="op">+</span> <span class="va">x2</span> <span class="op">+</span> <span class="va">x3</span>, <span class="va">L2</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">~</span> <span class="va">y1</span> <span class="op">+</span> <span class="va">y2</span> <span class="op">+</span> <span class="va">y3</span>, <span class="va">L3</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">~</span> <span class="va">z1</span> <span class="op">+</span> <span class="va">z2</span> <span class="op">+</span> <span class="va">z3</span>,</span>
 <span>             <span class="va">JC</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">~</span> <span class="va">L1</span> <span class="op">+</span> <span class="va">L2</span> <span class="op">+</span> <span class="va">L3</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">jlca</span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/jlca.png"></p>
+<div class="float">
+<img src="reference/figures/jlca.png" alt="Joint latent class analysis model structure"><div class="figcaption">Joint latent class analysis model structure</div>
+</div>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lcamg</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/slca.html">slca</a></span><span class="op">(</span><span class="va">L1</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">~</span> <span class="va">x1</span> <span class="op">+</span> <span class="va">x2</span> <span class="op">+</span> <span class="va">x3</span>, <span class="va">L2</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">~</span> <span class="va">y1</span> <span class="op">+</span> <span class="va">y2</span> <span class="op">+</span> <span class="va">y3</span>, <span class="va">L3</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">~</span> <span class="va">z1</span> <span class="op">+</span> <span class="va">z2</span> <span class="op">+</span> <span class="va">z3</span>,</span>
 <span>              <span class="va">JC</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">~</span> <span class="va">L1</span> <span class="op">+</span> <span class="va">L2</span> <span class="op">+</span> <span class="va">L3</span>, <span class="va">LG</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">~</span> <span class="va">g1</span> <span class="op">+</span> <span class="va">g2</span> <span class="op">+</span> <span class="va">g3</span>, </span>
 <span>              <span class="va">LG</span> <span class="op">~</span> <span class="va">JC</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">lcamg</span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/lcamg.png"></p>
+<div class="float">
+<img src="reference/figures/lcamg.png" alt="Latent class analysis with a grouping variable model structure"><div class="figcaption">Latent class analysis with a grouping variable model structure</div>
+</div>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
@@ -190,7 +203,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>

@@ -10,7 +10,7 @@
 ## Citation
 
 Source:
-[`inst/CITATION`](https://github.com/kim0sun/slca/blob/master/inst/CITATION)
+[`inst/CITATION`](https://github.com/kim0sun/slca/blob/HEAD/inst/CITATION)
 
 Kim Y, Chung H (2024). *slca: Structural Modeling for Multiple Latent
 Class Variables*. R package version 1.3.1,

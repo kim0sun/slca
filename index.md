@@ -61,7 +61,10 @@ L2[3] ~ y1 + y2 + y3
 L3(3) ~ z1 + z2 + z3
 ```
 
-![](reference/figures/syn1.png)
+![Three latent class variables measured by manifest
+indicators](reference/figures/syn1.png)
+
+Three latent class variables measured by manifest indicators
 
 #### Structural model specification
 
@@ -74,7 +77,10 @@ class variables. For example, `L1 ~ L2` indicates a relationship where
 L1 ~ L2
 ```
 
-![](reference/figures/syn2.png)
+![Structural relationship between latent class
+variables](reference/figures/syn2.png)
+
+Structural relationship between latent class variables
 
 In some cases, you might need to define higher-level latent class
 variables that are influenced by or comprise several other latent class
@@ -87,7 +93,11 @@ latent classes for `P`. This relationship can be represented as follows:
 P[4] ~ L1 + L2 + L3
 ```
 
-![](reference/figures/syn3.png)
+![Higher-level latent class variable measured by lower-level latent
+class variables](reference/figures/syn3.png)
+
+Higher-level latent class variable measured by lower-level latent class
+variables
 
 #### Parameter constraints
 
@@ -132,7 +142,9 @@ lta <- slca(L1[3] ~ x1 + y1 + z1, L2[3] ~ x2 + y2 + z2, L3[3] ~ x3 + y3 + z3,
 plot(lta)
 ```
 
-![](reference/figures/lta.png)
+![Latent transition analysis model structure](reference/figures/lta.png)
+
+Latent transition analysis model structure
 
 ``` r
 
@@ -141,7 +153,10 @@ jlca <- slca(L1[3] ~ x1 + x2 + x3, L2[3] ~ y1 + y2 + y3, L3[3] ~ z1 + z2 + z3,
 plot(jlca)
 ```
 
-![](reference/figures/jlca.png)
+![Joint latent class analysis model
+structure](reference/figures/jlca.png)
+
+Joint latent class analysis model structure
 
 ``` r
 
@@ -151,4 +166,7 @@ lcamg <- slca(L1[3] ~ x1 + x2 + x3, L2[3] ~ y1 + y2 + y3, L3[3] ~ z1 + z2 + z3,
 plot(lcamg)
 ```
 
-![](reference/figures/lcamg.png)
+![Latent class analysis with a grouping variable model
+structure](reference/figures/lcamg.png)
+
+Latent class analysis with a grouping variable model structure

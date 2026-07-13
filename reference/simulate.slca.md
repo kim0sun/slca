@@ -54,7 +54,9 @@ A `list` with the following components:
 
 - response:
 
-  A `data.frame` containing the simulated manifest item responses.
+  A `data.frame` containing the simulated manifest item responses as
+  factors. Internal response encodings used for model calculation are
+  not stored on this object.
 
 ## Examples
 
