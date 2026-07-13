@@ -38,6 +38,7 @@ compare(
 \value{
 A \code{data.frame} containing the number of parameters (Df), loglikelihood, AIC, BIC, G-squared statistics, and the residual degree of freedom for each object.
 If a statistical test is conducted (via \code{test}), the resulting p-value for the comparison is also included.
+For \code{test = "boot"}, failed bootstrap replicates are omitted from the p-value calculation and recorded in the \code{bootFail}, \code{boot.fail.msgs}, and \code{boot.all.msgs} attributes.
 }
 \description{
 Conducts a relative model fit test between two fitted SLCM models using the deviance statistic.

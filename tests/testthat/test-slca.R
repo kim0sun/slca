@@ -215,3 +215,140 @@ test_that("regress uses marginal posterior after prediction changes", {
 
    expect_s3_class(reg, "reg.slca")
 })
+
+test_that("predict handles structural models with multiple latent variables", {
+   m <- slca(lx[2] ~ x1 + x2 + x3,
+             ly[3] ~ y1 + y2 + y3,
+             lx ~ ly)
+   sim <- simulate(m, nsim = 50, seed = 5)
+   fit <- estimate(
+      m, sim$response,
+      control = slcaControl(em.iterlim = 50, em.tol = 1e-6)
+   )
+
+   pred <- predict(fit)
+   post <- predict(fit, type = "posterior")
+
+   expect_named(pred, c("lx", "ly"))
+   expect_equal(nrow(pred), nrow(sim$response))
+   expect_named(post, c("lx", "ly"))
+   expect_equal(post, fit$posterior$marginal)
+   expect_equal(nrow(predict(fit, newdata = sim$response[1:4, ])), 4)
+})
+
+test_that("regress supports bias-adjusted methods with stored posterior", {
+   m <- slca(l[2] ~ y1 + y2 + y3)
+   par <- c(
+      .6, .4,
+      .8, .2, .7, .3, .6, .4,
+      .3, .7, .4, .6, .5, .5
+   )
+   sim <- simulate(m, nsim = 60, seed = 7, parm = par)
+   fit <- estimate(
+      m, sim$response,
+      control = slcaControl(em.iterlim = 50, em.tol = 1e-6)
+   )
+   covar <- data.frame(x = seq_len(nrow(sim$response)) %% 2)
+
+   expect_s3_class(
+      regress(fit, l ~ x, data = covar,
+              imputation = "modal", method = "BCH"),
+      "reg.slca"
+   )
+   expect_s3_class(
+      regress(fit, l ~ x, data = covar,
+              imputation = "modal", method = "ML"),
+      "reg.slca"
+   )
+})
+
+test_that("variance methods handle missing responses", {
+   m <- slca(l[2] ~ y1 + y2 + y3)
+   par <- c(
+      .6, .4,
+      .8, .2, .7, .3, .6, .4,
+      .3, .7, .4, .6, .5, .5
+   )
+   sim <- simulate(m, nsim = 60, seed = 7, parm = par)
+   dat <- sim$response
+   dat$y1[c(1, 3)] <- NA
+   dat$y2[2] <- NA
+   fit <- estimate(
+      m, dat,
+      control = slcaControl(em.iterlim = 50, em.tol = 1e-6)
+   )
+
+   expect_true(all(is.finite(vcov(fit)[!is.na(vcov(fit))])))
+   expect_true(all(is.finite(confint(fit, parm = 1:2))))
+})
+
+test_that("bootstrap diagnostics keep failure metadata", {
+   m1 <- slca(l[2] ~ y1 + y2 + y3)
+   m2 <- slca(l[3] ~ y1 + y2 + y3)
+   par <- c(
+      .6, .4,
+      .8, .2, .7, .3, .6, .4,
+      .3, .7, .4, .6, .5, .5
+   )
+   sim <- simulate(m1, nsim = 50, seed = 7, parm = par)
+   fit1 <- estimate(
+      m1, sim$response,
+      control = slcaControl(em.iterlim = 50, em.tol = 1e-6)
+   )
+   fit2 <- estimate(
+      m2, sim$response,
+      control = slcaControl(em.iterlim = 50, em.tol = 1e-6)
+   )
+
+   bgof <- gof(fit1, test = "boot", nboot = 1, maxiter = 5, tol = 1e-5)
+   bcmp <- compare(fit1, fit2, test = "boot", nboot = 1,
+                   maxiter = 5, tol = 1e-5)
+
+   expect_equal(attr(bgof, "bootFail"), c(fit1 = 0L))
+   expect_equal(attr(bcmp, "bootFail"), 0L)
+   expect_true(is.list(attr(bgof, "boot.fail.msgs")))
+   expect_true(is.list(attr(bcmp, "boot.fail.msgs")))
+})
+
+test_that("bootstrap diagnostics record failed refits", {
+   m1 <- slca(l[2] ~ y1 + y2 + y3)
+   m2 <- slca(l[3] ~ y1 + y2 + y3)
+   par <- c(
+      .6, .4,
+      .8, .2, .7, .3, .6, .4,
+      .3, .7, .4, .6, .5, .5
+   )
+   sim <- simulate(m1, nsim = 50, seed = 7, parm = par)
+   fit1 <- estimate(
+      m1, sim$response,
+      control = slcaControl(em.iterlim = 50, em.tol = 1e-6)
+   )
+   fit2 <- estimate(
+      m2, sim$response,
+      control = slcaControl(em.iterlim = 50, em.tol = 1e-6)
+   )
+
+   local_mocked_bindings(
+      estModel = function(...) simpleError("forced bootstrap failure"),
+      .package = "slca"
+   )
+
+   expect_warning(
+      bgof <- gof(fit1, test = "boot", nboot = 1, maxiter = 5, tol = 1e-5),
+      "1 bootstrap replicate"
+   )
+   expect_warning(
+      bcmp <- compare(fit1, fit2, test = "boot", nboot = 1,
+                      maxiter = 5, tol = 1e-5),
+      "1 bootstrap replicate"
+   )
+
+   expect_equal(attr(bgof, "bootFail"), c(fit1 = 1L))
+   expect_equal(attr(bcmp, "bootFail"), 1L)
+   expect_true(is.na(bgof$`Pr(Boot)`))
+   expect_true(is.na(bcmp$`Pr(Boot)`[2]))
+   expect_true("forced bootstrap failure" %in%
+               names(attr(bgof, "boot.fail.msgs")[[1]]))
+   expect_true("forced bootstrap failure" %in%
+               names(attr(bcmp, "boot.fail.msgs")[[1]]))
+})

@@ -44,6 +44,7 @@ gof(object, ...)
 \value{
 A \code{data.frame} containing the number of parameters (Df), loglikelihood, AIC, BIC, G-squared statistics, and the residual degree of freedom for each object.
 If a statistical test is performed (using \code{test}), the result includes the corresponding p-value.
+For \code{test = "boot"}, failed bootstrap replicates are omitted from the p-value calculation and recorded in the \code{bootFail}, \code{boot.fail.msgs}, and \code{boot.all.msgs} attributes.
 }
 \description{
 Computes the AIC, BIC, and deviance statistic (G-squared) for assessing the goodness-of-fit of a fitted \code{slca} model. If the \code{test} argument is specified, absolute model fit can be evaluated using deviance statistics.

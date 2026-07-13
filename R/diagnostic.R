@@ -15,6 +15,13 @@ deviance.slcafit <- function(object, ...) {
    2 * (attr(object$mf, "loglik") - sum(object$loglikelihood))
 }
 
+add_boot_attrs <- function(x, fail, msg) {
+   attr(x, "bootFail") <- fail
+   attr(x, "boot.fail.msgs") <- lapply(msg, table)
+   attr(x, "boot.all.msgs") <- msg
+   x
+}
+
 #' Goodness-of-Fit Test for Fitted `slca` Model
 #'
 #' Computes the AIC, BIC, and deviance statistic (G-squared) for assessing the goodness-of-fit of a fitted `slca` model. If the `test` argument is specified, absolute model fit can be evaluated using deviance statistics.
@@ -40,6 +47,7 @@ deviance.slcafit <- function(object, ...) {
 #' @returns
 #' A `data.frame` containing the number of parameters (Df), loglikelihood, AIC, BIC, G-squared statistics, and the residual degree of freedom for each object.
 #' If a statistical test is performed (using `test`), the result includes the corresponding p-value.
+#' For `test = "boot"`, failed bootstrap replicates are omitted from the p-value calculation and recorded in the `bootFail`, `boot.fail.msgs`, and `boot.all.msgs` attributes.
 #'
 #' @seealso \link[slca]{compare}
 #'
@@ -86,6 +94,8 @@ gof.slcafit <- function(
    }
    if (test == "boot") {
       pb <- numeric(nmodel)
+      boot_fail <- integer(nmodel)
+      boot_msg <- vector("list", nmodel)
       if (verbose) cat("START Bootstrap Sampling.\n")
       for (i in seq_len(nmodel)) {
          obj <- objects[[i]]
@@ -93,54 +103,68 @@ gof.slcafit <- function(
          mr <- obj$model$measure
          arg <- obj$arg
          par <- unlist(obj$par)
-         gb <- numeric(nboot)
+         gb <- rep(NA_real_, nboot)
+         fail_msg <- character()
 
          trace <- paste0(mn[i], "(", i, "/", nmodel, ") : ")
          for (b in 1:nboot) {
             if (verbose) cat("\r", trace, b, "/", nboot, sep = "")
-            sim <- simModel(
-               arg$nobs, arg$nvar, arg$nlev, par,
-               arg$nlv, arg$nrl, arg$nlf, arg$npi, arg$ntau, arg$nrho,
-               arg$ul, arg$vl, arg$lf, arg$rt, arg$eqrl, arg$eqlf,
-               arg$nc, arg$nk, arg$nl, arg$ncl,
-               arg$nc_pi, arg$nk_tau, arg$nl_tau, arg$nc_rho, arg$nr_rho
-            )
-            y <- data.frame(do.call(cbind, sim$y))
-            colnames(y) <- unlist(mr[["indicator"]])
-            y[] <- lapply(names(y), function(x) {
-               res <- factor(y[[x]])
-               levels(res) <- attr(obj$mf, "levels")[[x]]
-               res
-            })
-            mf <- proc_data(y, obj$model, obj$control$na.rm)
-            con <- obj$control
-            con$verbose <- FALSE
-            con$em.iterlim <- maxiter; con$nlm.iterlim <- maxiter
-            con$em.tol <- tol; con$nlm.tol <- tol
-            est <- estModel(obj$method, con, par, mf, arg)
-            if (inherits(est, "error")) return(est)
-            etc <- calcModel(
-               attr(mf, "y"), arg$nobs, arg$nvar, unlist(arg$nlev),
-               est$par, arg$fix0, arg$ref - 1, arg$nlv, arg$nrl, arg$nlf,
-               arg$npi, arg$ntau, arg$nrho, arg$ul, arg$vl,
-               arg$lf, arg$tr, arg$rt, arg$eqrl, arg$eqlf,
-               arg$nc, arg$nk, arg$nl, arg$ncl,
-               arg$nc_pi, arg$nk_tau, arg$nl_tau, arg$nc_rho, arg$nr_rho
-            )
-            gb[b] <- 2 * (attr(mf, "loglik") - sum(etc$ll))
+            res <- tryCatch({
+               sim <- simModel(
+                  arg$nobs, arg$nvar, arg$nlev, par,
+                  arg$nlv, arg$nrl, arg$nlf, arg$npi, arg$ntau, arg$nrho,
+                  arg$ul, arg$vl, arg$lf, arg$rt, arg$eqrl, arg$eqlf,
+                  arg$nc, arg$nk, arg$nl, arg$ncl,
+                  arg$nc_pi, arg$nk_tau, arg$nl_tau, arg$nc_rho, arg$nr_rho
+               )
+               y <- data.frame(do.call(cbind, sim$y))
+               colnames(y) <- unlist(mr[["indicator"]])
+               y[] <- lapply(names(y), function(x) {
+                  factor(y[[x]],
+                         levels = seq_along(attr(obj$mf, "levels")[[x]]) - 1,
+                         labels = attr(obj$mf, "levels")[[x]])
+               })
+               mf <- proc_data(y, obj$model, obj$control$na.rm)
+               con <- obj$control
+               con$verbose <- FALSE
+               con$em.iterlim <- maxiter; con$nlm.iterlim <- maxiter
+               con$em.tol <- tol; con$nlm.tol <- tol
+               est <- estModel(obj$method, con, par, mf, arg)
+               if (inherits(est, "error")) stop(conditionMessage(est))
+               etc <- calcModel(
+                  attr(mf, "y"), arg$nobs, arg$nvar, unlist(arg$nlev),
+                  est$par, arg$fix0, arg$ref - 1, arg$nlv, arg$nrl, arg$nlf,
+                  arg$npi, arg$ntau, arg$nrho, arg$ul, arg$vl,
+                  arg$lf, arg$tr, arg$rt, arg$eqrl, arg$eqlf,
+                  arg$nc, arg$nk, arg$nl, arg$ncl,
+                  arg$nc_pi, arg$nk_tau, arg$nl_tau, arg$nc_rho, arg$nr_rho
+               )
+               2 * (attr(mf, "loglik") - sum(etc$ll))
+            }, error = function(e) e)
+            if (inherits(res, "error")) fail_msg <- c(fail_msg, conditionMessage(res))
+            else gb[b] <- res
          }
          if (verbose) cat("\n")
-         pb[i] <- mean(gb >= gsq[i])
-         if (plot) {
-            graphics::hist(gb, breaks = "FD",
+         boot_fail[i] <- length(fail_msg)
+         boot_msg[[i]] <- fail_msg
+         ok <- !is.na(gb)
+         pb[i] <- if (any(ok)) mean(gb[ok] >= gsq[i]) else NA_real_
+         if (plot && any(ok)) {
+            graphics::hist(gb[ok], breaks = "FD",
                  main = bquote(.(mn[i]) ~ ": Bootstrap Histogram"),
                  xlab = bquote("G"^2 ~ "statistic"),
-                 xlim = c(min(min(gb), gsq[i]), max(max(gb), gsq[i])))
+                 xlim = c(min(min(gb[ok]), gsq[i]), max(max(gb[ok]), gsq[i])))
             graphics::abline(v = gsq[i], col = "red", lwd = 1.5)
          }
       }
       if (verbose) cat("END.\n")
       dt["Pr(Boot)"] <-pb
+      names(boot_fail) <- mn
+      names(boot_msg) <- mn
+      if (sum(boot_fail) > 0)
+         warning(sum(boot_fail), " bootstrap replicate(s) failed.",
+                 call. = FALSE)
+      dt <- add_boot_attrs(dt, boot_fail, boot_msg)
    }
    structure(dt, heading = "Analysis of Goodness of Fit Table\n",
              class = c("anova", "data.frame"))
@@ -163,6 +187,7 @@ gof.slcafit <- function(
 #' @returns
 #' A `data.frame` containing the number of parameters (Df), loglikelihood, AIC, BIC, G-squared statistics, and the residual degree of freedom for each object.
 #' If a statistical test is conducted (via `test`), the resulting p-value for the comparison is also included.
+#' For `test = "boot"`, failed bootstrap replicates are omitted from the p-value calculation and recorded in the `bootFail`, `boot.fail.msgs`, and `boot.all.msgs` attributes.
 #'
 #' @seealso \link[slca]{gof}
 #'
@@ -210,69 +235,82 @@ compare <- function(
    } else if (test == "boot") {
       if (gsq < 1e-8) gb <- Inf
       else {
-         gb <- numeric(nboot)
+         gb <- rep(NA_real_, nboot)
+         fail_msg <- character()
          if (verbose) cat("START Bootstrap Sampling. \n")
          blank <- rep(" ", nchar(nboot))
          for (b in seq_len(nboot)) {
             if (verbose) cat("\r", b, "/", nboot, blank, sep = "")
-            arg0 <- h0$arg
-            sim <- simModel(
-               arg0$nobs, arg0$nvar, arg0$nlev, h0$par,
-               arg0$nlv, arg0$nrl, arg0$nlf,
-               arg0$npi, arg0$ntau, arg0$nrho,
-               arg0$ul, arg0$vl, arg0$lf, arg0$rt,
-               arg0$eqrl, arg0$eqlf,
-               arg0$nc, arg0$nk, arg0$nl, arg0$ncl,
-               arg0$nc_pi, arg0$nk_tau, arg0$nl_tau,
-               arg0$nc_rho, arg0$nr_rho
-            )
-            y <- data.frame(do.call(cbind, sim$y))
-            colnames(y) <- unlist(h0$model$measure[["indicator"]])
-            y[] <- lapply(names(y), function(x) {
-               res <- factor(y[[x]])
-               levels(res) <- attr(h0$mf, "levels")[[x]]
-               res
-            })
-            mf0 <- proc_data(y, h0$model, h0$control$na.rm)
-            mf1 <- proc_data(y, h1$model, h1$control$na.rm)
+            res <- tryCatch({
+               arg0 <- h0$arg
+               sim <- simModel(
+                  arg0$nobs, arg0$nvar, arg0$nlev, h0$par,
+                  arg0$nlv, arg0$nrl, arg0$nlf,
+                  arg0$npi, arg0$ntau, arg0$nrho,
+                  arg0$ul, arg0$vl, arg0$lf, arg0$rt,
+                  arg0$eqrl, arg0$eqlf,
+                  arg0$nc, arg0$nk, arg0$nl, arg0$ncl,
+                  arg0$nc_pi, arg0$nk_tau, arg0$nl_tau,
+                  arg0$nc_rho, arg0$nr_rho
+               )
+               y <- data.frame(do.call(cbind, sim$y))
+               colnames(y) <- unlist(h0$model$measure[["indicator"]])
+               y[] <- lapply(names(y), function(x) {
+                  factor(y[[x]],
+                         levels = seq_along(attr(h0$mf, "levels")[[x]]) - 1,
+                         labels = attr(h0$mf, "levels")[[x]])
+               })
+               mf0 <- proc_data(y, h0$model, h0$control$na.rm)
+               mf1 <- proc_data(y, h1$model, h1$control$na.rm)
 
-            con <- slcaControl()
-            con$verbose <- FALSE
-            con$em.iterlim <- maxiter
-            con$nlm.iterlim <- maxiter
-            con$em.tol <- tol
-            con$nlm.tol <- tol
+               con <- slcaControl()
+               con$verbose <- FALSE
+               con$em.iterlim <- maxiter
+               con$nlm.iterlim <- maxiter
+               con$em.tol <- tol
+               con$nlm.tol <- tol
 
-            arg1 <- h1$arg
-            est0 <- estModel(method, con, h0$par, mf0, arg0)
-            est1 <- estModel(method, con, h1$par, mf1, arg1)
-            etc0 <- calcModel(
-               attr(mf0, "y"), arg0$nobs, arg0$nvar, unlist(arg0$nlev),
-               est0$par, arg0$fix0, arg0$ref - 1, arg0$nlv, arg0$nrl, arg0$nlf,
-               arg0$npi, arg0$ntau, arg0$nrho, arg0$ul, arg0$vl,
-               arg0$lf, arg0$tr, arg0$rt, arg0$eqrl, arg0$eqlf,
-               arg0$nc, arg0$nk, arg0$nl, arg0$ncl,
-               arg0$nc_pi, arg0$nk_tau, arg0$nl_tau, arg0$nc_rho, arg0$nr_rho
-            )
-            etc1 <- calcModel(
-               attr(mf1, "y"), arg1$nobs, arg1$nvar, unlist(arg1$nlev),
-               est1$par, arg1$fix0, arg1$ref - 1, arg1$nlv, arg1$nrl, arg1$nlf,
-               arg1$npi, arg1$ntau, arg1$nrho, arg1$ul, arg1$vl,
-               arg1$lf, arg1$tr, arg1$rt, arg1$eqrl, arg1$eqlf,
-               arg1$nc, arg1$nk, arg1$nl, arg1$ncl,
-               arg1$nc_pi, arg1$nk_tau, arg1$nl_tau, arg1$nc_rho, arg1$nr_rho
-            )
-            gb[b] <- 2 * (sum(etc1$ll) - sum(etc0$ll))
+               arg1 <- h1$arg
+               est0 <- estModel(method, con, h0$par, mf0, arg0)
+               est1 <- estModel(method, con, h1$par, mf1, arg1)
+               if (inherits(est0, "error")) stop(conditionMessage(est0))
+               if (inherits(est1, "error")) stop(conditionMessage(est1))
+               etc0 <- calcModel(
+                  attr(mf0, "y"), arg0$nobs, arg0$nvar, unlist(arg0$nlev),
+                  est0$par, arg0$fix0, arg0$ref - 1, arg0$nlv, arg0$nrl, arg0$nlf,
+                  arg0$npi, arg0$ntau, arg0$nrho, arg0$ul, arg0$vl,
+                  arg0$lf, arg0$tr, arg0$rt, arg0$eqrl, arg0$eqlf,
+                  arg0$nc, arg0$nk, arg0$nl, arg0$ncl,
+                  arg0$nc_pi, arg0$nk_tau, arg0$nl_tau, arg0$nc_rho, arg0$nr_rho
+               )
+               etc1 <- calcModel(
+                  attr(mf1, "y"), arg1$nobs, arg1$nvar, unlist(arg1$nlev),
+                  est1$par, arg1$fix0, arg1$ref - 1, arg1$nlv, arg1$nrl, arg1$nlf,
+                  arg1$npi, arg1$ntau, arg1$nrho, arg1$ul, arg1$vl,
+                  arg1$lf, arg1$tr, arg1$rt, arg1$eqrl, arg1$eqlf,
+                  arg1$nc, arg1$nk, arg1$nl, arg1$ncl,
+                  arg1$nc_pi, arg1$nk_tau, arg1$nl_tau, arg1$nc_rho, arg1$nr_rho
+               )
+               2 * (sum(etc1$ll) - sum(etc0$ll))
+            }, error = function(e) e)
+            if (inherits(res, "error")) fail_msg <- c(fail_msg, conditionMessage(res))
+            else gb[b] <- res
          }
          if (verbose) cat("\r")
       }
       if (verbose) cat("DONE Bootstrap Sampling.\n")
-      dt$`Pr(Boot)` <- c(NA, mean(gb >= gsq))
-      if (plot) {
-         graphics::hist(gb, breaks = "FD",
+      ok <- !is.na(gb)
+      dt$`Pr(Boot)` <- c(NA, if (any(ok)) mean(gb[ok] >= gsq) else NA_real_)
+      if (exists("fail_msg") && length(fail_msg) > 0)
+         warning(length(fail_msg), " bootstrap replicate(s) failed.",
+                 call. = FALSE)
+      dt <- add_boot_attrs(dt, if (exists("fail_msg")) length(fail_msg) else 0L,
+                           list(compare = if (exists("fail_msg")) fail_msg else character()))
+      if (plot && any(ok)) {
+         graphics::hist(gb[ok], breaks = "FD",
               main = "Bootstrap Histogram",
               xlab = bquote("G"^2 ~ "statistic"),
-              xlim = c(min(min(gb), gsq), max(max(gb), gsq)))
+              xlim = c(min(min(gb[ok]), gsq), max(max(gb[ok]), gsq)))
          graphics::abline(v = gsq, col = "red", lwd = 1.5)
       }
    }
