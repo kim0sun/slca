@@ -87,6 +87,7 @@ simulate.slca <- function(
    y[] <- lapply(items, function(x)
       factor(y[[x]], labels = level[[x]]))
    mf <- proc_data(y, model, FALSE)
+   rownames(y) <- row.names(mf)
 
    class <- data.frame(sim$class + 1)
    colnames(class) <- row.names(model$latent)
@@ -95,5 +96,5 @@ simulate.slca <- function(
    skeleton <- get_frame(model, arg, mf)
    param <- utils::relist(exp(par), skeleton$par)
 
-   list(class = class, response = mf, parm = param, llik = -llik)
+   list(class = class, response = y, parm = param, llik = -llik)
 }

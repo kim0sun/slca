@@ -92,8 +92,11 @@ test_that("simulate and re-estimate use zero-based encoded responses", {
    sim <- simulate(m, nsim = 60, seed = 7, parm = par)
 
    expect_true(is.finite(sim$llik))
-   expect_false(-1 %in% attr(sim$response, "y"))
-   expect_true(all(attr(sim$response, "y") %in% 0:1))
+   expect_null(attr(sim$response, "y"))
+   expect_true(all(vapply(sim$response, is.factor, logical(1))))
+   response_values <- unlist(lapply(sim$response, as.character),
+                             use.names = FALSE)
+   expect_true(all(response_values %in% c("1", "2")))
 
    fit <- estimate(
       m, sim$response,
