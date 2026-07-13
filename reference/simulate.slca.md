@@ -20,8 +20,8 @@ simulate(object, nsim = 500, seed = NULL, parm, nlevel, ...)
 
 - nsim:
 
-  an integer specifying the number of response observations to simulate.
-  The default is 500.
+  a positive number specifying the number of response observations to
+  simulate. Non-integer values are rounded up. The default is 500.
 
 - seed:
 

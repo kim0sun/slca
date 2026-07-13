@@ -40,8 +40,8 @@ regress(
 
 - formula:
 
-  a formula specifying the regression model, including both latent class
-  variables (from the estimated model) and exogenous variables.
+  a formula specifying the regression model. The left-hand side must be
+  a single latent class variable from the estimated model.
 
 - data:
 

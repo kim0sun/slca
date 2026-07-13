@@ -37,8 +37,9 @@ compare(
 
 - nboot:
 
-  an integer specifying the number of bootstrap iterations to perform
-  (used only when `test = "boot"`). The default is 100.
+  a positive number specifying the number of bootstrap iterations to
+  perform (used only when `test = "boot"`). Non-integer values are
+  rounded up. The default is 50.
 
 - method:
 
@@ -114,7 +115,7 @@ gof(stat2, stat3, stat4, test = "boot")
 #>       Df  logLik    AIC    BIC     Gsq Res. Df Pr(Boot)    
 #> stat2 21 -1179.2 2400.4 2489.5 115.979      53   <2e-16 ***
 #> stat3 32 -1139.3 2342.6 2478.5  36.204      42     0.21    
-#> stat4 43 -1135.4 2356.8 2539.4  28.423      31     0.44    
+#> stat4 43 -1135.4 2356.8 2539.4  28.423      31     0.45    
 #> ---
 #> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 # }

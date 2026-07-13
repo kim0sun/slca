@@ -48,7 +48,8 @@ gof(
 
 - nboot:
 
-  an integer specifying the number of bootstrap rounds to be performed.
+  a positive number specifying the number of bootstrap rounds to be
+  performed. Non-integer values are rounded up.
 
 - plot:
 
@@ -144,12 +145,61 @@ compare(stat3, stat4, test = "chisq")
 #> stat4 43 -1135.4 2356.8 2539.4 7.7805      11   0.7328
 # \donttest{
 compare(stat3, stat4, test = "boot")
+#> Warning: NA/NaN replaced by maximum positive value
+#> Warning: NA/NaN replaced by maximum positive value
+#> Warning: NA/NaN replaced by maximum positive value
+#> Warning: NA/NaN replaced by maximum positive value
+#> Warning: NA/NaN replaced by maximum positive value
+#> Warning: NA/NaN replaced by maximum positive value
+#> Warning: NA/NaN replaced by maximum positive value
+#> Warning: NA/NaN replaced by maximum positive value
+#> Warning: NA/NaN replaced by maximum positive value
+#> Warning: NA/NaN replaced by maximum positive value
+#> Warning: NA/NaN replaced by maximum positive value
+#> Warning: NA/NaN replaced by maximum positive value
+#> Warning: NA/NaN replaced by maximum positive value
+#> Warning: NA/NaN replaced by maximum positive value
+#> Warning: NA/NaN replaced by maximum positive value
+#> Warning: NA/NaN replaced by maximum positive value
+#> Warning: NA/NaN replaced by maximum positive value
+#> Warning: NA/NaN replaced by maximum positive value
+#> Warning: NA/NaN replaced by maximum positive value
+#> Warning: NA/NaN replaced by maximum positive value
+#> Warning: NA/NaN replaced by maximum positive value
+#> Warning: NA/NaN replaced by maximum positive value
+#> Warning: NA/NaN replaced by maximum positive value
+#> Warning: NA/NaN replaced by maximum positive value
+#> Warning: NA/NaN replaced by maximum positive value
+#> Warning: NA/NaN replaced by maximum positive value
+#> Warning: NA/NaN replaced by maximum positive value
+#> Warning: NA/NaN replaced by maximum positive value
+#> Warning: NA/NaN replaced by maximum positive value
+#> Warning: NA/NaN replaced by maximum positive value
+#> Warning: NA/NaN replaced by maximum positive value
+#> Warning: NA/NaN replaced by maximum positive value
+#> Warning: NA/NaN replaced by maximum positive value
+#> Warning: NA/NaN replaced by maximum positive value
+#> Warning: NA/NaN replaced by maximum positive value
+#> Warning: NA/NaN replaced by maximum positive value
+#> Warning: NA/NaN replaced by maximum positive value
+#> Warning: NA/NaN replaced by maximum positive value
+#> Warning: NA/NaN replaced by maximum positive value
+#> Warning: NA/NaN replaced by maximum positive value
+#> Warning: NA/NaN replaced by maximum positive value
+#> Warning: NA/NaN replaced by maximum positive value
+#> Warning: NA/NaN replaced by maximum positive value
+#> Warning: NA/NaN replaced by maximum positive value
+#> Warning: NA/NaN replaced by maximum positive value
+#> Warning: NA/NaN replaced by maximum positive value
+#> Warning: NA/NaN replaced by maximum positive value
+#> Warning: NA/NaN replaced by maximum positive value
+#> Warning: NA/NaN replaced by maximum positive value
 #> Analysis of Relative Model Fit
 #> 
 #> Model H0: stat3
 #> Model H1: stat4
 #>       Df  logLik    AIC    BIC    Gsq Res. Df Pr(Boot)
 #> stat3 32 -1139.3 2342.6 2478.5                        
-#> stat4 43 -1135.4 2356.8 2539.4 7.7805      11     0.18
+#> stat4 43 -1135.4 2356.8 2539.4 7.7805      11         
 # }
 ```
