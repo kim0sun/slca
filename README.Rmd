@@ -12,7 +12,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# slca <a href="https://kim0sun.github.io/slca/"><img src="man/figures/logo.png" align="right" height="138" /></a>
+# slca <a href="https://kim0sun.github.io/slca/"><img src="man/figures/logo.png" align="right" height="138" alt="slca logo" /></a>
 
 <!-- badges: start -->
 [![CRAN status](https://www.r-pkg.org/badges/version/slca)](https://CRAN.R-project.org/package=slca)
@@ -58,7 +58,7 @@ L1(3) ~ x1 + x2 + x3
 L2[3] ~ y1 + y2 + y3
 L3(3) ~ z1 + z2 + z3
 ```
-![](man/figures/syn1.png)
+![Three latent class variables measured by manifest indicators](man/figures/syn1.png)
 
 #### Structural model specification
 This part focuses on establishing relationships between different latent class variables.
@@ -67,7 +67,7 @@ For example, `L1 ~ L2` indicates a relationship where `L1` have impact on or rel
 ```{r eval = FALSE}
 L1 ~ L2
 ```
-![](man/figures/syn2.png)
+![Structural relationship between latent class variables](man/figures/syn2.png)
 
 In some cases, you might need to define higher-level latent class variables that are influenced by or comprise several other latent class variables.
 For example, a higher-level variable `P` could be a composite of `L1`, `L2`, and `L3`. 
@@ -77,7 +77,7 @@ This relationship can be represented as follows:
 ```{r eval = FALSE}
 P[4] ~ L1 + L2 + L3
 ```
-![](man/figures/syn3.png)
+![Higher-level latent class variable measured by lower-level latent class variables](man/figures/syn3.png)
 
 #### Parameter constraints
 A critical aspect of model specification is ensuring measurement invariance.
@@ -111,18 +111,17 @@ lta <- slca(L1[3] ~ x1 + y1 + z1, L2[3] ~ x2 + y2 + z2, L3[3] ~ x3 + y3 + z3,
             L1 ~ L2, L2 ~ L3, constraints = c("L1", "L2", "L3"))
 plot(lta)
 ```
-![](man/figures/lta.png)
+![Latent transition analysis model structure](man/figures/lta.png)
 ```{r eval = FALSE}
 jlca <- slca(L1[3] ~ x1 + x2 + x3, L2[3] ~ y1 + y2 + y3, L3[3] ~ z1 + z2 + z3,
              JC[3] ~ L1 + L2 + L3)
 plot(jlca)
 ```
-![](man/figures/jlca.png)
+![Joint latent class analysis model structure](man/figures/jlca.png)
 ```{r eval = FALSE}
 lcamg <- slca(L1[3] ~ x1 + x2 + x3, L2[3] ~ y1 + y2 + y3, L3[3] ~ z1 + z2 + z3,
               JC[3] ~ L1 + L2 + L3, LG[3] ~ g1 + g2 + g3, 
               LG ~ JC)
 plot(lcamg)
 ```
-![](man/figures/lcamg.png)
-
+![Latent class analysis with a grouping variable model structure](man/figures/lcamg.png)

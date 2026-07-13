@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# slca <a href="https://kim0sun.github.io/slca/"><img src="man/figures/logo.png" align="right" height="138" /></a>
+# slca <a href="https://kim0sun.github.io/slca/"><img src="man/figures/logo.png" align="right" height="138" alt="slca logo" /></a>
 
 <!-- badges: start -->
 
@@ -67,7 +67,8 @@ L2[3] ~ y1 + y2 + y3
 L3(3) ~ z1 + z2 + z3
 ```
 
-![](man/figures/syn1.png)
+![Three latent class variables measured by manifest
+indicators](man/figures/syn1.png)
 
 #### Structural model specification
 
@@ -79,7 +80,8 @@ class variables. For example, `L1 ~ L2` indicates a relationship where
 L1 ~ L2
 ```
 
-![](man/figures/syn2.png)
+![Structural relationship between latent class
+variables](man/figures/syn2.png)
 
 In some cases, you might need to define higher-level latent class
 variables that are influenced by or comprise several other latent class
@@ -91,7 +93,8 @@ latent classes for `P`. This relationship can be represented as follows:
 P[4] ~ L1 + L2 + L3
 ```
 
-![](man/figures/syn3.png)
+![Higher-level latent class variable measured by lower-level latent class
+variables](man/figures/syn3.png)
 
 #### Parameter constraints
 
@@ -133,7 +136,7 @@ lta <- slca(L1[3] ~ x1 + y1 + z1, L2[3] ~ x2 + y2 + z2, L3[3] ~ x3 + y3 + z3,
 plot(lta)
 ```
 
-![](man/figures/lta.png)
+![Latent transition analysis model structure](man/figures/lta.png)
 
 ``` r
 jlca <- slca(L1[3] ~ x1 + x2 + x3, L2[3] ~ y1 + y2 + y3, L3[3] ~ z1 + z2 + z3,
@@ -141,7 +144,7 @@ jlca <- slca(L1[3] ~ x1 + x2 + x3, L2[3] ~ y1 + y2 + y3, L3[3] ~ z1 + z2 + z3,
 plot(jlca)
 ```
 
-![](man/figures/jlca.png)
+![Joint latent class analysis model structure](man/figures/jlca.png)
 
 ``` r
 lcamg <- slca(L1[3] ~ x1 + x2 + x3, L2[3] ~ y1 + y2 + y3, L3[3] ~ z1 + z2 + z3,
@@ -150,4 +153,5 @@ lcamg <- slca(L1[3] ~ x1 + x2 + x3, L2[3] ~ y1 + y2 + y3, L3[3] ~ z1 + z2 + z3,
 plot(lcamg)
 ```
 
-![](man/figures/lcamg.png)
+![Latent class analysis with a grouping variable model
+structure](man/figures/lcamg.png)

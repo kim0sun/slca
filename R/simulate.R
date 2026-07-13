@@ -12,7 +12,7 @@
 #' @returns
 #' A `list` with the following components:
 #' \item{class}{A `data.frame` containing the assigned latent class for each individual across all latent class variables.}
-#' \item{response}{A `data.frame` containing the simulated manifest item responses.}
+#' \item{response}{A `data.frame` containing the simulated manifest item responses as factors. Internal response encodings used for model calculation are not stored on this object.}
 #'
 #' @example man/examples/simulate.R
 #'

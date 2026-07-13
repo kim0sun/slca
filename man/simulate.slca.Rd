@@ -22,7 +22,7 @@
 \value{
 A \code{list} with the following components:
 \item{class}{A \code{data.frame} containing the assigned latent class for each individual across all latent class variables.}
-\item{response}{A \code{data.frame} containing the simulated manifest item responses.}
+\item{response}{A \code{data.frame} containing the simulated manifest item responses as factors. Internal response encodings used for model calculation are not stored on this object.}
 }
 \description{
 Simulates data based on a specified \code{slca} model. If the model parameters are not already estimated, they can either be provided by the user or generated randomly.

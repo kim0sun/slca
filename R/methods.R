@@ -358,7 +358,8 @@ vcov.slcafit <- function(
 
 #' Model Predictions for Estimated `slca` Object
 #'
-#' Provides predicted class memberships or posterior probabilities for new data based on a fitted `slca` model.
+#' Provides predicted class memberships or posterior probabilities based on a fitted `slca` model.
+#' If `newdata` is omitted, predictions are computed from the posterior probabilities stored in `object`.
 #'
 #' @param object An object of class `slcafit`, representing a fitted `slca` model.
 #' @param newdata A `data.frame` containing the same variables as those used to estimate the `object`.
@@ -368,7 +369,7 @@ vcov.slcafit <- function(
 #' @returns A `data.frame` or `list` depending on the `type`:
 #'   \itemize{
 #'     \item For `type = "class"`, a `data.frame` is returned where rows represent observations and columns correspond to latent class variables.
-#'     \item For `type = "posterior"`, a `list` is returned containing `data.frame`s with posterior probabilities for each latent class variable.
+#'     \item For `type = "posterior"`, a `list` is returned containing one matrix for each latent class variable. Rows represent observations and columns represent latent classes.
 #'   }
 #'
 #' @exportS3Method stats::predict slcafit
