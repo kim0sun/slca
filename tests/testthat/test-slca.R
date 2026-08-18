@@ -330,6 +330,23 @@ test_that("regression validates latent outcome and confidence intervals", {
    expect_silent(out <- capture.output(ci <- confint(reg)))
    expect_true(length(out) > 0)
    expect_true(is.list(ci))
+
+   se <- matrix(
+      sqrt(pmax(diag(reg$vcov), 0)),
+      nrow = nrow(reg$std.err), byrow = TRUE
+   )
+   expect_equal(unname(reg$std.err), se)
+
+   wald <- reg$coefficients / reg$std.err
+   pval <- 2 * stats::pnorm(abs(wald), lower.tail = FALSE)
+   old_pval <- stats::pnorm(abs(wald), 1, lower.tail = FALSE)
+   expect_false(isTRUE(all.equal(pval, old_pval)))
+   summary_out <- capture.output(summary(reg, digits = 8))
+   expect_true(all(vapply(
+      format(pval, digits = 8),
+      function(x) any(grepl(x, summary_out, fixed = TRUE)),
+      logical(1)
+   )))
 })
 
 test_that("model and diagnostic count inputs are validated", {

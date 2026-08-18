@@ -208,7 +208,7 @@ regress.slcafit <- function(
    )
 
    se <- matrix(
-      diag(vcov), nr, nc, byrow = TRUE,
+      sqrt(pmax(diag(vcov), 0)), nr, nc, byrow = TRUE,
       dimnames = list(class = rn, cn)
    )
 
@@ -252,7 +252,7 @@ summary.reg.slca <- function(
    }
    if (wald) {
       wald <- object$coefficients / object$std.err
-      pval <- stats::pnorm(abs(wald), 1, lower.tail = FALSE)
+      pval <- 2 * stats::pnorm(abs(wald), lower.tail = FALSE)
       cat("\nValue/SE (Wald statistics):")
       print.default(format(wald, digits = digits),
                     print.gap = 2L, quote = FALSE)

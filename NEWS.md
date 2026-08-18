@@ -8,5 +8,6 @@
 * Added validation for model formulas, regression latent outcomes, bootstrap counts, and simulation counts.
 * Fixed simulated factor responses when some generated categories are absent in a sample.
 * Fixed Hessian-based covariance extraction and regression confidence interval returns.
+* Fixed regression standard errors and Wald p-values in `summary.reg.slca()`.
 * Recorded bootstrap replicate failures in model-fit diagnostics instead of returning error objects.
 * Clarified the documented structure of `convergence`, `predict()`, and simulated responses.
