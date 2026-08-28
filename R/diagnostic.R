@@ -54,7 +54,38 @@ add_boot_attrs <- function(x, fail, msg) {
 #' @example man/examples/diagnostic.R
 #'
 #' @export
-gof <- function(object, ...) UseMethod("gof")
+gof <- function(object, ...) {
+   if (missing(object)) {
+      dots <- list(...)
+      if (!length(dots)) stop("argument \"object\" is missing, with no default")
+      nms <- names(dots)
+      if (length(nms) && !is.na(nms[1]) && nzchar(nms[1]))
+         attr(dots[[1]], "gof.name") <- nms[1]
+      if (length(dots) > 1) {
+         for (i in 2:length(dots)) {
+            if (length(nms) >= i && !is.na(nms[i]) && nzchar(nms[i]) &&
+                inherits(dots[[i]], "slcafit"))
+               attr(dots[[i]], "gof.name") <- nms[i]
+         }
+      }
+      object <- dots[[1]]
+      dots <- dots[-1]
+      return(do.call(gof, c(list(object), dots)))
+   }
+   UseMethod("gof")
+}
+
+gof_model_name <- function(expr, object, i) {
+   nm <- attr(object, "gof.name", exact = TRUE)
+   if (length(nm) == 1L && !is.na(nm) && nzchar(nm)) return(nm)
+
+   s <- tryCatch(deparse(expr, nlines = 1L),
+                 error = function(e) NA_character_)
+   if (length(s) == 1L && !is.na(s) && nchar(s) <= 40L &&
+       !grepl("^(structure|list)\\(", s))
+      return(s)
+   paste0("Model", i)
+}
 
 #' @rdname gof
 #' @exportS3Method slca::gof slcafit
@@ -65,7 +96,9 @@ gof.slcafit <- function(
 ) {
    cl <- match.call(expand.dots = FALSE)
    objects <- list(object, ...)
-   mn <- sapply(c(cl[["object"]], cl[["..."]]), deparse)
+   exprs <- c(list(cl[["object"]]), as.list(cl[["..."]]))
+   mn <- vapply(seq_along(objects), function(i)
+      gof_model_name(exprs[[i]], objects[[i]], i), character(1))
    est <- sapply(objects, inherits, "slcafit")
    if (all(!est)) stop("all models should be estimated")
    objects <- objects[est]

@@ -16,7 +16,7 @@
 #' @param imputation a character string specifying the imputation method for latent class assignment. Options include:
 #'    \itemize{
 #'       \item `"modal"`: Assigns each individual to the latent class with the highest posterior probability.
-#'       \item `"prop"`: Assigns classes probabilistically based on the posterior probability distribution.
+#'       \item `"prop"`: Uses posterior probabilities as proportional assignment weights.
 #'    }
 #' @param method a character string specifying the method to adjust for bias in the three-step approach. Options include:
 #'   \itemize{
@@ -43,6 +43,14 @@
 #' @export
 regress <- function(object, ...) UseMethod("regress")
 
+classification_error <- function(w, p) {
+   sweep(w %*% p, 2, colSums(p), "/")
+}
+
+bch_weights <- function(w, d) {
+   t(w) %*% t(ginv(d))
+}
+
 #' @rdname regress
 #' @exportS3Method slca::regress slcafit
 regress.slcafit <- function(
@@ -68,7 +76,9 @@ regress.slcafit <- function(
 
    # Imputation
    impute <- function(x, imputation) {
-      as.factor(apply(x, 1, which.max))
+      cls <- seq_len(ncol(x))
+      y <- max.col(x, ties.method = "first")
+      factor(y, levels = cls)
    }
 
    if (missing(data)) data <- object$mf
@@ -129,11 +139,11 @@ regress.slcafit <- function(
       hess <- c(hess, lapply(fit2, "[[", "hessian"))
    } else {
       # bias_adjusted
-      d <- (w %*% p) / colSums(p)
+      d <- classification_error(w, p)
 
       if (method == "BCH") {
          # BCH
-         w_ <- t(w) %*% ginv(d)
+         w_ <- bch_weights(w, d)
 
          bch_ll <- function(par, X, w_, ref) {
             b <- matrix(par, ncol(X))
@@ -141,7 +151,7 @@ regress.slcafit <- function(
             - sum(w_ * prob)
          }
          fit1 <- try(suppressWarnings(stats::nlm(
-            bch_ll, init, X = X, w_ = w_, ref = nlevels(y), hessian = TRUE, iterlim = 2
+            bch_ll, init, X = X, w_ = w_, ref = nlevels(y), hessian = TRUE
             )), silent =  TRUE)
          if (!inherits(fit1, "try-error")) {
             ll <- fit1$minimum
@@ -162,14 +172,14 @@ regress.slcafit <- function(
          hess <- c(hess, lapply(fit2, "[[", "hessian"))
       } else if (method == "ML") {
          # ML
-         ml_ll <- function(par, X, w_, ref) {
+         ml_ll <- function(par, X, ref) {
             b <- matrix(par, ncol(X))
             prob <- t(cprobs(X, b, ref))
             - sum(w * log(d %*% exp(prob)))
          }
 
          fit1 <- try(suppressWarnings(stats::nlm(
-            ml_ll, init, X = X, w_ = w_, ref = nlevels(y), hessian = TRUE
+            ml_ll, init, X = X, ref = nlevels(y), hessian = TRUE
             )), silent = TRUE)
          if (!inherits(fit1, "try-error")) {
             ll <- fit1$minimum
@@ -182,7 +192,7 @@ regress.slcafit <- function(
          }
          fit2 <- lapply(c("Nelder-Mead", "BFGS", "CG", "L-BFGS-B", "SANN"), function(x)
             try(suppressWarnings(stats::optim(
-               init, ml_ll, X = X, w_ = w_, method = x, ref = nlevels(y), hessian = TRUE
+               init, ml_ll, X = X, method = x, ref = nlevels(y), hessian = TRUE
                )), TRUE))
          fit2 <- fit2[sapply(fit2, class) != "try-error"]
          ll <- c(ll, sapply(fit2, "[[", "value"))

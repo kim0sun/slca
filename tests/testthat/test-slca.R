@@ -264,6 +264,35 @@ test_that("regress supports bias-adjusted methods with stored posterior", {
               imputation = "modal", method = "ML"),
       "reg.slca"
    )
+   set.seed(11)
+   expect_s3_class(
+      regress(fit, l ~ x, data = covar,
+              imputation = "prop", method = "naive"),
+      "reg.slca"
+   )
+})
+
+test_that("classification-error corrections use P(W|X) orientation", {
+   d <- matrix(
+      c(.70, .10, .20,
+        .20, .75, .20,
+        .10, .15, .60),
+      3, 3, byrow = TRUE
+   )
+   pi_x <- c(.20, .30, .50)
+   w_dist <- as.vector(d %*% pi_x)
+   w <- diag(3)
+   p <- sweep(d, 2, pi_x, "*")
+   p <- sweep(p, 1, rowSums(p), "/")
+   p <- sweep(p, 1, w_dist, "*")
+
+   expect_equal(classification_error(w, p), d)
+   expect_equal(as.vector(w_dist %*% t(ginv(d))), pi_x)
+   expect_equal(as.vector(colSums(sweep(bch_weights(w, d), 1, w_dist, "*"))),
+                pi_x)
+
+   px_z <- matrix(c(.2, .3, .5, .5, .2, .3), nrow = 2, byrow = TRUE)
+   expect_equal(t(d %*% t(px_z)), px_z %*% t(d))
 })
 
 test_that("variance methods handle missing responses", {
@@ -369,6 +398,10 @@ test_that("model and diagnostic count inputs are validated", {
    expect_error(gof(fit, test = "boot", nboot = 0), "positive")
    expect_warning(gof(fit, test = "boot", nboot = 1.5,
                       maxiter = 5, tol = 1e-5), "rounded up")
+   unnamed <- do.call(gof, list(fit, fit))
+   expect_equal(rownames(unnamed), c("Model1", "Model2"))
+   named <- do.call(gof, list(Class_1 = fit, Class_2 = fit))
+   expect_equal(rownames(named), c("Class_1", "Class_2"))
    expect_error(compare(fit, fit, test = "boot", nboot = 0), "positive")
 })
 
