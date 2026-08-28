@@ -57,8 +57,8 @@ regress(
   - `"modal"`: Assigns each individual to the latent class with the
     highest posterior probability.
 
-  - `"prop"`: Assigns classes probabilistically based on the posterior
-    probability distribution.
+  - `"prop"`: Uses posterior probabilities as proportional assignment
+    weights.
 
 - method:
 

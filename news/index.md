@@ -22,6 +22,8 @@
   interval returns.
 - Fixed regression standard errors and Wald p-values in
   `summary.reg.slca()`.
+- Hardened [`gof()`](https://kim0sun.github.io/slca/reference/gof.md)
+  list calls and bias-adjusted regression internals.
 - Recorded bootstrap replicate failures in model-fit diagnostics instead
   of returning error objects.
 - Clarified the documented structure of `convergence`,
