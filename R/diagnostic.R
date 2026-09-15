@@ -35,7 +35,9 @@ add_boot_attrs <- function(x, fail, msg) {
 #'    maxiter = 100, tol = 1e-6, verbose = FALSE
 #' )
 #'
-#' @param object an object of class `slcafit`.
+#' @param object an object of class `slcafit`, or a list of `slcafit` objects.
+#' List names are used as model labels; unnamed elements are labeled `[[1]]`,
+#' `[[2]]`, and so on.
 #' @param ... additional objects of class `slcafit` for comparison.
 #' @param test a character string specifying the type of test to be conducted. If `"chisq"`, a chi-squared test is conducted. If `"boot"`, a bootstrap test is conducted.
 #' @param nboot a positive number specifying the number of bootstrap rounds to be performed. Non-integer values are rounded up.
@@ -55,6 +57,17 @@ add_boot_attrs <- function(x, fail, msg) {
 #'
 #' @export
 gof <- function(object, ...) {
+   if (!missing(object) && is.list(object) && !inherits(object, "slcafit")) {
+      if (!length(object)) stop("argument \"object\" is missing, with no default")
+      nms <- names(object)
+      for (i in seq_along(object)) {
+         if (inherits(object[[i]], "slcafit"))
+            attr(object[[i]], "gof.name") <-
+               if (length(nms) >= i && !is.na(nms[i]) && nzchar(nms[i]))
+                  nms[i] else paste0("[[", i, "]]")
+      }
+      return(do.call(gof, c(unname(object), list(...))))
+   }
    if (missing(object)) {
       dots <- list(...)
       if (!length(dots)) stop("argument \"object\" is missing, with no default")

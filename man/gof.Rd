@@ -25,7 +25,9 @@ gof(object, ...)
 )
 }
 \arguments{
-\item{object}{an object of class \code{slcafit}.}
+\item{object}{an object of class \code{slcafit}, or a list of \code{slcafit} objects.
+List names are used as model labels; unnamed elements are labeled \code{[[1]]},
+\code{[[2]]}, and so on.}
 
 \item{...}{additional objects of class \code{slcafit} for comparison.}
 

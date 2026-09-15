@@ -402,6 +402,16 @@ test_that("model and diagnostic count inputs are validated", {
    expect_equal(rownames(unnamed), c("Model1", "Model2"))
    named <- do.call(gof, list(Class_1 = fit, Class_2 = fit))
    expect_equal(rownames(named), c("Class_1", "Class_2"))
+   fit1 <- fit
+   fit2 <- fit
+   from_list <- gof(list(fit1, fit2))
+   expect_equal(rownames(from_list), c("[[1]]", "[[2]]"))
+   from_named_list <- gof(list(Class_1 = fit, Class_2 = fit))
+   expect_equal(rownames(from_named_list), c("Class_1", "Class_2"))
+   from_mixed_list <- gof(list(Class_1 = fit, fit))
+   expect_equal(rownames(from_mixed_list), c("Class_1", "[[2]]"))
+   stored_list <- list(fit, fit)
+   expect_equal(rownames(gof(stored_list)), c("[[1]]", "[[2]]"))
    expect_error(compare(fit, fit, test = "boot", nboot = 0), "positive")
 })
 
