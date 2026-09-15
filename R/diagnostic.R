@@ -251,7 +251,8 @@ compare <- function(
    test <- match.arg(test)
    method <- match.arg(method)
    if (test == "boot") nboot <- positive_count(nboot, "nboot")
-   name <- c(cl[["model1"]], cl[["model2"]])
+   name <- vapply(seq_along(models), function(i)
+      gof_model_name(cl[[paste0("model", i)]], models[[i]], i), character(1))
    if (any(!sapply(models, inherits, "slcafit")))
       stop("both model should be estimated")
    mf1 <- model1$mf
@@ -274,7 +275,7 @@ compare <- function(
 
    gsq <- 2 * (stats::logLik(h1) - stats::logLik(h0))
    tab <- cbind(dff, ll, aic, bic, c(NA, gsq), c(NA, resdf))
-   rownames(tab) <- unlist(name)
+   rownames(tab) <- name
    dt <- data.frame(tab)
    names(dt) <- c("Df", "logLik", "AIC", "BIC", "Gsq", "Res. Df")
 

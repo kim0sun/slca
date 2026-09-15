@@ -413,6 +413,13 @@ test_that("model and diagnostic count inputs are validated", {
    stored_list <- list(fit, fit)
    expect_equal(rownames(gof(stored_list)), c("[[1]]", "[[2]]"))
    expect_error(compare(fit, fit, test = "boot", nboot = 0), "positive")
+
+   fits <- list(fit, fit)
+   compared <- compare(fits[[1]], fits[[2]])
+   expect_equal(rownames(compared), c("fits[[1]]", "fits[[2]]"))
+   expect_equal(attr(compared, "heading"),
+                c("Analysis of Relative Model Fit\n",
+                  "Model H0: fits[[1]]\nModel H1: fits[[2]]"))
 })
 
 test_that("reorder warns on ignored or conflicting specifications", {
