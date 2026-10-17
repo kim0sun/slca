@@ -11,7 +11,7 @@ source package index reported version 1.4.0 when checked on 2026-10-17.
 
 ## R CMD check results
 
-0 errors | 1 warning | 2 notes
+0 errors | 1 warning | 1 note
 
 The installation warning comes from the R framework header
 `R_ext/Boolean.h` with Apple clang 21:
@@ -20,14 +20,15 @@ The installation warning comes from the R framework header
 warning: unknown warning group '-Wfixed-enum-extension', ignored
 ```
 
-The first note is an extended example timing note: `nlsy97` takes about 20 seconds
-when `--run-donttest` runs its larger models. The expensive examples are already
-inside `\donttest{}` blocks. All examples completed successfully. The diagnostic
-bootstrap examples use five illustrative replicates, report failure counts, and
-had zero failed replicates in this check; five replicates are not recommended
-for statistical inference.
+The previous extended-example timing note has been resolved. The longitudinal
+example now uses a reproducible 500-row subset and two-class models while
+preserving the three-occasion structure and equality constraints. The text makes
+clear that this is a syntax illustration, not full-data inference. Its `\donttest`
+wrapper was removed so these examples run in ordinary checks. All examples passed
+with no timing note. Diagnostic bootstrap examples had zero failed replicates;
+their five illustrative replicates are not intended for statistical inference.
 
-The second note is an environment limitation in HTML manual checks:
+The remaining note is an environment limitation in HTML manual checks:
 
 * The installed HTML Tidy is too old for HTML validation.
 * Math rendering was skipped because V8 is unavailable.
@@ -55,5 +56,8 @@ test helpers. Version 1.4.1 remains the proposed patch release.
 Refresh these results on the final candidate. Windows, Linux, current R release,
 R-devel, oldrel-1, and minimum dependency versions have not been checked for this
 candidate. Resolve or explain the compiler warning and complete HTML validation
-in a suitable environment before deciding to submit. No external builder upload,
+in a suitable environment before deciding to submit. Additional syntax-only checks parsed all 17 source files on installed R 3.5.3,
+3.6.0, and 4.2.0; missing or old dependencies prevented full checks there. An
+isolated install without the user Makevars also passed the test suite and removed
+an additional deprecated-linker warning. No external builder upload,
 CRAN submission, tag, or release has been performed.
