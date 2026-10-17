@@ -34,7 +34,7 @@ The remaining note is an environment limitation in HTML manual checks:
 * Math rendering was skipped because V8 is unavailable.
 
 The PDF manual, dependency checks, code/documentation consistency checks, compiled
-code checks, and test suite passed. Tests reported 175 passes, no failures,
+code checks, and test suite passed. Tests reported 201 passes, no failures,
 warnings, or skips. CRAN incoming feasibility passed in this local check.
 
 ## Reverse dependencies
@@ -46,7 +46,9 @@ Imports, LinkingTo, Suggests, or Enhances. No reverse-dependency checks were run
 
 See NEWS.md for the full maintenance changelog. This candidate corrects missing
 response scores and fit diagnostics, bootstrap handling, class reordering,
-confidence intervals, and constrained starts. It adds regression coverage for
+confidence intervals, and constrained starts. It also withholds saturated fit statistics when EM does not converge, and aligns
+regression covariates by row identity with an explicit positional option.
+It adds regression coverage for
 constrained categorical levels and clarifies that continuous indicators remain
 unsupported. Runtime Imports are unchanged; testthat >= 3.1.7 is required by the
 test helpers. Version 1.4.1 remains the proposed patch release.
