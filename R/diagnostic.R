@@ -22,6 +22,54 @@ add_boot_attrs <- function(x, fail, msg) {
    x
 }
 
+bootstrap_converged <- function(est, method) {
+   if (inherits(est, "error") || length(est$ll) != 1L || !is.finite(est$ll))
+      return(FALSE)
+   conv <- est$conv[c("EM", "nlm")]
+   if (method == "em") isTRUE(unname(conv["EM"]))
+   else if (method == "nlm") isTRUE(unname(conv["nlm"]))
+   else any(conv, na.rm = TRUE)
+}
+
+random_model_start <- function(arg) {
+   par <- stats::runif(length(arg$id), 1, 1.1)
+   par[arg$fix0] <- -Inf
+   unlist(tapply(par, arg$id, norm2), use.names = FALSE)
+}
+
+bootstrap_estimate <- function(method, control, par, mf, arg, nrep) {
+   starts <- c(list(par), replicate(nrep - 1L,
+      random_model_start(arg), simplify = FALSE))
+   best <- NULL
+   msg <- character()
+
+   for (i in seq_along(starts)) {
+      est <- tryCatch(estModel(method, control, starts[[i]], mf, arg),
+                      error = function(e) e)
+      if (inherits(est, "error")) {
+         msg <- c(msg, conditionMessage(est))
+      } else if (!bootstrap_converged(est, method)) {
+         msg <- c(msg, paste0("starting value ", i,
+                              " did not converge"))
+      } else if (is.null(best) || est$ll > best$ll) {
+         best <- est
+      }
+   }
+
+   if (is.null(best)) {
+      msg <- unique(msg)
+      stop(if (length(msg) == 1L) msg else paste(msg, collapse = "; "),
+           call. = FALSE)
+   }
+   best
+}
+
+restore_missing_pattern <- function(data, template) {
+   for (i in seq_along(data))
+      data[[i]][is.na(template[[i]])] <- NA
+   data
+}
+
 #' Goodness-of-Fit Test for Fitted `slca` Model
 #'
 #' Computes the AIC, BIC, and deviance statistic (G-squared) for assessing the goodness-of-fit of a fitted `slca` model. If the `test` argument is specified, absolute model fit can be evaluated using deviance statistics.
@@ -35,7 +83,9 @@ add_boot_attrs <- function(x, fail, msg) {
 #'    maxiter = 100, tol = 1e-6, verbose = FALSE
 #' )
 #'
-#' @param object an object of class `slcafit`.
+#' @param object an object of class `slcafit`, or a list of `slcafit` objects.
+#' List names are used as model labels; unnamed elements are labeled `[[1]]`,
+#' `[[2]]`, and so on.
 #' @param ... additional objects of class `slcafit` for comparison.
 #' @param test a character string specifying the type of test to be conducted. If `"chisq"`, a chi-squared test is conducted. If `"boot"`, a bootstrap test is conducted.
 #' @param nboot a positive number specifying the number of bootstrap rounds to be performed. Non-integer values are rounded up.
@@ -48,6 +98,10 @@ add_boot_attrs <- function(x, fail, msg) {
 #' A `data.frame` containing the number of parameters (Df), loglikelihood, AIC, BIC, G-squared statistics, and the residual degree of freedom for each object.
 #' If a statistical test is performed (using `test`), the result includes the corresponding p-value.
 #' For `test = "boot"`, failed bootstrap replicates are omitted from the p-value calculation and recorded in the `bootFail`, `boot.fail.msgs`, and `boot.all.msgs` attributes.
+#' Absolute bootstrap samples retain the fitted data's missing-value pattern.
+#' Nonconverged refits are counted as failures. With \eqn{B} successful
+#' replicates and \eqn{b} statistics at least as large as observed, the
+#' bootstrap p-value is \eqn{(b + 1)/(B + 1)}.
 #'
 #' @seealso \link[slca]{compare}
 #'
@@ -55,6 +109,17 @@ add_boot_attrs <- function(x, fail, msg) {
 #'
 #' @export
 gof <- function(object, ...) {
+   if (!missing(object) && is.list(object) && !inherits(object, "slcafit")) {
+      if (!length(object)) stop("argument \"object\" is missing, with no default")
+      nms <- names(object)
+      for (i in seq_along(object)) {
+         if (inherits(object[[i]], "slcafit"))
+            attr(object[[i]], "gof.name") <-
+               if (length(nms) >= i && !is.na(nms[i]) && nzchar(nms[i]))
+                  nms[i] else paste0("[[", i, "]]")
+      }
+      return(do.call(gof, c(unname(object), list(...))))
+   }
    if (missing(object)) {
       dots <- list(...)
       if (!length(dots)) stop("argument \"object\" is missing, with no default")
@@ -127,6 +192,9 @@ gof.slcafit <- function(
          stats::pchisq(gsq, resdf, lower.tail = FALSE)
    }
    if (test == "boot") {
+      if (any(!is.finite(gsq)))
+         stop("absolute bootstrap requires an available saturated log-likelihood.",
+              call. = FALSE)
       pb <- numeric(nmodel)
       boot_fail <- integer(nmodel)
       boot_msg <- vector("list", nmodel)
@@ -158,13 +226,20 @@ gof.slcafit <- function(
                          levels = seq_along(attr(obj$mf, "levels")[[x]]) - 1,
                          labels = attr(obj$mf, "levels")[[x]])
                })
+               y <- restore_missing_pattern(y, obj$mf)
                mf <- proc_data(y, obj$model, obj$control$na.rm)
+               if (nrow(mf) != arg$nobs)
+                  stop("observation count changed; refit the original model")
+               if (!is.finite(attr(mf, "loglik")))
+                  stop("saturated log-likelihood is unavailable")
                con <- obj$control
                con$verbose <- FALSE
                con$em.iterlim <- maxiter; con$nlm.iterlim <- maxiter
                con$em.tol <- tol; con$nlm.tol <- tol
                est <- estModel(obj$method, con, par, mf, arg)
                if (inherits(est, "error")) stop(conditionMessage(est))
+               if (!bootstrap_converged(est, obj$method))
+                  stop("bootstrap fit did not converge")
                etc <- calcModel(
                   attr(mf, "y"), arg$nobs, arg$nvar, unlist(arg$nlev),
                   est$par, arg$fix0, arg$ref - 1, arg$nlv, arg$nrl, arg$nlf,
@@ -182,7 +257,8 @@ gof.slcafit <- function(
          boot_fail[i] <- length(fail_msg)
          boot_msg[[i]] <- fail_msg
          ok <- !is.na(gb)
-         pb[i] <- if (any(ok)) mean(gb[ok] >= gsq[i]) else NA_real_
+         pb[i] <- if (any(ok))
+            (sum(gb[ok] >= gsq[i]) + 1) / (sum(ok) + 1) else NA_real_
          if (plot && any(ok)) {
             graphics::hist(gb[ok], breaks = "FD",
                  main = bquote(.(mn[i]) ~ ": Bootstrap Histogram"),
@@ -217,6 +293,9 @@ gof.slcafit <- function(
 #' @param maxiter an integer specifying the maximum number of iterations allowed during each bootstrap estimation round. The default is 100.
 #' @param tol numeric value setting the convergence tolerance for each bootstrap iteration. The default is `1e-6`.
 #' @param verbose a logical value indicating whether to print progress updates on completed bootstrap iterations. The default is `FALSE`.
+#' @param nrep a positive number specifying the number of starting values used
+#' for each model in a bootstrap iteration. The fitted-model parameters are used
+#' first and additional starting values are generated randomly. The default is 3.
 #'
 #' @returns
 #' A `data.frame` containing the number of parameters (Df), loglikelihood, AIC, BIC, G-squared statistics, and the residual degree of freedom for each object.
@@ -231,21 +310,25 @@ gof.slcafit <- function(
 compare <- function(
       model1, model2, test = c("none", "chisq", "boot"), nboot = 50,
       method = c("hybrid", "em", "nlm"), plot = FALSE,
-      maxiter = 1000, tol = 1e-8, verbose = FALSE
+      maxiter = 1000, tol = 1e-8, verbose = FALSE, nrep = 3
 ) {
    models <- list(model1, model2)
    cl <- match.call()
    test <- match.arg(test)
    method <- match.arg(method)
-   if (test == "boot") nboot <- positive_count(nboot, "nboot")
-   name <- c(cl[["model1"]], cl[["model2"]])
+   if (test == "boot") {
+      nboot <- positive_count(nboot, "nboot")
+      nrep <- positive_count(nrep, "nrep")
+   }
+   name <- vapply(seq_along(models), function(i)
+      gof_model_name(cl[[paste0("model", i)]], models[[i]], i), character(1))
    if (any(!sapply(models, inherits, "slcafit")))
       stop("both model should be estimated")
    mf1 <- model1$mf
    mf2 <- model2$mf
    attr(mf1, "y") <- NULL
    attr(mf2, "y") <- NULL
-   if (!all.equal(mf1, mf2))
+   if (!isTRUE(all.equal(mf1, mf2)))
       stop("datasets used for models are different")
 
    df <- sapply(models, function(x) x$arg$df)
@@ -260,18 +343,21 @@ compare <- function(
    resdf <- diff(dff)
 
    gsq <- 2 * (stats::logLik(h1) - stats::logLik(h0))
+   if (test != "none" && (!is.finite(gsq) || gsq < -1e-8))
+      stop("the alternative model has a lower or non-finite log-likelihood; refit the models before testing.",
+           call. = FALSE)
    tab <- cbind(dff, ll, aic, bic, c(NA, gsq), c(NA, resdf))
-   rownames(tab) <- unlist(name)
+   rownames(tab) <- name
    dt <- data.frame(tab)
    names(dt) <- c("Df", "logLik", "AIC", "BIC", "Gsq", "Res. Df")
 
    if (test == "chisq") {
       dt$`Pr(>Chi)` <- c(NA, stats::pchisq(gsq, resdf, lower.tail = FALSE))
    } else if (test == "boot") {
+      fail_msg <- character()
       if (gsq < 1e-8) gb <- Inf
       else {
          gb <- rep(NA_real_, nboot)
-         fail_msg <- character()
          if (verbose) cat("START Bootstrap Sampling. \n")
          blank <- rep(" ", nchar(nboot))
          for (b in seq_len(nboot)) {
@@ -295,8 +381,9 @@ compare <- function(
                          levels = seq_along(attr(h0$mf, "levels")[[x]]) - 1,
                          labels = attr(h0$mf, "levels")[[x]])
                })
-               mf0 <- proc_data(y, h0$model, h0$control$na.rm)
-               mf1 <- proc_data(y, h1$model, h1$control$na.rm)
+               y <- restore_missing_pattern(y, h0$mf)
+               mf0 <- proc_data2(y, h0$model, h0$control$na.rm)
+               mf1 <- proc_data2(y, h1$model, h1$control$na.rm)
 
                con <- slcaControl()
                con$verbose <- FALSE
@@ -306,10 +393,12 @@ compare <- function(
                con$nlm.tol <- tol
 
                arg1 <- h1$arg
-               est0 <- estModel(method, con, h0$par, mf0, arg0)
-               est1 <- estModel(method, con, h1$par, mf1, arg1)
-               if (inherits(est0, "error")) stop(conditionMessage(est0))
-               if (inherits(est1, "error")) stop(conditionMessage(est1))
+               est0 <- bootstrap_estimate(
+                  method, con, h0$par, mf0, arg0, nrep
+               )
+               est1 <- bootstrap_estimate(
+                  method, con, h1$par, mf1, arg1, nrep
+               )
                etc0 <- calcModel(
                   attr(mf0, "y"), arg0$nobs, arg0$nvar, unlist(arg0$nlev),
                   est0$par, arg0$fix0, arg0$ref - 1, arg0$nlv, arg0$nrl, arg0$nlf,
@@ -326,7 +415,10 @@ compare <- function(
                   arg1$nc, arg1$nk, arg1$nl, arg1$ncl,
                   arg1$nc_pi, arg1$nk_tau, arg1$nl_tau, arg1$nc_rho, arg1$nr_rho
                )
-               2 * (sum(etc1$ll) - sum(etc0$ll))
+               lr <- 2 * (sum(etc1$ll) - sum(etc0$ll))
+               if (lr < -1e-8)
+                  stop("the alternative model has a lower bootstrap log-likelihood")
+               max(lr, 0)
             }, error = function(e) e)
             if (inherits(res, "error")) fail_msg <- c(fail_msg, conditionMessage(res))
             else gb[b] <- res
@@ -335,12 +427,12 @@ compare <- function(
       }
       if (verbose) cat("DONE Bootstrap Sampling.\n")
       ok <- !is.na(gb)
-      dt$`Pr(Boot)` <- c(NA, if (any(ok)) mean(gb[ok] >= gsq) else NA_real_)
-      if (exists("fail_msg") && length(fail_msg) > 0)
+      dt$`Pr(Boot)` <- c(NA, if (any(ok))
+         (sum(gb[ok] >= gsq) + 1) / (sum(ok) + 1) else NA_real_)
+      if (length(fail_msg) > 0)
          warning(length(fail_msg), " bootstrap replicate(s) failed.",
                  call. = FALSE)
-      dt <- add_boot_attrs(dt, if (exists("fail_msg")) length(fail_msg) else 0L,
-                           list(compare = if (exists("fail_msg")) fail_msg else character()))
+      dt <- add_boot_attrs(dt, length(fail_msg), list(compare = fail_msg))
       if (plot && any(ok)) {
          graphics::hist(gb[ok], breaks = "FD",
               main = "Bootstrap Histogram",

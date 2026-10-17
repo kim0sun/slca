@@ -491,7 +491,7 @@ confint.slcafit <- function(
    cn <- format_pc(c(lower, upper), 3)
 
    ci <- val + se %o% stats::qnorm(c(lower, upper))
-   ci <- ci[parm,]
+   ci <- ci[parm, , drop = FALSE]
    colnames(ci) <- cn
    rownames(ci) <- paste0("(", parm, ")")
    ci
@@ -595,19 +595,37 @@ reorder.slcafit <- function(x, ...) {
    rid <- unlist(id, use.names = FALSE)
    par <- x$par
    par[] <- x$par[rid]
-   logit <- x$logit
-   logit[] <- x$logit[rid]
    arg <- x$arg
    arg$fix0 <- arg$fix0[rid]
    fix2zero <- which(arg$fix0)
-   ref <- arg$ref
-   ref_idx <- cumsum(ref)
-   while (any(cond <- ref_idx %in% arg$fix2zero)) {
+   sizes <- tabulate(arg$id)
+   ref <- sizes
+   ref_idx <- cumsum(sizes)
+   while (any(cond <- ref_idx %in% fix2zero)) {
       ref[cond] <- ref[cond] - 1
       ref_idx[cond] <- ref_idx[cond] - 1
    }
    arg$ref <- ref
    arg$ref_idx <- ref_idx
+   logit <- par - par[ref_idx[arg$id]]
+
+   # Transform the stored Hessian to the reordered reference logits.
+   hess <- x$hessian
+   old_free <- which(!is.na(diag(hess)))
+   if (length(old_free)) {
+      new_free <- setdiff(which(is.finite(logit)), ref_idx)
+      transform <- matrix(0, length(old_free), length(new_free))
+      pos <- match(old_free, rid)
+      base <- match(x$arg$ref_idx[x$arg$id[old_free]], rid)
+      for (i in seq_along(old_free)) {
+         transform[i, ] <- as.numeric(new_free == pos[i]) -
+            as.numeric(new_free == base[i])
+      }
+      hess[] <- NA_real_
+      hess[new_free, new_free] <- crossprod(
+         transform, x$hessian[old_free, old_free, drop = FALSE] %*% transform
+      )
+   }
 
    etc <- calcModel(
       attr(x$mf, "y"), arg$nobs, arg$nvar, unlist(arg$nlev),
@@ -634,6 +652,7 @@ reorder.slcafit <- function(x, ...) {
    x$logit <- logit
    x$fix2zero <- fix2zero
    x$score <- score
+   x$hessian <- hess
    x$posterior <- list(
       marginal = lapply(post, t), joint = joint
    )

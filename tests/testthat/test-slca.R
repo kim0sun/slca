@@ -397,12 +397,51 @@ test_that("model and diagnostic count inputs are validated", {
 
    expect_error(gof(fit, test = "boot", nboot = 0), "positive")
    expect_warning(gof(fit, test = "boot", nboot = 1.5,
-                      maxiter = 5, tol = 1e-5), "rounded up")
+                      maxiter = 5000, tol = 1e-5), "rounded up")
    unnamed <- do.call(gof, list(fit, fit))
    expect_equal(rownames(unnamed), c("Model1", "Model2"))
    named <- do.call(gof, list(Class_1 = fit, Class_2 = fit))
    expect_equal(rownames(named), c("Class_1", "Class_2"))
+   fit1 <- fit
+   fit2 <- fit
+   from_list <- gof(list(fit1, fit2))
+   expect_equal(rownames(from_list), c("[[1]]", "[[2]]"))
+   from_named_list <- gof(list(Class_1 = fit, Class_2 = fit))
+   expect_equal(rownames(from_named_list), c("Class_1", "Class_2"))
+   from_mixed_list <- gof(list(Class_1 = fit, fit))
+   expect_equal(rownames(from_mixed_list), c("Class_1", "[[2]]"))
+   stored_list <- list(fit, fit)
+   expect_equal(rownames(gof(stored_list)), c("[[1]]", "[[2]]"))
    expect_error(compare(fit, fit, test = "boot", nboot = 0), "positive")
+   expect_error(compare(fit, fit, test = "boot", nboot = 1, nrep = 0),
+                "positive")
+
+   fits <- list(fit, fit)
+   compared <- compare(fits[[1]], fits[[2]])
+   expect_equal(rownames(compared), c("fits[[1]]", "fits[[2]]"))
+   expect_equal(attr(compared, "heading"),
+                c("Analysis of Relative Model Fit\n",
+                  "Model H0: fits[[1]]\nModel H1: fits[[2]]"))
+
+   other <- fit
+   other$mf[1, 1] <- 3 - other$mf[1, 1]
+   expect_error(compare(fit, other), "datasets used")
+})
+
+test_that("bootstrap refits preserve the original missing pattern", {
+   generated <- data.frame(
+      y1 = factor(c(1, 2, 1)),
+      y2 = factor(c(2, 1, 2))
+   )
+   template <- data.frame(
+      y1 = c(1, NA, 1),
+      y2 = c(NA, 1, 2)
+   )
+
+   restored <- restore_missing_pattern(generated, template)
+
+   expect_equal(is.na(restored), is.na(template))
+   expect_true(all(vapply(restored, is.factor, logical(1))))
 })
 
 test_that("reorder warns on ignored or conflicting specifications", {
@@ -438,14 +477,37 @@ test_that("bootstrap diagnostics keep failure metadata", {
       control = slcaControl(em.iterlim = 50, em.tol = 1e-6)
    )
 
-   bgof <- gof(fit1, test = "boot", nboot = 1, maxiter = 5, tol = 1e-5)
+   bgof <- gof(fit1, test = "boot", nboot = 1, maxiter = 5000, tol = 1e-5)
    bcmp <- compare(fit1, fit2, test = "boot", nboot = 1,
-                   maxiter = 5, tol = 1e-5)
+                   maxiter = 50, tol = 1e-5)
 
    expect_equal(attr(bgof, "bootFail"), c(fit1 = 0L))
    expect_equal(attr(bcmp, "bootFail"), 0L)
    expect_true(is.list(attr(bgof, "boot.fail.msgs")))
    expect_true(is.list(attr(bcmp, "boot.fail.msgs")))
+   expect_true(bcmp$`Pr(Boot)`[2] %in% c(0.5, 1))
+})
+
+test_that("relative bootstrap omits nonconverged refits", {
+   m1 <- slca(l[2] ~ y1 + y2 + y3)
+   m2 <- slca(l[3] ~ y1 + y2 + y3)
+   sim <- simulate(m1, nsim = 40, seed = 7)
+   fit1 <- estimate(m1, sim$response)
+   fit2 <- estimate(m2, sim$response)
+
+   local_mocked_bindings(
+      estModel = function(method, control, par, mf, arg) {
+         list(par = par, ll = -1, conv = c(EM = FALSE, nlm = FALSE))
+      },
+      .package = "slca"
+   )
+
+   expect_warning(
+      result <- compare(fit1, fit2, test = "boot", nboot = 1, nrep = 1),
+      "1 bootstrap replicate"
+   )
+   expect_equal(attr(result, "bootFail"), 1L)
+   expect_true(is.na(result$`Pr(Boot)`[2]))
 })
 
 test_that("bootstrap diagnostics record failed refits", {

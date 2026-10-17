@@ -25,7 +25,9 @@ gof(object, ...)
 )
 }
 \arguments{
-\item{object}{an object of class \code{slcafit}.}
+\item{object}{an object of class \code{slcafit}, or a list of \code{slcafit} objects.
+List names are used as model labels; unnamed elements are labeled \verb{[[1]]},
+\verb{[[2]]}, and so on.}
 
 \item{...}{additional objects of class \code{slcafit} for comparison.}
 
@@ -45,6 +47,10 @@ gof(object, ...)
 A \code{data.frame} containing the number of parameters (Df), loglikelihood, AIC, BIC, G-squared statistics, and the residual degree of freedom for each object.
 If a statistical test is performed (using \code{test}), the result includes the corresponding p-value.
 For \code{test = "boot"}, failed bootstrap replicates are omitted from the p-value calculation and recorded in the \code{bootFail}, \code{boot.fail.msgs}, and \code{boot.all.msgs} attributes.
+Absolute bootstrap samples retain the fitted data's missing-value pattern.
+Nonconverged refits are counted as failures. With \eqn{B} successful
+replicates and \eqn{b} statistics at least as large as observed, the
+bootstrap p-value is \eqn{(b + 1)/(B + 1)}.
 }
 \description{
 Computes the AIC, BIC, and deviance statistic (G-squared) for assessing the goodness-of-fit of a fitted \code{slca} model. If the \code{test} argument is specified, absolute model fit can be evaluated using deviance statistics.

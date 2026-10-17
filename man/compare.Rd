@@ -13,7 +13,8 @@ compare(
   plot = FALSE,
   maxiter = 1000,
   tol = 1e-08,
-  verbose = FALSE
+  verbose = FALSE,
+  nrep = 3
 )
 }
 \arguments{
@@ -34,6 +35,10 @@ compare(
 \item{tol}{numeric value setting the convergence tolerance for each bootstrap iteration. The default is \code{1e-6}.}
 
 \item{verbose}{a logical value indicating whether to print progress updates on completed bootstrap iterations. The default is \code{FALSE}.}
+
+\item{nrep}{a positive number specifying the number of starting values used
+for each model in a bootstrap iteration. The fitted-model parameters are used
+first and additional starting values are generated randomly. The default is 3.}
 }
 \value{
 A \code{data.frame} containing the number of parameters (Df), loglikelihood, AIC, BIC, G-squared statistics, and the residual degree of freedom for each object.

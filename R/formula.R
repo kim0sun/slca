@@ -28,6 +28,9 @@ proc_tree <- function(nc, iv) {
       par <- tree$parent[i]
       rank <- 1
       while (par %in% tree$child) {
+         if (rank > nrow(tree))
+            stop("latent variable relationships must not contain cycles.",
+                 call. = FALSE)
          rank <- rank + 1
          par <- tree$parent[tree$child == par]
       }
