@@ -100,8 +100,8 @@ test_that("reorder transforms logits and Hessian without changing probabilities"
    ix <- unlist(old, use.names = FALSE)
    expect_equal(unname(vcov(changed, hessian = TRUE)),
                 unname(vcov(fit, hessian = TRUE)[ix, ix]), tolerance = 1e-7)
-   expect_equal(changed$posterior$marginal$l,
-                fit$posterior$marginal$l[, 2:1], ignore_attr = TRUE)
+   expect_equal(unname(changed$posterior$marginal$l),
+                unname(fit$posterior$marginal$l[, 2:1]))
    restored <- reorder(changed, l = c(2, 1))
    expect_equal(restored$logit, fit$logit)
    expect_equal(restored$hessian, fit$hessian, tolerance = 1e-7)

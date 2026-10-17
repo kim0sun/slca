@@ -1,5 +1,9 @@
 # slca 1.4.1
 
+* Clarified categorical level requirements for constrained indicators and added regression coverage.
+* Required final-stage convergence for hybrid bootstrap refits.
+* Declared testthat >= 3.1.7 for the mocked-binding test helpers.
+
 * Corrected missing-item scores used for standard errors and covariance matrices.
 * Included compatible unobserved cells in large saturated response tables; oversized tables now warn and return unavailable absolute fit statistics.
 * Preserved missingness and rejected nonconverged fits in absolute bootstrap tests, with finite-sample p-values; relative tests reject negative observed likelihood ratios.

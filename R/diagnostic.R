@@ -28,7 +28,7 @@ bootstrap_converged <- function(est, method) {
    conv <- est$conv[c("EM", "nlm")]
    if (method == "em") isTRUE(unname(conv["EM"]))
    else if (method == "nlm") isTRUE(unname(conv["nlm"]))
-   else any(conv, na.rm = TRUE)
+   else isTRUE(unname(conv["nlm"]))
 }
 
 random_model_start <- function(arg) {
@@ -290,8 +290,8 @@ gof.slcafit <- function(
 #' @param nboot a positive number specifying the number of bootstrap iterations to perform (used only when `test = "boot"`). Non-integer values are rounded up. The default is 50.
 #' @param method a character string specifying the estimation method for bootstrapping.
 #' @param plot a logical value indicating whether to display a histogram of G-squared statistics for the bootstrap samples (applicable only for `test = "boot"`). The default is `FALSE`.
-#' @param maxiter an integer specifying the maximum number of iterations allowed during each bootstrap estimation round. The default is 100.
-#' @param tol numeric value setting the convergence tolerance for each bootstrap iteration. The default is `1e-6`.
+#' @param maxiter an integer specifying the maximum number of iterations allowed during each bootstrap estimation round. The default is 1000.
+#' @param tol numeric value setting the convergence tolerance for each bootstrap iteration. The default is `1e-8`.
 #' @param verbose a logical value indicating whether to print progress updates on completed bootstrap iterations. The default is `FALSE`.
 #' @param nrep a positive number specifying the number of starting values used
 #' for each model in a bootstrap iteration. The fitted-model parameters are used
@@ -301,6 +301,12 @@ gof.slcafit <- function(
 #' A `data.frame` containing the number of parameters (Df), loglikelihood, AIC, BIC, G-squared statistics, and the residual degree of freedom for each object.
 #' If a statistical test is conducted (via `test`), the resulting p-value for the comparison is also included.
 #' For `test = "boot"`, failed bootstrap replicates are omitted from the p-value calculation and recorded in the `bootFail`, `boot.fail.msgs`, and `boot.all.msgs` attributes.
+#'
+#' Bootstrap samples retain the fitted data's missing-value pattern.
+#' Nonconverged refits and negative bootstrap likelihood ratios are counted
+#' as failures. Hybrid refits must converge in their final `nlm` stage.
+#' With \eqn{B} successful replicates and \eqn{b} statistics at least as large
+#' as observed, the p-value is \eqn{(b + 1)/(B + 1)}.
 #'
 #' @seealso \link[slca]{gof}
 #'

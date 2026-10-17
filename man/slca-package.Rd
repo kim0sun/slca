@@ -20,6 +20,7 @@ Useful links:
 
 Authors:
 \itemize{
+  \item Youngsun Kim \email{yskstat@gmail.com} (\href{https://orcid.org/0000-0001-8003-1939}{ORCID})
   \item Hwan Chung \email{hwanch@korea.ac.kr} (\href{https://orcid.org/0000-0002-8969-9086}{ORCID})
 }
 

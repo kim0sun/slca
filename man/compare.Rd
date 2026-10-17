@@ -30,9 +30,9 @@ compare(
 
 \item{plot}{a logical value indicating whether to display a histogram of G-squared statistics for the bootstrap samples (applicable only for \code{test = "boot"}). The default is \code{FALSE}.}
 
-\item{maxiter}{an integer specifying the maximum number of iterations allowed during each bootstrap estimation round. The default is 100.}
+\item{maxiter}{an integer specifying the maximum number of iterations allowed during each bootstrap estimation round. The default is 1000.}
 
-\item{tol}{numeric value setting the convergence tolerance for each bootstrap iteration. The default is \code{1e-6}.}
+\item{tol}{numeric value setting the convergence tolerance for each bootstrap iteration. The default is \code{1e-8}.}
 
 \item{verbose}{a logical value indicating whether to print progress updates on completed bootstrap iterations. The default is \code{FALSE}.}
 
@@ -44,6 +44,12 @@ first and additional starting values are generated randomly. The default is 3.}
 A \code{data.frame} containing the number of parameters (Df), loglikelihood, AIC, BIC, G-squared statistics, and the residual degree of freedom for each object.
 If a statistical test is conducted (via \code{test}), the resulting p-value for the comparison is also included.
 For \code{test = "boot"}, failed bootstrap replicates are omitted from the p-value calculation and recorded in the \code{bootFail}, \code{boot.fail.msgs}, and \code{boot.all.msgs} attributes.
+
+Bootstrap samples retain the fitted data's missing-value pattern.
+Nonconverged refits and negative bootstrap likelihood ratios are counted
+as failures. Hybrid refits must converge in their final \code{nlm} stage.
+With \eqn{B} successful replicates and \eqn{b} statistics at least as large
+as observed, the p-value is \eqn{(b + 1)/(B + 1)}.
 }
 \description{
 Conducts a relative model fit test between two fitted SLCM models using the deviance statistic.
