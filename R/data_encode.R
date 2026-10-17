@@ -26,7 +26,8 @@ count_row <- function(mf, nlev, na.rm) {
       loglik <- sum(freq * log(theta))
       row.names(y_uniq) <- NULL
       return(list(y_unique = y_uniq, freq = freq,
-                  theta = theta, loglik = loglik))
+                  theta = theta, loglik = loglik,
+                  converged = TRUE, iterations = 0L))
    } else {
       miss <- rowSums(is.na(y_sort)) >  0
       yobs <- y_sort[!miss, ]
@@ -52,7 +53,8 @@ count_row <- function(mf, nlev, na.rm) {
             }
             return(list(y_unique = obs_uniq,
                         freq = rep(NA_real_, nrow(obs_uniq)),
-                        theta = rep(NA_real_, nrow(obs_uniq)), loglik = NA_real_))
+                        theta = rep(NA_real_, nrow(obs_uniq)), loglik = NA_real_,
+                        converged = FALSE, iterations = 0L))
          }
          lev <- lapply(nlev, seq_len)
          cells <- lapply(seq_len(nrow(mis_uniq)), function(i)
@@ -76,6 +78,13 @@ count_row <- function(mf, nlev, na.rm) {
          imis, rmis, nmis, fmis, obs_freq, ncell,
          nrow(mf), if (large) 1e-10 else 1e-6, if (large) 20000 else 500
       )
+      if (!isTRUE(calc_mis$converged)) {
+         warning("Saturated response table did not converge; absolute fit statistics are unavailable.",
+                 call. = FALSE)
+         calc_mis$freq[] <- NA_real_
+         calc_mis$theta[] <- NA_real_
+         calc_mis$loglik <- NA_real_
+      }
       return(c(list(y_unique = obs_uniq), calc_mis))
    }
 }
@@ -117,6 +126,8 @@ proc_data <- function(data, model, na.rm) {
    attr(mf, "freq") <- res$freq
    attr(mf, "theta") <- res$theta
    attr(mf, "loglik") <- res$loglik
+   attr(mf, "saturated.converged") <- res$converged
+   attr(mf, "saturated.iterations") <- res$iterations
    attr(mf, "df") <- prod(nlev) - 1
 
    mf

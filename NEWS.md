@@ -1,5 +1,8 @@
 # slca 1.4.1
 
+* Reported saturated-table EM convergence and withheld absolute fit statistics for unfinished iterations.
+* Aligned regression covariates by row identity even with equal row counts; added explicit positional alignment.
+
 * Clarified categorical level requirements for constrained indicators and added regression coverage.
 * Required final-stage convergence for hybrid bootstrap refits.
 * Declared testthat >= 3.1.7 for the mocked-binding test helpers.
