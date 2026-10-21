@@ -13,7 +13,11 @@
 #' )
 #' @param object an object of class `slcafit`.
 #' @param formula a formula specifying the regression model. The left-hand side must be a single latent class variable from the estimated model.
-#' @param data an optional `data.frame` containing the exogenous variables of interest. If omitted, the variables are taken from the parent environment.
+#' @param data an optional `data.frame` containing the exogenous variables of
+#' interest. Variables absent from the fitted data and `data` are taken from
+#' the formula's environment and aligned before formula transformations are
+#' evaluated. Such vectors and factors need observation IDs in `names()`;
+#' matrices and data frames need observation IDs in `rownames()`.
 #' @param imputation a character string specifying the imputation method for latent class assignment. Options include:
 #'    \itemize{
 #'       \item `"modal"`: Assigns each individual to the latent class with the highest posterior probability.
@@ -33,6 +37,19 @@
 #' reset them after subsetting or reordering. Use `"position"` explicitly for
 #' data already in fitted-observation order; it requires exactly the same number
 #' of rows and ignores row names. There is no automatic positional fallback.
+#' These rules also apply separately to each environment covariate, even when
+#' its length already equals the fitted sample size. Unnamed environment
+#' covariates require explicit `align = "position"` and fitted-row order.
+#' After observations have been excluded, an unnamed original-length vector
+#' cannot be aligned safely: supply `data` with preserved row IDs, or name the
+#' vector with its original observation IDs. Matrix covariates remain matrices
+#' and factor levels are retained. Unnamed scalar formula parameters are left
+#' unchanged, not recycled as covariates. Non-scalar transformation settings
+#' (such as spline knots or factor levels) must be written inline or captured
+#' inside a transformation function; otherwise they are treated as row inputs.
+#' Transformation functions must use their explicit covariate arguments rather
+#' than retrieve hidden observation vectors. Use explicit covariate columns
+#' instead of dynamic `get()` or `eval()` lookups with row-ID alignment.
 #' @param ... additional arguments.
 #'
 #' @returns
@@ -58,6 +75,91 @@ classification_error <- function(w, p) {
 
 bch_weights <- function(w, d) {
    t(w) %*% t(ginv(d))
+}
+
+regression_formula_inputs <- function(expr, align) {
+   if (missing(expr)) return(character())
+   if (is.symbol(expr)) return(setdiff(as.character(expr), ""))
+   if (!is.call(expr)) return(character())
+   head <- expr[[1]]
+   fun <- if (is.symbol(head)) as.character(head) else ""
+   if (fun %in% c("::", ":::")) {
+      value <- eval(expr, envir = baseenv())
+      if (align == "rownames" && !is.function(value) &&
+          !(is.atomic(value) && is.null(dim(value)) &&
+            length(value) == 1L && is.null(names(value))))
+         stop("namespace-qualified row inputs cannot be aligned safely; use explicit covariate columns in `data`.",
+              call. = FALSE)
+      return(character())
+   }
+   if (is.call(head) && is.symbol(head[[1]]) &&
+       as.character(head[[1]]) %in% c("::", ":::"))
+      fun <- as.character(head[[3]])
+   if (align == "rownames" &&
+       (fun %in% c("get", "get0", "mget", "eval", "evalq") ||
+        length(expr) == 1L ||
+        (fun %in% c("$", "@", "[[") && is.call(expr[[2]]))))
+      stop("dynamic formula lookups cannot be aligned by row identity; use explicit covariate columns in `data`.",
+           call. = FALSE)
+   args <- if (fun %in% c("$", "@")) list(expr[[2]]) else as.list(expr)[-1]
+   unique(unlist(lapply(args, regression_formula_inputs, align = align),
+                 use.names = FALSE))
+}
+
+align_regression_input <- function(x, fitted_ids, align, label) {
+   has_rows <- is.matrix(x) || is.data.frame(x)
+   ids <- if (has_rows) rownames(x) else names(x)
+   if (align == "position") {
+      if (NROW(x) != length(fitted_ids))
+         stop("positional ", label,
+              " must have the same number of rows as the fitted data.",
+              call. = FALSE)
+      keep <- seq_along(fitted_ids)
+   } else {
+      valid_ids <- function(ids) !is.null(ids) && !anyNA(ids) &&
+         all(nzchar(ids)) && !anyDuplicated(ids)
+      id_type <- if (has_rows) "row names" else "names"
+      if (!valid_ids(ids) || !valid_ids(fitted_ids))
+         stop(label, " ", id_type,
+              " must be unique, nonmissing, and nonempty; supply observation IDs or use align = \"position\" for data already in fitted row order.",
+              call. = FALSE)
+      keep <- match(fitted_ids, ids)
+      if (anyNA(keep))
+         stop(label, " ", id_type,
+              " must identify every fitted observation; use align = \"position\" only for data already in fitted row order.",
+              call. = FALSE)
+   }
+   if (has_rows) {
+      x <- x[keep, , drop = FALSE]
+      rownames(x) <- fitted_ids
+   } else {
+      x <- x[keep]
+      names(x) <- fitted_ids
+   }
+   x
+}
+
+align_regression_formula <- function(formula, data, align) {
+   inputs <- setdiff(regression_formula_inputs(formula[[3]], align),
+                     c(names(data), "."))
+   if (!length(inputs)) return(formula)
+   env <- new.env(parent = environment(formula))
+   for (nm in inputs) {
+      value <- get(nm, envir = environment(formula), inherits = TRUE)
+      # Scalar transform parameters and functions are not observation vectors.
+      if (is.function(value) || is.null(value) ||
+          (is.atomic(value) && is.null(dim(value)) &&
+           length(value) == 1L && is.null(names(value)))) next
+      if ((!is.atomic(value) && !is.data.frame(value)) ||
+          (!is.null(dim(value)) && length(dim(value)) != 2L))
+         stop("environment input `", nm,
+              "` cannot be aligned safely; use explicit covariate columns in `data`.",
+              call. = FALSE)
+      env[[nm]] <- align_regression_input(value, rownames(data), align,
+         paste0("environment covariate `", nm, "`"))
+   }
+   environment(formula) <- env
+   formula
 }
 
 #' @rdname regress
@@ -92,32 +194,21 @@ regress.slcafit <- function(
       factor(y, levels = cls)
    }
 
-   if (missing(data)) data <- object$mf
-   else {
-      data <- as.data.frame(data)
-      if (align == "position") {
-         if (nrow(data) != nrow(object$mf))
-            stop("positional `data` must have the same number of rows as the fitted data.",
-                 call. = FALSE)
-      } else {
-         ids <- rownames(data)
-         fitted_ids <- rownames(object$mf)
-         valid_ids <- function(x) !is.null(x) && !anyNA(x) &&
-            all(nzchar(x)) && !anyDuplicated(x)
-         if (!valid_ids(ids) || !valid_ids(fitted_ids))
-            stop("row names must be unique, nonmissing, and nonempty.", call. = FALSE)
-         keep <- match(fitted_ids, ids)
-         if (anyNA(keep))
-            stop("`data` row names must identify every fitted observation; use align = \"position\" only for data already in fitted row order.",
-                 call. = FALSE)
-         data <- data[keep, , drop = FALSE]
-      }
-      rownames(data) <- rownames(object$mf)
-      data <- data.frame(object$mf, data)
+   fitted_data <- object$mf
+   if (!missing(data)) {
+      if (align == "rownames" && is.null(rownames(data)))
+         stop("`data` must have observation row names before conversion; supply a row-identified data frame or use align = \"position\" for fitted row order.",
+              call. = FALSE)
+      supplied <- align_regression_input(as.data.frame(data),
+         rownames(fitted_data), align, "`data`")
+      for (nm in setdiff(names(supplied), names(fitted_data)))
+         fitted_data[[nm]] <- supplied[[nm]]
    }
    imputed <- lapply(object$posterior$marginal[latent],
                      impute, imputation)
-   data <- data.frame(data, imputed)
+   data <- fitted_data
+   for (nm in names(imputed)) data[[nm]] <- imputed[[nm]]
+   formula <- align_regression_formula(formula, data, align)
    mf <- stats::model.frame(formula, data)
 
    # Functions

@@ -31,7 +31,11 @@ regress(object, ...)
 
 \item{formula}{a formula specifying the regression model. The left-hand side must be a single latent class variable from the estimated model.}
 
-\item{data}{an optional \code{data.frame} containing the exogenous variables of interest. If omitted, the variables are taken from the parent environment.}
+\item{data}{an optional \code{data.frame} containing the exogenous variables of
+interest. Variables absent from the fitted data and \code{data} are taken from
+the formula's environment and aligned before formula transformations are
+evaluated. Such vectors and factors need observation IDs in \code{names()};
+matrices and data frames need observation IDs in \code{rownames()}.}
 
 \item{imputation}{a character string specifying the imputation method for latent class assignment. Options include:
 \itemize{
@@ -53,7 +57,20 @@ are allowed, but every fitted observation must be present. Automatic row
 numbers work only if they still identify the original observations; do not
 reset them after subsetting or reordering. Use \code{"position"} explicitly for
 data already in fitted-observation order; it requires exactly the same number
-of rows and ignores row names. There is no automatic positional fallback.}
+of rows and ignores row names. There is no automatic positional fallback.
+These rules also apply separately to each environment covariate, even when
+its length already equals the fitted sample size. Unnamed environment
+covariates require explicit \code{align = "position"} and fitted-row order.
+After observations have been excluded, an unnamed original-length vector
+cannot be aligned safely: supply \code{data} with preserved row IDs, or name the
+vector with its original observation IDs. Matrix covariates remain matrices
+and factor levels are retained. Unnamed scalar formula parameters are left
+unchanged, not recycled as covariates. Non-scalar transformation settings
+(such as spline knots or factor levels) must be written inline or captured
+inside a transformation function; otherwise they are treated as row inputs.
+Transformation functions must use their explicit covariate arguments rather
+than retrieve hidden observation vectors. Use explicit covariate columns
+instead of dynamic \code{get()} or \code{eval()} lookups with row-ID alignment.}
 }
 \value{
 A \code{list} of class \code{reg.slca} with the following components:
