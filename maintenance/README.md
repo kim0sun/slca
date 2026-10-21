@@ -1,7 +1,7 @@
 # Maintenance
 
 This is the entry point for maintaining the public `slca` R package. Start with
-[the independent-review corrections](2026-10-17-independent-fixes.md) for evidence, status, and next
+[the integration validation](2026-10-21-integration-validation.md) for evidence, status, and next
 steps. This directory is repository documentation, excluded from source packages
 by the scoped `^maintenance$` rule in [.Rbuildignore](../.Rbuildignore).
 
