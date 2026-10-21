@@ -37,6 +37,7 @@ estModel <- function(method, control, par, mf, arg) {
       em.conv <- em$converged
       em.niter <- em$niter
       nlm.conv <- NA
+      ll <- em$ll
       if (control$verbose) cat(".. done.\n")
    } else if (method == "nlm") {
       if (control$verbose) cat("nlm iteration begin.\n")
@@ -62,6 +63,7 @@ estModel <- function(method, control, par, mf, arg) {
       par <- unlist(tapply(logit, arg$id, norm2))
       em.conv <- NA
       nlm.conv <- nonlm$code < 3
+      ll <- -nonlm$minimum
       if (control$verbose) cat(".. done.\n")
    } else if (method == "hybrid") {
       if (control$verbose) cat("EM iteration begin.\n")
@@ -99,6 +101,7 @@ estModel <- function(method, control, par, mf, arg) {
 
       em.conv  <- em$converged
       nlm.conv <- nonlm$code < 3
+      ll <- -nonlm$minimum
       if (control$verbose) cat(".. done.\n")
    }
 
@@ -121,6 +124,6 @@ estModel <- function(method, control, par, mf, arg) {
       hess[-ind, -ind] <- nonlm$hessian
    }
 
-   list(par = par, logit = logit, hess = hess,
+   list(par = par, logit = logit, hess = hess, ll = ll,
         conv = c(EM = em.conv, nlm = nlm.conv))
 }

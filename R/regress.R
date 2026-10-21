@@ -82,7 +82,17 @@ regress.slcafit <- function(
    }
 
    if (missing(data)) data <- object$mf
-   else data <- data.frame(object$mf, data)
+   else {
+      data <- as.data.frame(data)
+      if (nrow(data) != nrow(object$mf)) {
+         keep <- match(rownames(object$mf), rownames(data))
+         if (anyNA(keep))
+            stop("`data` must include the observations used to fit the model.",
+                 call. = FALSE)
+         data <- data[keep, , drop = FALSE]
+      }
+      data <- data.frame(object$mf, data)
+   }
    imputed <- lapply(object$posterior$marginal[latent],
                      impute, imputation)
    data <- data.frame(data, imputed)
@@ -98,10 +108,10 @@ regress.slcafit <- function(
       denom <- rowSums(exb)
       xb - log(denom)
    }
-   p <- object$posterior$marginal[[latent]][rownames(mf),]
+   p <- object$posterior$marginal[[latent]][rownames(mf), , drop = FALSE]
    w <- switch(
       imputation,
-      modal = apply(p, 1, function(x) as.numeric(x == max(x))),
+      modal = t(diag(ncol(p))[max.col(p, ties.method = "first"), , drop = FALSE]),
       prop  = t(p)
    )
    y <- stats::model.response(mf)
@@ -285,7 +295,8 @@ confint.reg.slca <- function(
       fac <- stats::qnorm(a)
       ci <- array(NA, dim = c(length(parm), 2L),
                   dimnames = list(parm, pct))
-      ci[] <- cf[parm] + se %o% fac
+      ci[] <- cf[parm] + se[parm] %o% fac
+      if (odds.ratio) ci <- exp(ci)
       ci
    }
    cf <- object$coefficients
@@ -293,7 +304,9 @@ confint.reg.slca <- function(
    cn <- colnames(cf)
    rn <- rownames(cf)
    if (missing(parm)) parm <- cn
-   else parm <- cn[parm]
+   else if (is.numeric(parm)) parm <- cn[parm]
+   if (anyNA(parm) || any(!parm %in% cn))
+      stop("unknown regression parameter(s).", call. = FALSE)
    ci <- lapply(seq_len(nrow(cf)), function(i)
       fci(cf[i, ], se[i,]))
    names(ci) <- rn

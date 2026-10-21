@@ -188,7 +188,8 @@ List calcModel(
                   _scr_[_y_[m]] += exp(_tmp1_[k]);
                for (int r = 0; r < _lev_[m]; r ++) {
                   if (r == _ref_[m]) _scr_[r] = R_NaN;
-                  else _scr_[r] -= exp(_tmp1_[k] + _tmp2_[r]);
+                  else if (_y_[m] >= 0)
+                     _scr_[r] -= exp(_tmp1_[k] + _tmp2_[r]);
                }
                _scr_ += _lev_[m];
                _tmp2_ += _lev_[m];

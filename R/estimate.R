@@ -91,7 +91,7 @@ estimate.slca <- function(
                cat(i, "/", control$nrep, " ")
             }
             init.param <- stats::runif(length(arg$id), 1, 1.1)
-            init.param[arg$fix0] <- -Inf
+            init.param[arg$fix0] <- 0
             tpar <- unlist(tapply(init.param, arg$id, norm1),
                            use.names = FALSE)
             em <- em_est(
