@@ -25,7 +25,9 @@ gof(object, ...)
 )
 }
 \arguments{
-\item{object}{an object of class \code{slcafit}.}
+\item{object}{an object of class \code{slcafit}, or a list of \code{slcafit} objects.
+List names are used as model labels; unnamed elements are labeled \verb{[[1]]},
+\verb{[[2]]}, and so on.}
 
 \item{...}{additional objects of class \code{slcafit} for comparison.}
 
@@ -45,12 +47,17 @@ gof(object, ...)
 A \code{data.frame} containing the number of parameters (Df), loglikelihood, AIC, BIC, G-squared statistics, and the residual degree of freedom for each object.
 If a statistical test is performed (using \code{test}), the result includes the corresponding p-value.
 For \code{test = "boot"}, failed bootstrap replicates are omitted from the p-value calculation and recorded in the \code{bootFail}, \code{boot.fail.msgs}, and \code{boot.all.msgs} attributes.
+Absolute bootstrap samples retain the fitted data's missing-value pattern.
+Nonconverged refits are counted as failures. With \eqn{B} successful
+replicates and \eqn{b} statistics at least as large as observed, the
+bootstrap p-value is \eqn{(b + 1)/(B + 1)}.
 }
 \description{
 Computes the AIC, BIC, and deviance statistic (G-squared) for assessing the goodness-of-fit of a fitted \code{slca} model. If the \code{test} argument is specified, absolute model fit can be evaluated using deviance statistics.
 }
 \examples{
 library(magrittr)
+set.seed(20261017)
 data <- gss7677[gss7677$COHORT == "YOUNG", ]
 stat2 <- slca(status(2) ~ PAPRES + PADEG + MADEG) \%>\%
    estimate(data = data, control = list(verbose = FALSE))
@@ -62,13 +69,21 @@ stat4 <- slca(status(4) ~ PAPRES + PADEG + MADEG) \%>\%
 gof(stat2, stat3, stat4)
 gof(stat2, stat3, stat4, test = "chisq")
 \donttest{
-gof(stat2, stat3, stat4, test = "boot")
+# Five replicates illustrate the interface only; use more for inference.
+absolute_boot <- gof(stat2, stat3, stat4, test = "boot",
+                     nboot = 5, maxiter = 5000, tol = 1e-6)
+absolute_boot
+attr(absolute_boot, "bootFail")
 }
 
 compare(stat3, stat4)
 compare(stat3, stat4, test = "chisq")
 \donttest{
-compare(stat3, stat4, test = "boot")
+# Use EM refits here; always inspect convergence failures.
+relative_boot <- compare(stat3, stat4, test = "boot", method = "em",
+                         nboot = 5, maxiter = 5000, tol = 1e-6)
+relative_boot
+attr(relative_boot, "bootFail")
 }
 }
 \seealso{

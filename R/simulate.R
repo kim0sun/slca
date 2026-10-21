@@ -93,7 +93,8 @@ simulate.slca <- function(
    # data.name
    yy <- do.call(cbind, sim$y)
    llik <- fll(
-      t(yy), par, nsim, arg$nvar, unlist(arg$nlev), arg$nlv, arg$nrl, arg$nlf,
+      unlist(lapply(sim$y, t), use.names = FALSE),
+      par, nsim, arg$nvar, unlist(arg$nlev), arg$nlv, arg$nrl, arg$nlf,
       arg$npi, arg$ntau, arg$nrho, arg$ul, arg$vl, arg$lf, arg$tr, arg$rt,
       arg$eqrl, arg$eqlf, arg$nc, arg$nk, arg$nl, arg$ncl,
       arg$nc_pi, arg$nk_tau, arg$nl_tau, arg$nc_rho, arg$nr_rho

@@ -22,6 +22,13 @@
 #' @details
 #' The `fix2zero` argument allows you to constrain specific parameters to zero. Each parameter is associated with a unique index, which can be identified using the \link[slca]{param} function with the argument `index = TRUE`. To apply constraints, provide the relevant parameter indices in the `fix2zero` arguments with vector.
 #'
+#' @details
+#' Manifest responses are categorical; continuous-response models are not
+#' supported. Corresponding indicators under equality constraints must have
+#' identical factor levels, including labels and order. For categories absent
+#' from a sample, declare the full levels explicitly, for example
+#' `factor(x, levels = 1:3)`, consistently across constrained indicators.
+#'
 #' @returns
 #' An object of class `slcafit` containing the following components:
 #' \item{model}{a `list` describing of the model structure.}
@@ -91,7 +98,7 @@ estimate.slca <- function(
                cat(i, "/", control$nrep, " ")
             }
             init.param <- stats::runif(length(arg$id), 1, 1.1)
-            init.param[arg$fix0] <- -Inf
+            init.param[arg$fix0] <- 0
             tpar <- unlist(tapply(init.param, arg$id, norm1),
                            use.names = FALSE)
             em <- em_est(

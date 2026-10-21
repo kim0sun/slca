@@ -47,6 +47,12 @@ Specifies control parameters for estimating \code{slca} model.
 \strong{Missing data:}
 Missing data are handled in two ways. If all manifest variables for an observation are missing, the case is excluded (listwise deletion).
 For partially missing data, the model assumes Missing At Random (MAR) and uses following algorithm to integrate over the missing values.
+Saturated-model fit statistics use response cells compatible with the
+observed patterns. If the required table is too large to construct,
+or its EM iteration does not converge within the iteration limit,
+these statistics are returned as \code{NA} with a warning; model estimation
+remains available. The fitted model frame records \code{saturated.converged}
+and \code{saturated.iterations} attributes for this calculation.
 In the E-step, posterior probabilities are computed using only the observed items.
 In the M-step, parameter updates use these posterior probabilities, with expected counts for missing responses distributed according to current parameter estimates.
 

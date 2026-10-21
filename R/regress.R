@@ -8,7 +8,8 @@
 #' \method{regress}{slcafit}(
 #'    object, formula, data = parent.frame(),
 #'    imputation = c("modal", "prop"),
-#'    method = c("naive", "BCH", "ML"), ...
+#'    method = c("naive", "BCH", "ML"), ...,
+#'    align = c("rownames", "position")
 #' )
 #' @param object an object of class `slcafit`.
 #' @param formula a formula specifying the regression model. The left-hand side must be a single latent class variable from the estimated model.
@@ -24,6 +25,14 @@
 #'     \item `"BCH"`: The bias-adjusted Bolck, Croon, and Hagenaars method.
 #'     \item `"ML"`: A maximum likelihood approach that accounts for classification error.
 #'   }
+#' @param align how supplied covariate rows are aligned with the fitted data.
+#' The default, `"rownames"`, requires unique, nonempty row names and matches
+#' them to the fitted observations, regardless of row count or order. Extra rows
+#' are allowed, but every fitted observation must be present. Automatic row
+#' numbers work only if they still identify the original observations; do not
+#' reset them after subsetting or reordering. Use `"position"` explicitly for
+#' data already in fitted-observation order; it requires exactly the same number
+#' of rows and ignores row names. There is no automatic positional fallback.
 #' @param ... additional arguments.
 #'
 #' @returns
@@ -56,7 +65,8 @@ bch_weights <- function(w, d) {
 regress.slcafit <- function(
       object, formula, data = parent.frame(),
       imputation = c("modal", "prop"),
-      method = c("naive", "BCH", "ML"), ...
+      method = c("naive", "BCH", "ML"), ...,
+      align = c("rownames", "position")
 ) {
    # Import
    model <- object$model
@@ -70,6 +80,7 @@ regress.slcafit <- function(
            call. = FALSE)
    imputation <- match.arg(imputation)
    method <- match.arg(method)
+   align <- match.arg(align)
 
    model$reg$x <- setdiff(labels, latent)
    model$reg$y <- latent
@@ -82,7 +93,28 @@ regress.slcafit <- function(
    }
 
    if (missing(data)) data <- object$mf
-   else data <- data.frame(object$mf, data)
+   else {
+      data <- as.data.frame(data)
+      if (align == "position") {
+         if (nrow(data) != nrow(object$mf))
+            stop("positional `data` must have the same number of rows as the fitted data.",
+                 call. = FALSE)
+      } else {
+         ids <- rownames(data)
+         fitted_ids <- rownames(object$mf)
+         valid_ids <- function(x) !is.null(x) && !anyNA(x) &&
+            all(nzchar(x)) && !anyDuplicated(x)
+         if (!valid_ids(ids) || !valid_ids(fitted_ids))
+            stop("row names must be unique, nonmissing, and nonempty.", call. = FALSE)
+         keep <- match(fitted_ids, ids)
+         if (anyNA(keep))
+            stop("`data` row names must identify every fitted observation; use align = \"position\" only for data already in fitted row order.",
+                 call. = FALSE)
+         data <- data[keep, , drop = FALSE]
+      }
+      rownames(data) <- rownames(object$mf)
+      data <- data.frame(object$mf, data)
+   }
    imputed <- lapply(object$posterior$marginal[latent],
                      impute, imputation)
    data <- data.frame(data, imputed)
@@ -98,10 +130,10 @@ regress.slcafit <- function(
       denom <- rowSums(exb)
       xb - log(denom)
    }
-   p <- object$posterior$marginal[[latent]][rownames(mf),]
+   p <- object$posterior$marginal[[latent]][rownames(mf), , drop = FALSE]
    w <- switch(
       imputation,
-      modal = apply(p, 1, function(x) as.numeric(x == max(x))),
+      modal = t(diag(ncol(p))[max.col(p, ties.method = "first"), , drop = FALSE]),
       prop  = t(p)
    )
    y <- stats::model.response(mf)
@@ -285,7 +317,8 @@ confint.reg.slca <- function(
       fac <- stats::qnorm(a)
       ci <- array(NA, dim = c(length(parm), 2L),
                   dimnames = list(parm, pct))
-      ci[] <- cf[parm] + se %o% fac
+      ci[] <- cf[parm] + se[parm] %o% fac
+      if (odds.ratio) ci <- exp(ci)
       ci
    }
    cf <- object$coefficients
@@ -293,7 +326,9 @@ confint.reg.slca <- function(
    cn <- colnames(cf)
    rn <- rownames(cf)
    if (missing(parm)) parm <- cn
-   else parm <- cn[parm]
+   else if (is.numeric(parm)) parm <- cn[parm]
+   if (anyNA(parm) || any(!parm %in% cn))
+      stop("unknown regression parameter(s).", call. = FALSE)
    ci <- lapply(seq_len(nrow(cf)), function(i)
       fci(cf[i, ], se[i,]))
    names(ci) <- rn

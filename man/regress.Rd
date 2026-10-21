@@ -10,7 +10,8 @@ regress(object, ...)
 \method{regress}{slcafit}(
    object, formula, data = parent.frame(),
    imputation = c("modal", "prop"),
-   method = c("naive", "BCH", "ML"), ...
+   method = c("naive", "BCH", "ML"), ...,
+   align = c("rownames", "position")
 )
 
 \method{regress}{slcafit}(
@@ -19,7 +20,8 @@ regress(object, ...)
   data = parent.frame(),
   imputation = c("modal", "prop"),
   method = c("naive", "BCH", "ML"),
-  ...
+  ...,
+  align = c("rownames", "position")
 )
 }
 \arguments{
@@ -43,6 +45,15 @@ regress(object, ...)
 \item \code{"BCH"}: The bias-adjusted Bolck, Croon, and Hagenaars method.
 \item \code{"ML"}: A maximum likelihood approach that accounts for classification error.
 }}
+
+\item{align}{how supplied covariate rows are aligned with the fitted data.
+The default, \code{"rownames"}, requires unique, nonempty row names and matches
+them to the fitted observations, regardless of row count or order. Extra rows
+are allowed, but every fitted observation must be present. Automatic row
+numbers work only if they still identify the original observations; do not
+reset them after subsetting or reordering. Use \code{"position"} explicitly for
+data already in fitted-observation order; it requires exactly the same number
+of rows and ignores row names. There is no automatic positional fallback.}
 }
 \value{
 A \code{list} of class \code{reg.slca} with the following components:

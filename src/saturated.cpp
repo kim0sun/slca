@@ -39,10 +39,31 @@ List calcfreq(
       theta = x / N;
    }
 
+   // The loop's likelihood belongs to the previous iterate. Recompute it
+   // at the returned probabilities, and never publish an unfinished fit.
+   bool converged = R_finite(diff) && diff <= tol;
+   loglik = 0;
+   for (int c = 0; c < nc; c ++) {
+      if (xobs[c] > 0)
+         loglik += xobs[c] * log(theta[c]);
+   }
+   const int *mis_ = mis_begin;
+   for (int i = 0; i < nmis; i ++) {
+      beta = 0;
+      for (int j = 0; j < nrep[i]; j ++)
+         beta += theta[mis_[j]];
+      if (freq[i] > 0)
+         loglik += freq[i] * log(beta);
+      mis_ += nrep[i];
+   }
+   converged = converged && R_finite(loglik);
+
    List res;
+   res["converged"] = converged;
+   res["iterations"] = iter;
    res["freq"] = x;
    res["theta"] = theta;
-   res["loglik"] = loglik;
+   res["loglik"] = converged ? loglik : NA_REAL;
 
    return res;
 }
