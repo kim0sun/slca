@@ -4,83 +4,95 @@
 
 ## Source and scope
 
-The validated package source is local commit
-`069284455388cb4d447b8e7ed11f28e3d475c39c`. It integrates fetched public master
-`ff84ca1afab1424d8540ceb1ad39b8c079e06373` with the preserved review candidate
-`0d63dd5ca56977d4fdcaf7f1f288e252c1a6b321`, retaining the latter's correction
-history. The integration commit is
+Validated package source: `208b2f69bc6deb5657ac4a4bb2aa50ed7c152d91`.
+It integrates public master `ff84ca1afab1424d8540ceb1ad39b8c079e06373`
+with review candidate `0d63dd5ca56977d4fdcaf7f1f288e252c1a6b321`,
+retaining its correction history. Integration commit:
 `8d6188c8616f96f805778548bedd6bf7a8285101`.
 
-The comparison baseline called "1.4.1" in this review is Git commit
-`aa5ed712b7e822053fc1b7b786d37896959603ee` ("Release 1.4.1"), not a claim that
-CRAN accepted that version. DESCRIPTION remains version 1.4.1. This work does
-not submit, tag, publish, or push a release.
+The baseline called Git 1.4.1 is
+`aa5ed712b7e822053fc1b7b786d37896959603ee` ("Release 1.4.1"); this is
+not a claim of CRAN acceptance. DESCRIPTION remains version 1.4.1. No version
+bump, release tag, release publication, or CRAN submission is included.
 
-The preserved candidate includes the final-nlm bootstrap convergence fix
-(`02861a39fcabe2b717930752d7c6df51e2ab732f`) and the saturated-fit and covariate
-row-identity corrections (`44d4eb5849f402dbdf89d94f49eb836e019e761f`). The root
-CLAUDE.md was removed. Archive inspection found that R build included a Git
-worktree's .git pointer file; the scoped `^\.git$` rule now excludes it. The
-initial archive/check was abandoned before installation, then a fresh archive
-was built and checked. No package algorithms were reimplemented for this
-integration. See NEWS.md and the prior review records for the maintenance
-changes; internal zero-based/-1 encoding predates the Git 1.4.1 baseline.
+The candidate retains final-nlm bootstrap convergence (`02861a39`), saturated
+convergence and explicit covariate row identity (`44d4eb58`), and fixes formula
+environment alignment (`208b2f69`). Root CLAUDE.md is removed. A scoped
+`^\.git$` rule excludes linked-worktree metadata from source archives.
+Internal zero-based categories and -1 missing encoding predate Git 1.4.1.
+
+## Formula-environment regression correction
+
+After all-manifest-missing observations are excluded, an original-length
+external covariate previously failed with a model-frame length mismatch.
+Equal-length external inputs with reordered IDs could silently pair the wrong
+observations. Each external vector/factor is now matched through names, and
+each matrix/data frame through row names, before formula transformations.
+Extra observations are allowed; duplicate, absent, or missing fitted IDs fail.
+Factors retain levels/contrasts and matrices retain dimensions and column names.
+
+Unnamed row inputs require explicit `align = "position"` and exactly the fitted
+row count. There is no inferred positional fallback after case exclusion.
+Formula environments are not mutated. Supplied data and fitted columns take
+precedence. Dynamic lookups and hidden argument-free providers are rejected
+under ID alignment; transformation functions must use explicit covariate
+arguments. Scalar parameters and namespace constants are supported. Non-scalar
+transformation settings must be inline or captured inside a transformation
+function, since their role cannot safely be distinguished from row inputs.
+These constraints and recovery options are documented in `regress()`.
+
+The first 12 new test blocks were run against the previous installed source
+`06928445`, producing 3 failed assertions and 9 errors. The final 19 blocks
+contain 63 passing assertions, including equal-length reorderings, dropped
+observations, factors, matrices, independent inputs, transformed formulas,
+missing covariates, positional alignment, immutable saved formula environments,
+explicit-data precedence, dynamic access, qualified constants, and equality of
+actual fitted coefficients and covariance with explicit row-identified data.
 
 ## Fresh validation
 
 Environment: macOS 26.5.2 arm64, R 4.5.0, Apple clang 21.0.0, MacOSX26.5 SDK,
-Rcpp 1.1.2, testthat 3.3.2. User Makevars, R profile, and R environment files
-were disabled for build/install/check (`R_MAKEVARS_USER`, `R_PROFILE_USER`, and
-`R_ENVIRON_USER` set to `/dev/null`). Build, installation libraries, check
-output, and supplemental scripts were kept outside the worktree.
+Rcpp 1.1.2, testthat 3.3.2. User Makevars, R profiles, and R environment files
+were disabled with their respective environment variables set to `/dev/null`.
+Build output, check directories, and installation libraries were outside the
+worktree.
 
-- `R CMD build`: passed.
-- Archive inspection: 87 files; all 86 files other than build-normalized
-  DESCRIPTION are byte-identical to the validated source. Required package
-  directories and tests are present. Git metadata, CLAUDE.md, maintenance
-  records, cran-comments.md, research directories, and compiled/check output
-  are absent. Archive SHA-256:
-  `adc32b04387df3f85ef78293b47acced6ebd27b07c034ee1e32768294a16ab27`.
-- `R CMD check --as-cran --run-donttest`: **0 errors, 1 warning, 1 note**.
-  CRAN incoming feasibility, dependencies, compiled-code checks, examples,
-  code/documentation consistency, tests, and PDF manual passed. Examples took
-  about 14 seconds and had no timing note.
-- Check test suite: **201 passes, 0 failures, 0 warnings, 0 skips**. A separate
-  installation with `R CMD INSTALL --install-tests` also passed all 201
-  assertions across 45 test blocks using the installed namespace.
-- Supplemental installed-package verification: **26 checks across six probes
-  passed**. They cover public bootstrap propagation of final-nlm failure,
-  selection among multiple starts, saturated-solver iteration boundaries and
-  likelihood consistency, suppression of finite unfinished saturated results,
-  row-ID alignment with shuffled/extra rows and covariate NA, and explicit
-  covariate data after case exclusion. Scoped mocks test failure propagation;
-  these probes do not establish general optimizer convergence or inferential
-  validity.
+- `R CMD build`: passed. Archive has 88 files; 87 files other than build-normalized
+  DESCRIPTION match source bytes. No Git metadata, CLAUDE.md, maintenance records,
+  cran-comments.md, private research, compiled output, or check output is included.
+  Archive SHA-256:
+  `f04124596cb1b0b48c003f64145b6ada6eb48d66a1717a486bc225088eef3ce9`.
+- `R CMD check --as-cran --run-donttest`: **0 errors, 1 warning, 2 notes**.
+  Incoming feasibility, dependencies, compiled code, examples, tests,
+  documentation consistency, and PDF manual passed.
+- Full check and separate installed-package suite: **264 passes across 64 test
+  blocks**, with zero failures, errors, test warnings, or skips.
+- Supplemental installed-package checks: **29 assertions across six probes**,
+  all passed. They cover hybrid bootstrap failure propagation and start selection,
+  saturated-solver boundaries and likelihood, suppression of unfinished results,
+  extra/reordered covariate rows and NA, explicit covariates after case exclusion,
+  actionable unnamed-input rejection, and named-environment fit equivalence.
+  Scoped failure mocks do not establish general optimizer convergence or
+  inferential validity.
 
-The warning is from the installed R framework's `R_ext/Boolean.h`:
-`unknown warning group '-Wfixed-enum-extension'`. It persists without user
-Makevars and is not attributed to a package source pragma. The HTML-manual
-note reports an old HTML Tidy and missing V8, so HTML validation and math
-rendering were skipped. testthat also emits a startup message that it was
-built under R 4.5.2; the test results above distinguish that environment
-message from test warnings. None of these limitations was suppressed.
+The warning originates in the installed R framework's `R_ext/Boolean.h`:
+unknown warning group `-Wfixed-enum-extension`. One note reports old HTML Tidy
+and unavailable V8, skipping HTML validation and math rendering. The other
+reports the compare example taking 5.181 seconds elapsed (4.736 CPU seconds),
+slightly above the five-second example threshold; total examples took 16 seconds.
+The earlier `06928445` check had 0 errors, 1 warning, 1 note and 201 assertions;
+these are historical results, superseded by the run above. testthat's startup
+message about being built under R 4.5.2 is distinct from test warnings.
 
-## Remaining issue and release limits
+## Integration and release limits
 
-The supplemental probes reproduce a covariate-input limitation: after one
-all-manifest-missing observation is excluded from a 100-row fit, calling
-`regress(fit, l ~ x)` with omitted `data` and an original-length environmental
-`x` fails with `variable lengths differ`. Supplying the original row-identified
-covariate data explicitly via `data=` succeeds and aligns the retained 99
-observations. The omitted-data case was recorded separately as a known issue,
-not counted as a successful regression assertion. It remains unresolved in
-this candidate and should be triaged before describing the maintenance work
-as covering every regression input path.
+The preserved local source changes were compared file by file with the validated
+candidate. Their corrections are retained; subsequent convergence and row-ID
+fixes supersede weaker earlier implementations. Original source commit ancestry
+must be retained through normal merges, without replaying duplicate patches.
 
-Windows, Linux, other R versions, minimum dependencies, and a new platform
-matrix have not been checked for this source. The successful historical or
-baseline CI checks do not substitute for those runs. This is a locally
-validated integration candidate, not an assertion of CRAN readiness.
-
-This record and its maintenance index entry are excluded from source archives;
-the follow-up documentation commit does not change the tested package files.
+The new platform matrix must run on the PR and final master commit. Historical
+CI does not substitute for current checks. Successful checks are not a claim of
+CRAN readiness or general statistical validity. This record is excluded from
+source archives; documentation-only follow-up commits do not change the tested
+package bytes.
