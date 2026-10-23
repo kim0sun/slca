@@ -1,3 +1,11 @@
+# slca (development version)
+
+* Fixed out-of-bounds reads when reordering or summarizing fitted objects saved with the older response encoding, including the bundled NLSY fits. Native likelihood calculations now reject out-of-range response codes.
+
+* Updated the bundled NLSY fits' internal response caches to the current encoding without refitting or changing their stored parameter estimates.
+
+* Increased the default absolute-bootstrap iteration limit in `gof()` from 100 to 5000; explicit `maxiter` values and `compare()` defaults are unchanged.
+
 # slca 1.4.1
 
 * Aligned formula-environment regression covariates by their observation IDs before transformations, including factors and matrices. Unnamed environment covariates now require explicit positional alignment; ambiguous original-length inputs receive actionable errors.

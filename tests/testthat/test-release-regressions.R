@@ -31,3 +31,22 @@ test_that("hybrid bootstrap requires convergence of the returned nlm fit", {
    est$ll <- Inf
    expect_false(bootstrap_converged(est, "hybrid"))
 })
+
+test_that("absolute bootstrap uses a larger default but respects explicit limits", {
+   expect_equal(formals(gof.slcafit)$maxiter, 5000)
+   expect_equal(formals(compare)$maxiter, 1000)
+   model <- slca(l[2] ~ y1+y2+y3)
+   fit <- estimate(model, simulate(model, nsim = 50, seed = 7)$response)
+   seen <- list()
+   local_mocked_bindings(estModel = function(method, control, par, mf, arg) {
+      seen[[length(seen) + 1L]] <<- control
+      list(par = par, ll = -1, conv = c(EM = TRUE, nlm = NA))
+   }, .package = "slca")
+   gof(fit, test = "boot", nboot = 1)
+   gof(fit, test = "boot", nboot = 1, maxiter = 100)
+   expect_equal(seen[[1]]$em.iterlim, 5000)
+   expect_equal(seen[[1]]$nlm.iterlim, 5000)
+   expect_equal(seen[[2]]$em.iterlim, 100)
+   expect_equal(seen[[2]]$nlm.iterlim, 100)
+   expect_equal(seen[[1]]$em.tol, 1e-6)
+})

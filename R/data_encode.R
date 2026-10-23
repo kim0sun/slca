@@ -89,6 +89,12 @@ count_row <- function(mf, nlev, na.rm) {
    }
 }
 
+encode_response <- function(mf, child) {
+   mf[] <- lapply(mf, function(x) as.numeric(x) - 1)
+   mf[is.na(mf)] <- -1
+   unlist(lapply(child, function(x) t(mf[x])), use.names = FALSE)
+}
+
 proc_data <- function(data, model, na.rm) {
    child <- model$measure$indicator
    f <- paste("~", paste(unlist(child), collapse = "+"))
@@ -112,17 +118,10 @@ proc_data <- function(data, model, na.rm) {
 
    res <- count_row(mf, nlev, na.rm)
 
-   nmf <- mf
-   nmf[] <- lapply(mf, function(x) as.numeric(x) - 1)
-   nmf[is.na(nmf)] <- -1
-   attr(mf, "y") <- unlist(lapply(child, function(x) t(nmf[x])),
-                           use.names = FALSE)
+   attr(mf, "y") <- encode_response(mf, child)
    attr(mf, "levels") <- lev
    attr(mf, "y_unique") <- res$y_unique
-   nyu <- res$y_unique
-   nyu[] <- lapply(nyu, function(x) as.numeric(x) - 1)
-   attr(mf, "yu") <- unlist(lapply(child, function(x)
-      t(nyu[x])), use.names = FALSE)
+   attr(mf, "yu") <- encode_response(res$y_unique, child)
    attr(mf, "freq") <- res$freq
    attr(mf, "theta") <- res$theta
    attr(mf, "loglik") <- res$loglik
@@ -147,11 +146,7 @@ proc_data2 <- function(data, model, na.rm) {
    lev <- lapply(mf, levels)
    nlev <- sapply(mf, nlevels)
    mf[] <- lapply(mf, as.numeric)
-   nmf <- mf
-   nmf[] <- lapply(mf, function(x) as.numeric(x) - 1)
-   nmf[is.na(nmf)] <- -1
-   attr(mf, "y") <- unlist(lapply(child, function(x) t(nmf[x])),
-                           use.names = FALSE)
+   attr(mf, "y") <- encode_response(mf, child)
    attr(mf, "levels") <- lev
    mf
 }

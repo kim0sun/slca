@@ -191,7 +191,8 @@ summary.slcafit <- function(object, ...) {
    arg <- object$arg
    mf <- object$mf
    ll <- calcModel(
-      attr(mf, "yu"), nrow(attr(mf, "y_unique")),
+      encode_response(attr(mf, "y_unique"), object$model$measure$indicator),
+      nrow(attr(mf, "y_unique")),
       arg$nvar, unlist(arg$nlev), object$par, arg$fix0,
       arg$ref - 1, arg$nlv, arg$nrl, arg$nlf,
       arg$npi, arg$ntau, arg$nrho, arg$ul, arg$vl,
@@ -627,6 +628,10 @@ reorder.slcafit <- function(x, ...) {
       )
    }
 
+   # Saved fits may still contain the pre-1.4.1 response encoding.
+   attr(x$mf, "y") <- encode_response(x$mf, x$model$measure$indicator)
+   attr(x$mf, "yu") <- encode_response(
+      attr(x$mf, "y_unique"), x$model$measure$indicator)
    etc <- calcModel(
       attr(x$mf, "y"), arg$nobs, arg$nvar, unlist(arg$nlev),
       par, arg$fix0, arg$ref - 1, arg$nlv, arg$nrl, arg$nlf,

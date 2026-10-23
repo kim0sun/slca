@@ -80,7 +80,7 @@ restore_missing_pattern <- function(data, template) {
 #' \method{gof}{slcafit}(
 #'    object, ..., test = c("none", "chisq", "boot"),
 #'    nboot = 100, plot = FALSE,
-#'    maxiter = 100, tol = 1e-6, verbose = FALSE
+#'    maxiter = 5000, tol = 1e-6, verbose = FALSE
 #' )
 #'
 #' @param object an object of class `slcafit`, or a list of `slcafit` objects.
@@ -90,7 +90,7 @@ restore_missing_pattern <- function(data, template) {
 #' @param test a character string specifying the type of test to be conducted. If `"chisq"`, a chi-squared test is conducted. If `"boot"`, a bootstrap test is conducted.
 #' @param nboot a positive number specifying the number of bootstrap rounds to be performed. Non-integer values are rounded up.
 #' @param plot a logical value indicating whether to print histogram of G-squared statistics for boostrap samples, only for `test = "boot"`. The default is `FALSE`.
-#' @param maxiter an integer specifying the maximum number of iterations allowed for the estimation process during each bootstrap iteration. The default is 100.
+#' @param maxiter an integer specifying the maximum number of iterations allowed for the estimation process during each bootstrap iteration. The default is 5000.
 #' @param tol a numeric value specifying the convergence tolerance for each bootstrap iteration. The default is `1e-6`.
 #' @param verbose a logical value indicating whether to print progress updates on the number of bootstrapping rounds completed.
 #'
@@ -157,7 +157,7 @@ gof_model_name <- function(expr, object, i) {
 gof.slcafit <- function(
       object, ...,  test = c("none", "chisq", "boot"),
       nboot = 100, plot = FALSE,
-      maxiter = 100, tol = 1e-6, verbose = FALSE
+      maxiter = 5000, tol = 1e-6, verbose = FALSE
 ) {
    cl <- match.call(expand.dots = FALSE)
    objects <- list(object, ...)

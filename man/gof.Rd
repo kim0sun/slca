@@ -10,7 +10,7 @@ gof(object, ...)
 \method{gof}{slcafit}(
    object, ..., test = c("none", "chisq", "boot"),
    nboot = 100, plot = FALSE,
-   maxiter = 100, tol = 1e-6, verbose = FALSE
+   maxiter = 5000, tol = 1e-6, verbose = FALSE
 )
 
 \method{gof}{slcafit}(
@@ -19,7 +19,7 @@ gof(object, ...)
   test = c("none", "chisq", "boot"),
   nboot = 100,
   plot = FALSE,
-  maxiter = 100,
+  maxiter = 5000,
   tol = 1e-06,
   verbose = FALSE
 )
@@ -37,7 +37,7 @@ List names are used as model labels; unnamed elements are labeled \verb{[[1]]},
 
 \item{plot}{a logical value indicating whether to print histogram of G-squared statistics for boostrap samples, only for \code{test = "boot"}. The default is \code{FALSE}.}
 
-\item{maxiter}{an integer specifying the maximum number of iterations allowed for the estimation process during each bootstrap iteration. The default is 100.}
+\item{maxiter}{an integer specifying the maximum number of iterations allowed for the estimation process during each bootstrap iteration. The default is 5000.}
 
 \item{tol}{a numeric value specifying the convergence tolerance for each bootstrap iteration. The default is \code{1e-6}.}
 
