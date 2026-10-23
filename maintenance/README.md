@@ -5,6 +5,13 @@ This is the entry point for maintaining the public `slca` R package. Start with
 steps. This directory is repository documentation, excluded from source packages
 by the scoped `^maintenance$` rule in [.Rbuildignore](../.Rbuildignore).
 
+Current status (2026-10-23): local `master` includes the reviewed maintenance
+candidate through `5db21ad`. Fresh tests pass (264 assertions), and the clean
+source check has 0 errors, 1 toolchain warning, and 1 HTML-tooling note.
+Proportional assignment is unchanged. See the validation record for output
+compatibility changes. No push, release, or CRAN submission was performed;
+the next release gate is cross-platform CI on the published commit.
+
 ## Sources of truth
 
 - [Public issues](https://github.com/kim0sun/slca/issues): reports and discussion.

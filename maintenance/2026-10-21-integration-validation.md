@@ -2,6 +2,62 @@
 
 [Maintenance workflow](README.md)
 
+## Local master integration, 2026-10-23
+
+At the maintainer's request, local `master` was fast-forwarded from
+`5531aeac953f9b598929902e147e302dedf55d73` to
+`5db21ad70561a39aa549b1f98e991ba968fa4678`, retaining the existing correction
+history. No numerical implementation was edited during this integration.
+`prop` remains posterior-probability weighting, not random assignment.
+Package version remains 1.4.1. No remote push or submission was performed.
+
+Fresh checks used R 4.5.0 on macOS arm64, with user Makevars, R profiles, and
+R environment files disabled. The complete suite passed all 264 assertions
+in 64 blocks, with no failures, errors, warnings, or skips. A clean source
+archive made from `git archive 5db21ad` passed
+`R CMD check --as-cran --run-donttest` with 0 errors, 1 warning, and 1 note.
+All examples, installed-package tests (264 passes), and the PDF manual passed.
+The warning is the R header's unknown `-Wfixed-enum-extension` warning group;
+the note is unavailable modern HTML Tidy/V8. There was no example-time note.
+Archive SHA-256:
+`a86d3936b5c806c005a985ad2061dedbccae1e9ef0596798b25df33bc6d5e30e`.
+The archive excludes Git metadata, maintenance records, private research,
+review logs, and compiled artifacts. An earlier concurrent worktree build
+captured a compiler temporary file and was discarded as validation evidence;
+the clean Git export removed that build-environment artifact.
+
+Compatibility was checked against the actual pre-integration master, not
+against CRAN. With identical data and seeds, all six modal/prop by naive/BCH/ML
+regression snapshots matched exactly (coefficients, SE, covariance, summary,
+and confidence-interval output). The complete-data fit snapshot also matched
+exactly. A missing-data fit retained identical estimates, likelihood, AIC,
+BIC, posterior, score, and parameter output; G-squared changed from
+2.8420410809897021 to 2.8420410930912112 because saturated likelihood is now
+evaluated at the returned probabilities. Other data can show changes in the
+last printed G-squared digits, so exact output parity is not claimed.
+
+Intentional behavior changes were reproduced:
+
+- An unfinished 20,000-iteration saturated fit now returns NA with a warning,
+  rather than the former finite log likelihood of approximately -10.3559.
+- Reversed equal-length covariate data are matched by row ID. A synthetic
+  example's erroneous slope -0.002364741 becomes +0.002365126, equal to the
+  correctly ordered result.
+- Named formula-environment covariates are aligned after case exclusion.
+  Unnamed observation vectors now require explicit `align = "position"` and
+  the fitted observation order, rather than silent positional matching.
+- A hybrid bootstrap refit with EM TRUE and nlm FALSE is now rejected.
+  Failure counts and bootstrap p-values can therefore change.
+- Existing candidate documentation changes also reduce diagnostic bootstrap
+  examples to five replicates and use a 500-row, two-class NLSY syntax example.
+  Their output is not comparable to the previous full-data examples.
+
+Detailed local reproduction scripts, before/after snapshots, output comparisons,
+and logs are retained in the package-excluded review bundle. Private research
+outputs are not copied into this public maintenance record. Cross-platform CI
+on the eventual published commit remains pending; local success is not a CRAN
+acceptance claim. The historical validation below remains available for context.
+
 ## Source and scope
 
 Validated package source: `208b2f69bc6deb5657ac4a4bb2aa50ed7c152d91`.
