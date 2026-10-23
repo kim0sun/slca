@@ -33,18 +33,31 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.4.1" id="slca-141">slca 1.4.1<a class="anchor" aria-label="anchor" href="#slca-141"></a></h2>
-<ul><li>Fixed saturated-frequency handling for partially missing data when missing patterns map to candidate observed cells of equal length.</li>
-<li>Updated internal response encoding to use <code>-1</code> for missing values and zero-based category indices for C++ calculations.</li>
-<li>Kept simulated manifest responses as plain factor data frames without internal encoding attributes.</li>
-<li>Fixed <code><a href="../reference/predict.slcafit.html">predict.slcafit()</a></code> when <code>newdata</code> is omitted.</li>
-<li>Added validation for <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> inputs, simulation levels, and initial parameter lengths.</li>
-<li>Added validation for model formulas, regression latent outcomes, bootstrap counts, and simulation counts.</li>
-<li>Fixed simulated factor responses when some generated categories are absent in a sample.</li>
-<li>Fixed Hessian-based covariance extraction and regression confidence interval returns.</li>
-<li>Fixed regression standard errors and Wald p-values in <code>summary.reg.slca()</code>.</li>
-<li>Hardened <code><a href="../reference/gof.html">gof()</a></code> list calls and bias-adjusted regression internals.</li>
-<li>Recorded bootstrap replicate failures in model-fit diagnostics instead of returning error objects.</li>
-<li>Clarified the documented structure of <code>convergence</code>, <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code>, and simulated responses.</li>
+<ul><li><p>Aligned formula-environment regression covariates by their observation IDs before transformations, including factors and matrices. Unnamed environment covariates now require explicit positional alignment; ambiguous original-length inputs receive actionable errors.</p></li>
+<li><p>Reported saturated-table EM convergence and withheld absolute fit statistics for unfinished iterations.</p></li>
+<li><p>Aligned regression covariates by row identity even with equal row counts; added explicit positional alignment.</p></li>
+<li><p>Clarified categorical level requirements for constrained indicators and added regression coverage.</p></li>
+<li><p>Required final-stage convergence for hybrid bootstrap refits.</p></li>
+<li><p>Declared testthat &gt;= 3.1.7 for the mocked-binding test helpers.</p></li>
+<li><p>Corrected missing-item scores used for standard errors and covariance matrices.</p></li>
+<li><p>Included compatible unobserved cells in large saturated response tables; oversized tables now warn and return unavailable absolute fit statistics.</p></li>
+<li><p>Preserved missingness and rejected nonconverged fits in absolute bootstrap tests, with finite-sample p-values; relative tests reject negative observed likelihood ratios.</p></li>
+<li><p>Corrected reference logits and Hessian transformations after class reordering.</p></li>
+<li><p>Fixed confidence interval subsets and regression odds-ratio intervals, multiple starts with zero constraints, and simulated log-likelihoods for multiple measurement blocks.</p></li>
+<li><p>Assigned modal ties to the first class consistently, rejected cyclic model structures, and excluded all-indicator-missing observations as documented.</p></li>
+<li><p>Fixed saturated-frequency handling for partially missing data when missing patterns map to candidate observed cells of equal length.</p></li>
+<li><p>Updated internal response encoding to use <code>-1</code> for missing values and zero-based category indices for C++ calculations.</p></li>
+<li><p>Kept simulated manifest responses as plain factor data frames without internal encoding attributes.</p></li>
+<li><p>Fixed <code><a href="../reference/predict.slcafit.html">predict.slcafit()</a></code> when <code>newdata</code> is omitted.</p></li>
+<li><p>Added validation for <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> inputs, simulation levels, and initial parameter lengths.</p></li>
+<li><p>Added validation for model formulas, regression latent outcomes, bootstrap counts, and simulation counts.</p></li>
+<li><p>Fixed simulated factor responses when some generated categories are absent in a sample.</p></li>
+<li><p>Fixed Hessian-based covariance extraction and regression confidence interval returns.</p></li>
+<li><p>Fixed regression standard errors and Wald p-values in <code>summary.reg.slca()</code>.</p></li>
+<li><p>Hardened <code><a href="../reference/gof.html">gof()</a></code> list inputs, <code><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call()</a></code> calls, and bias-adjusted regression internals.</p></li>
+<li><p>Recorded bootstrap replicate failures in model-fit diagnostics instead of returning error objects.</p></li>
+<li><p>Strengthened the relative bootstrap likelihood-ratio test with convergence checks, multiple starting values, missing-pattern preservation, and finite-sample p-values.</p></li>
+<li><p>Clarified the documented structure of <code>convergence</code>, <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code>, and simulated responses.</p></li>
 </ul></div>
   </main></div>
 

@@ -44,7 +44,8 @@
 <span><span class="fu">regress</span><span class="op">(</span></span>
 <span>   <span class="va">object</span>, <span class="va">formula</span>, data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sys.parent.html" class="external-link">parent.frame</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>   imputation <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"modal"</span>, <span class="st">"prop"</span><span class="op">)</span>,</span>
-<span>   method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"naive"</span>, <span class="st">"BCH"</span>, <span class="st">"ML"</span><span class="op">)</span>, <span class="va">...</span></span>
+<span>   method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"naive"</span>, <span class="st">"BCH"</span>, <span class="st">"ML"</span><span class="op">)</span>, <span class="va">...</span>,</span>
+<span>   align <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"rownames"</span>, <span class="st">"position"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S3 method for class 'slcafit'</span></span>
@@ -54,7 +55,8 @@
 <span>  data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sys.parent.html" class="external-link">parent.frame</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  imputation <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"modal"</span>, <span class="st">"prop"</span><span class="op">)</span>,</span>
 <span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"naive"</span>, <span class="st">"BCH"</span>, <span class="st">"ML"</span><span class="op">)</span>,</span>
-<span>  <span class="va">...</span></span>
+<span>  <span class="va">...</span>,</span>
+<span>  align <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"rownames"</span>, <span class="st">"position"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -75,7 +77,11 @@
 
 
 <dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
-<dd><p>an optional <code>data.frame</code> containing the exogenous variables of interest. If omitted, the variables are taken from the parent environment.</p></dd>
+<dd><p>an optional <code>data.frame</code> containing the exogenous variables of
+interest. Variables absent from the fitted data and <code>data</code> are taken from
+the formula's environment and aligned before formula transformations are
+evaluated. Such vectors and factors need observation IDs in <code><a href="https://rdrr.io/r/base/names.html" class="external-link">names()</a></code>;
+matrices and data frames need observation IDs in <code><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames()</a></code>.</p></dd>
 
 
 <dt id="arg-imputation">imputation<a class="anchor" aria-label="anchor" href="#arg-imputation"></a></dt>
@@ -89,6 +95,30 @@
 <li><p><code>"BCH"</code>: The bias-adjusted Bolck, Croon, and Hagenaars method.</p></li>
 <li><p><code>"ML"</code>: A maximum likelihood approach that accounts for classification error.</p></li>
 </ul></dd>
+
+
+<dt id="arg-align">align<a class="anchor" aria-label="anchor" href="#arg-align"></a></dt>
+<dd><p>how supplied covariate rows are aligned with the fitted data.
+The default, <code>"rownames"</code>, requires unique, nonempty row names and matches
+them to the fitted observations, regardless of row count or order. Extra rows
+are allowed, but every fitted observation must be present. Automatic row
+numbers work only if they still identify the original observations; do not
+reset them after subsetting or reordering. Use <code>"position"</code> explicitly for
+data already in fitted-observation order; it requires exactly the same number
+of rows and ignores row names. There is no automatic positional fallback.
+These rules also apply separately to each environment covariate, even when
+its length already equals the fitted sample size. Unnamed environment
+covariates require explicit <code>align = "position"</code> and fitted-row order.
+After observations have been excluded, an unnamed original-length vector
+cannot be aligned safely: supply <code>data</code> with preserved row IDs, or name the
+vector with its original observation IDs. Matrix covariates remain matrices
+and factor levels are retained. Unnamed scalar formula parameters are left
+unchanged, not recycled as covariates. Non-scalar transformation settings
+(such as spline knots or factor levels) must be written inline or captured
+inside a transformation function; otherwise they are treated as row inputs.
+Transformation functions must use their explicit covariate arguments rather
+than retrieve hidden observation vectors. Use explicit covariate columns
+instead of dynamic <code><a href="https://rdrr.io/r/base/get.html" class="external-link">get()</a></code> or <code><a href="https://rdrr.io/r/base/eval.html" class="external-link">eval()</a></code> lookups with row-ID alignment.</p></dd>
 
 </dl></div>
     <div class="section level2">

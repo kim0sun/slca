@@ -22,5 +22,8 @@ Useful links:
 
 Authors:
 
+- Youngsun Kim <yskstat@gmail.com>
+  ([ORCID](https://orcid.org/0000-0001-8003-1939))
+
 - Hwan Chung <hwanch@korea.ac.kr>
   ([ORCID](https://orcid.org/0000-0002-8969-9086))

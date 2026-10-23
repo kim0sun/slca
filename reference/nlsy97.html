@@ -154,14 +154,18 @@ The dataset focuses on youth born in 1984 and tracks three types of substance us
 <span class="r-out co"><span class="r-pr">#&gt;</span>    Likelihood Ratio (G-squared)        0.000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      P(&gt;Chi)                           1.000</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># \donttest{</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># A reproducible subset and two-class models keep these syntax examples small.</span></span></span>
+<span class="r-in"><span><span class="co"># Choose class counts and fit the full data separately for substantive inference.</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">20261017</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">example_data</span> <span class="op">&lt;-</span> <span class="va">nlsy97</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample.int</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">nlsy97</span><span class="op">)</span>, <span class="fl">500</span><span class="op">)</span>, <span class="op">]</span></span></span>
 <span class="r-in"><span><span class="co"># JLCA</span></span></span>
 <span class="r-in"><span><span class="va">model_jlca</span> <span class="op">&lt;-</span> <span class="fu"><a href="slca.html">slca</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>   <span class="fu">SMK_98</span><span class="op">(</span><span class="fl">3</span><span class="op">)</span> <span class="op">~</span> <span class="va">ESMK_98</span> <span class="op">+</span> <span class="va">FSMK_98</span> <span class="op">+</span> <span class="va">DSMK_98</span> <span class="op">+</span> <span class="va">HSMK_98</span>,</span></span>
-<span class="r-in"><span>   <span class="fu">DRK_98</span><span class="op">(</span><span class="fl">3</span><span class="op">)</span> <span class="op">~</span> <span class="va">EDRK_98</span> <span class="op">+</span> <span class="va">CDRK_98</span> <span class="op">+</span> <span class="va">WDRK_98</span> <span class="op">+</span> <span class="va">BDRK_98</span>,</span></span>
-<span class="r-in"><span>   <span class="fu">MRJ_98</span><span class="op">(</span><span class="fl">3</span><span class="op">)</span> <span class="op">~</span> <span class="va">EMRJ_98</span> <span class="op">+</span> <span class="va">CMRJ_98</span> <span class="op">+</span> <span class="va">OMRJ_98</span> <span class="op">+</span> <span class="va">SMRJ_98</span>,</span></span>
-<span class="r-in"><span>   <span class="fu">SUB_98</span><span class="op">(</span><span class="fl">4</span><span class="op">)</span> <span class="op">~</span> <span class="va">SMK_98</span> <span class="op">+</span> <span class="va">DRK_98</span> <span class="op">+</span> <span class="va">MRJ_98</span></span></span>
-<span class="r-in"><span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="estimate.html">estimate</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">nlsy97</span>, control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>   <span class="fu">SMK_98</span><span class="op">(</span><span class="fl">2</span><span class="op">)</span> <span class="op">~</span> <span class="va">ESMK_98</span> <span class="op">+</span> <span class="va">FSMK_98</span> <span class="op">+</span> <span class="va">DSMK_98</span> <span class="op">+</span> <span class="va">HSMK_98</span>,</span></span>
+<span class="r-in"><span>   <span class="fu">DRK_98</span><span class="op">(</span><span class="fl">2</span><span class="op">)</span> <span class="op">~</span> <span class="va">EDRK_98</span> <span class="op">+</span> <span class="va">CDRK_98</span> <span class="op">+</span> <span class="va">WDRK_98</span> <span class="op">+</span> <span class="va">BDRK_98</span>,</span></span>
+<span class="r-in"><span>   <span class="fu">MRJ_98</span><span class="op">(</span><span class="fl">2</span><span class="op">)</span> <span class="op">~</span> <span class="va">EMRJ_98</span> <span class="op">+</span> <span class="va">CMRJ_98</span> <span class="op">+</span> <span class="va">OMRJ_98</span> <span class="op">+</span> <span class="va">SMRJ_98</span>,</span></span>
+<span class="r-in"><span>   <span class="fu">SUB_98</span><span class="op">(</span><span class="fl">2</span><span class="op">)</span> <span class="op">~</span> <span class="va">SMK_98</span> <span class="op">+</span> <span class="va">DRK_98</span> <span class="op">+</span> <span class="va">MRJ_98</span></span></span>
+<span class="r-in"><span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="estimate.html">estimate</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">example_data</span>, control <span class="op">=</span> <span class="fu"><a href="slcaControl.html">slcaControl</a></span><span class="op">(</span>em.tol <span class="op">=</span> <span class="fl">1e-6</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">model_jlca</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Structural Latent Class Model</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -172,7 +176,7 @@ The dataset focuses on youth born in 1984 and tracks three types of substance us
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Latent variables (Root*):                                     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Label: SMK_98 DRK_98 MRJ_98 SUB_98*</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  nclass: 3      3      3      4      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  nclass: 2      2      2      2      </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Measurement model:                                                     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   SMK_98 -&gt; { ESMK_98, FSMK_98, DSMK_98, HSMK_98 }  a</span>
@@ -213,66 +217,63 @@ The dataset focuses on youth born in 1984 and tracks three types of substance us
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Frequencies for each categories:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           response</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>               1    2  &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    ESMK_98  558  446     0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    FSMK_98  413  591     0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    DSMK_98  179  825     0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    HSMK_98  115  889     0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    EDRK_98  735  269     0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    CDRK_98  521  483     0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    WDRK_98  218  786     0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    BDRK_98  288  716     0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    EMRJ_98  383  621     0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    CMRJ_98  226  778     0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    OMRJ_98   92  912     0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    SMRJ_98   98  906     0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    ESMK_98  280  220     0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    FSMK_98  204  296     0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    DSMK_98   93  407     0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    HSMK_98   52  448     0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    EDRK_98  374  126     0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    CDRK_98  265  235     0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    WDRK_98  110  390     0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    BDRK_98  137  363     0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    EMRJ_98  191  309     0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    CMRJ_98  110  390     0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    OMRJ_98   42  458     0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    SMRJ_98   44  456     0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Summary of model fit</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Number of observations                 1004</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Number of free parameters                63</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Log-likelihood                    -4095.382</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Number of observations                  500</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Number of free parameters                31</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Log-likelihood                    -2156.738</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Information criteria                       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Akaike (AIC)                     8316.765</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Bayesian (BIC)                   8626.205</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Akaike (AIC)                     4375.477</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Bayesian (BIC)                   4506.130</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Chi-squared Tests                          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Residual degree of freedom (df)      4032</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Pearson Chi-squared (X-squared)   370.887</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Residual degree of freedom (df)      4064</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Pearson Chi-squared (X-squared)   492.146</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      P(&gt;Chi)                           1.000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Likelihood Ratio (G-squared)      355.584</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Likelihood Ratio (G-squared)      419.510</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      P(&gt;Chi)                           1.000</span>
 <span class="r-in"><span><span class="fu"><a href="param.html">param</a></span><span class="op">(</span><span class="va">model_jlca</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> PI :</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (SUB_98)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   class</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          1       2       3       4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     0.1390  0.3753  0.2845  0.2012</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          1       2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     0.5853  0.4147</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> TAU :</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (A)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      parent</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> child       1       2       3       4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     1  0.6967  0.0000  0.3736  0.4835</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     2  0.0000  0.0433  0.5368  0.1949</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     3  0.3033  0.9567  0.0896  0.3216</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> child       1       2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     1  0.1386  0.7883</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     2  0.8614  0.2117</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>              </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> parent SUB_98</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> child  SMK_98</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (B)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      parent</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> child       1       2       3       4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     1  0.1098  0.0236  0.6984  0.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     2  0.0680  0.8360  0.0826  0.6678</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     3  0.8221  0.1403  0.2190  0.3322</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> child       1       2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     1  0.2782  0.8855</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     2  0.7218  0.1145</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>              </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> parent SUB_98</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> child  DRK_98</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (C)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      parent</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> child       1       2       3       4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     1  0.0000  0.0000  0.2686  0.8803</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     2  0.1957  0.0138  0.6499  0.0387</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     3  0.8043  0.9862  0.0815  0.0809</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> child       1       2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     1  0.0248  0.4956</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     2  0.9752  0.5044</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>              </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> parent SUB_98</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> child  MRJ_98</span>
@@ -280,62 +281,62 @@ The dataset focuses on youth born in 1984 and tracks three types of substance us
 <span class="r-out co"><span class="r-pr">#&gt;</span> RHO :</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (a)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         class</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> response       1       2       3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    1(V1)  1.0000  1.0000  0.0960</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    2      0.0000  0.0000  0.9040</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    1(V2)  0.6763  1.0000  0.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    2      0.3237  0.0000  1.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    1(V3)  0.0000  0.8564  0.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    2      1.0000  0.1436  1.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    1(V4)  0.0000  0.5502  0.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    2      1.0000  0.4498  1.0000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> response       1       2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    1(V1)  1.0000  0.2568</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    2      0.0000  0.7432</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    1(V2)  1.0000  0.0000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    2      0.0000  1.0000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    1(V3)  0.4559  0.0000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    2      0.5441  1.0000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    1(V4)  0.2549  0.0000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    2      0.7451  1.0000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        V1      V2      V3      V4     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> SMK_98 ESMK_98 FSMK_98 DSMK_98 HSMK_98</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (b)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         class</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> response       1       2       3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    1(V1)  1.0000  0.4431  1.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    2      0.0000  0.5569  0.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    1(V2)  1.0000  0.0000  1.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    2      0.0000  1.0000  0.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    1(V3)  0.8023  0.0000  0.1296</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    2      0.1977  1.0000  0.8704</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    1(V4)  0.9098  0.0000  0.2841</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    2      0.0902  1.0000  0.7159</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> response       1       2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    1(V1)  1.0000  0.4638</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    2      0.0000  0.5362</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    1(V2)  1.0000  0.0000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    2      0.0000  1.0000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    1(V3)  0.4151  0.0000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    2      0.5849  1.0000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    1(V4)  0.5170  0.0000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    2      0.4830  1.0000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        V1      V2      V3      V4     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DRK_98 EDRK_98 CDRK_98 WDRK_98 BDRK_98</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (c)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         class</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> response       1       2       3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    1(V1)  0.6167  1.0000  0.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    2      0.3833  0.0000  1.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    1(V2)  0.0000  1.0000  0.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    2      1.0000  0.0000  1.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    1(V3)  0.0000  0.4071  0.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    2      1.0000  0.5929  1.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    1(V4)  0.0000  0.4336  0.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    2      1.0000  0.5664  1.0000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> response       1       2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    1(V1)  1.0000  0.2077</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    2      0.0000  0.7923</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    1(V2)  1.0000  0.0000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    2      0.0000  1.0000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    1(V3)  0.3818  0.0000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    2      0.6182  1.0000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    1(V4)  0.4000  0.0000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    2      0.6000  1.0000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        V1      V2      V3      V4     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> MRJ_98 EMRJ_98 CMRJ_98 OMRJ_98 SMRJ_98</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># JLCPA</span></span></span>
 <span class="r-in"><span><span class="va">nlsy_jlcpa</span> <span class="op">&lt;-</span> <span class="fu"><a href="slca.html">slca</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>   <span class="fu">SMK_98</span><span class="op">(</span><span class="fl">3</span><span class="op">)</span> <span class="op">~</span> <span class="va">ESMK_98</span> <span class="op">+</span> <span class="va">FSMK_98</span> <span class="op">+</span> <span class="va">DSMK_98</span> <span class="op">+</span> <span class="va">HSMK_98</span>,</span></span>
-<span class="r-in"><span>   <span class="fu">DRK_98</span><span class="op">(</span><span class="fl">3</span><span class="op">)</span> <span class="op">~</span> <span class="va">EDRK_98</span> <span class="op">+</span> <span class="va">CDRK_98</span> <span class="op">+</span> <span class="va">WDRK_98</span> <span class="op">+</span> <span class="va">BDRK_98</span>,</span></span>
-<span class="r-in"><span>   <span class="fu">MRJ_98</span><span class="op">(</span><span class="fl">3</span><span class="op">)</span> <span class="op">~</span> <span class="va">EMRJ_98</span> <span class="op">+</span> <span class="va">CMRJ_98</span> <span class="op">+</span> <span class="va">OMRJ_98</span> <span class="op">+</span> <span class="va">SMRJ_98</span>,</span></span>
-<span class="r-in"><span>   <span class="fu">SUB_98</span><span class="op">(</span><span class="fl">5</span><span class="op">)</span> <span class="op">~</span> <span class="va">SMK_98</span> <span class="op">+</span> <span class="va">DRK_98</span> <span class="op">+</span> <span class="va">MRJ_98</span>,</span></span>
-<span class="r-in"><span>   <span class="fu">SMK_03</span><span class="op">(</span><span class="fl">3</span><span class="op">)</span> <span class="op">~</span> <span class="va">ESMK_03</span> <span class="op">+</span> <span class="va">FSMK_03</span> <span class="op">+</span> <span class="va">DSMK_03</span> <span class="op">+</span> <span class="va">HSMK_03</span>,</span></span>
-<span class="r-in"><span>   <span class="fu">DRK_03</span><span class="op">(</span><span class="fl">3</span><span class="op">)</span> <span class="op">~</span> <span class="va">EDRK_03</span> <span class="op">+</span> <span class="va">CDRK_03</span> <span class="op">+</span> <span class="va">WDRK_03</span> <span class="op">+</span> <span class="va">BDRK_03</span>,</span></span>
-<span class="r-in"><span>   <span class="fu">MRJ_03</span><span class="op">(</span><span class="fl">3</span><span class="op">)</span> <span class="op">~</span> <span class="va">EMRJ_03</span> <span class="op">+</span> <span class="va">CMRJ_03</span> <span class="op">+</span> <span class="va">OMRJ_03</span> <span class="op">+</span> <span class="va">SMRJ_03</span>,</span></span>
-<span class="r-in"><span>   <span class="fu">SUB_03</span><span class="op">(</span><span class="fl">5</span><span class="op">)</span> <span class="op">~</span> <span class="va">SMK_03</span> <span class="op">+</span> <span class="va">DRK_03</span> <span class="op">+</span> <span class="va">MRJ_03</span>,</span></span>
-<span class="r-in"><span>   <span class="fu">SMK_08</span><span class="op">(</span><span class="fl">3</span><span class="op">)</span> <span class="op">~</span> <span class="va">ESMK_08</span> <span class="op">+</span> <span class="va">FSMK_08</span> <span class="op">+</span> <span class="va">DSMK_08</span> <span class="op">+</span> <span class="va">HSMK_08</span>,</span></span>
-<span class="r-in"><span>   <span class="fu">DRK_08</span><span class="op">(</span><span class="fl">3</span><span class="op">)</span> <span class="op">~</span> <span class="va">EDRK_08</span> <span class="op">+</span> <span class="va">CDRK_08</span> <span class="op">+</span> <span class="va">WDRK_08</span> <span class="op">+</span> <span class="va">BDRK_08</span>,</span></span>
-<span class="r-in"><span>   <span class="fu">MRJ_08</span><span class="op">(</span><span class="fl">3</span><span class="op">)</span> <span class="op">~</span> <span class="va">EMRJ_08</span> <span class="op">+</span> <span class="va">CMRJ_08</span> <span class="op">+</span> <span class="va">OMRJ_08</span> <span class="op">+</span> <span class="va">SMRJ_08</span>,</span></span>
-<span class="r-in"><span>   <span class="fu">SUB_08</span><span class="op">(</span><span class="fl">5</span><span class="op">)</span> <span class="op">~</span> <span class="va">SMK_08</span> <span class="op">+</span> <span class="va">DRK_08</span> <span class="op">+</span> <span class="va">MRJ_08</span>,</span></span>
-<span class="r-in"><span>   <span class="fu">PROF</span><span class="op">(</span><span class="fl">4</span><span class="op">)</span> <span class="op">~</span> <span class="va">SUB_98</span> <span class="op">+</span> <span class="va">SUB_03</span> <span class="op">+</span> <span class="va">SUB_08</span>,</span></span>
+<span class="r-in"><span>   <span class="fu">SMK_98</span><span class="op">(</span><span class="fl">2</span><span class="op">)</span> <span class="op">~</span> <span class="va">ESMK_98</span> <span class="op">+</span> <span class="va">FSMK_98</span> <span class="op">+</span> <span class="va">DSMK_98</span> <span class="op">+</span> <span class="va">HSMK_98</span>,</span></span>
+<span class="r-in"><span>   <span class="fu">DRK_98</span><span class="op">(</span><span class="fl">2</span><span class="op">)</span> <span class="op">~</span> <span class="va">EDRK_98</span> <span class="op">+</span> <span class="va">CDRK_98</span> <span class="op">+</span> <span class="va">WDRK_98</span> <span class="op">+</span> <span class="va">BDRK_98</span>,</span></span>
+<span class="r-in"><span>   <span class="fu">MRJ_98</span><span class="op">(</span><span class="fl">2</span><span class="op">)</span> <span class="op">~</span> <span class="va">EMRJ_98</span> <span class="op">+</span> <span class="va">CMRJ_98</span> <span class="op">+</span> <span class="va">OMRJ_98</span> <span class="op">+</span> <span class="va">SMRJ_98</span>,</span></span>
+<span class="r-in"><span>   <span class="fu">SUB_98</span><span class="op">(</span><span class="fl">2</span><span class="op">)</span> <span class="op">~</span> <span class="va">SMK_98</span> <span class="op">+</span> <span class="va">DRK_98</span> <span class="op">+</span> <span class="va">MRJ_98</span>,</span></span>
+<span class="r-in"><span>   <span class="fu">SMK_03</span><span class="op">(</span><span class="fl">2</span><span class="op">)</span> <span class="op">~</span> <span class="va">ESMK_03</span> <span class="op">+</span> <span class="va">FSMK_03</span> <span class="op">+</span> <span class="va">DSMK_03</span> <span class="op">+</span> <span class="va">HSMK_03</span>,</span></span>
+<span class="r-in"><span>   <span class="fu">DRK_03</span><span class="op">(</span><span class="fl">2</span><span class="op">)</span> <span class="op">~</span> <span class="va">EDRK_03</span> <span class="op">+</span> <span class="va">CDRK_03</span> <span class="op">+</span> <span class="va">WDRK_03</span> <span class="op">+</span> <span class="va">BDRK_03</span>,</span></span>
+<span class="r-in"><span>   <span class="fu">MRJ_03</span><span class="op">(</span><span class="fl">2</span><span class="op">)</span> <span class="op">~</span> <span class="va">EMRJ_03</span> <span class="op">+</span> <span class="va">CMRJ_03</span> <span class="op">+</span> <span class="va">OMRJ_03</span> <span class="op">+</span> <span class="va">SMRJ_03</span>,</span></span>
+<span class="r-in"><span>   <span class="fu">SUB_03</span><span class="op">(</span><span class="fl">2</span><span class="op">)</span> <span class="op">~</span> <span class="va">SMK_03</span> <span class="op">+</span> <span class="va">DRK_03</span> <span class="op">+</span> <span class="va">MRJ_03</span>,</span></span>
+<span class="r-in"><span>   <span class="fu">SMK_08</span><span class="op">(</span><span class="fl">2</span><span class="op">)</span> <span class="op">~</span> <span class="va">ESMK_08</span> <span class="op">+</span> <span class="va">FSMK_08</span> <span class="op">+</span> <span class="va">DSMK_08</span> <span class="op">+</span> <span class="va">HSMK_08</span>,</span></span>
+<span class="r-in"><span>   <span class="fu">DRK_08</span><span class="op">(</span><span class="fl">2</span><span class="op">)</span> <span class="op">~</span> <span class="va">EDRK_08</span> <span class="op">+</span> <span class="va">CDRK_08</span> <span class="op">+</span> <span class="va">WDRK_08</span> <span class="op">+</span> <span class="va">BDRK_08</span>,</span></span>
+<span class="r-in"><span>   <span class="fu">MRJ_08</span><span class="op">(</span><span class="fl">2</span><span class="op">)</span> <span class="op">~</span> <span class="va">EMRJ_08</span> <span class="op">+</span> <span class="va">CMRJ_08</span> <span class="op">+</span> <span class="va">OMRJ_08</span> <span class="op">+</span> <span class="va">SMRJ_08</span>,</span></span>
+<span class="r-in"><span>   <span class="fu">SUB_08</span><span class="op">(</span><span class="fl">2</span><span class="op">)</span> <span class="op">~</span> <span class="va">SMK_08</span> <span class="op">+</span> <span class="va">DRK_08</span> <span class="op">+</span> <span class="va">MRJ_08</span>,</span></span>
+<span class="r-in"><span>   <span class="fu">PROF</span><span class="op">(</span><span class="fl">2</span><span class="op">)</span> <span class="op">~</span> <span class="va">SUB_98</span> <span class="op">+</span> <span class="va">SUB_03</span> <span class="op">+</span> <span class="va">SUB_08</span>,</span></span>
 <span class="r-in"><span>   constraints <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>      <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SMK_98"</span>, <span class="st">"SMK_03"</span>, <span class="st">"SMK_08"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>      <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"DRK_98"</span>, <span class="st">"DRK_03"</span>, <span class="st">"DRK_08"</span><span class="op">)</span>,</span></span>
@@ -344,8 +345,11 @@ The dataset focuses on youth born in 1984 and tracks three types of substance us
 <span class="r-in"><span>      <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SUB_98 ~ DRK_98"</span>, <span class="st">"SUB_03 ~ DRK_03"</span>, <span class="st">"SUB_08 ~ DRK_08"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>      <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SUB_98 ~ MRJ_98"</span>, <span class="st">"SUB_03 ~ MRJ_03"</span>, <span class="st">"SUB_08 ~ MRJ_08"</span><span class="op">)</span></span></span>
 <span class="r-in"><span>   <span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="estimate.html">estimate</a></span><span class="op">(</span><span class="va">nlsy97</span>, control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="co"># }</span></span></span>
+<span class="r-in"><span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="estimate.html">estimate</a></span><span class="op">(</span><span class="va">example_data</span>, control <span class="op">=</span> <span class="fu"><a href="slcaControl.html">slcaControl</a></span><span class="op">(</span>em.tol <span class="op">=</span> <span class="fl">1e-6</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">nlsy_jlcpa</span><span class="op">$</span><span class="va">convergence</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   EM  nlm </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> TRUE   NA </span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

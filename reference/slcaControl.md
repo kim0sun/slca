@@ -84,10 +84,16 @@ slcaControl(
 variables for an observation are missing, the case is excluded (listwise
 deletion). For partially missing data, the model assumes Missing At
 Random (MAR) and uses following algorithm to integrate over the missing
-values. In the E-step, posterior probabilities are computed using only
-the observed items. In the M-step, parameter updates use these posterior
-probabilities, with expected counts for missing responses distributed
-according to current parameter estimates.
+values. Saturated-model fit statistics use response cells compatible
+with the observed patterns. If the required table is too large to
+construct, or its EM iteration does not converge within the iteration
+limit, these statistics are returned as `NA` with a warning; model
+estimation remains available. The fitted model frame records
+`saturated.converged` and `saturated.iterations` attributes for this
+calculation. In the E-step, posterior probabilities are computed using
+only the observed items. In the M-step, parameter updates use these
+posterior probabilities, with expected counts for missing responses
+distributed according to current parameter estimates.
 
 **Local maxima and multiple starting values:** The EM algorithm may
 converge to a local rather than a global maximum. To reduce this risk,

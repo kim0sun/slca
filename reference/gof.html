@@ -65,7 +65,9 @@
 
 
 <dl><dt id="arg-object">object<a class="anchor" aria-label="anchor" href="#arg-object"></a></dt>
-<dd><p>an object of class <code>slcafit</code>.</p></dd>
+<dd><p>an object of class <code>slcafit</code>, or a list of <code>slcafit</code> objects.
+List names are used as model labels; unnamed elements are labeled <code>[[1]]</code>,
+<code>[[2]]</code>, and so on.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
@@ -100,7 +102,11 @@
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>A <code>data.frame</code> containing the number of parameters (Df), loglikelihood, AIC, BIC, G-squared statistics, and the residual degree of freedom for each object.
 If a statistical test is performed (using <code>test</code>), the result includes the corresponding p-value.
-For <code>test = "boot"</code>, failed bootstrap replicates are omitted from the p-value calculation and recorded in the <code>bootFail</code>, <code>boot.fail.msgs</code>, and <code>boot.all.msgs</code> attributes.</p>
+For <code>test = "boot"</code>, failed bootstrap replicates are omitted from the p-value calculation and recorded in the <code>bootFail</code>, <code>boot.fail.msgs</code>, and <code>boot.all.msgs</code> attributes.
+Absolute bootstrap samples retain the fitted data's missing-value pattern.
+Nonconverged refits are counted as failures. With \(B\) successful
+replicates and \(b\) statistics at least as large as observed, the
+bootstrap p-value is \((b + 1)/(B + 1)\).</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -110,6 +116,7 @@ For <code>test = "boot"</code>, failed bootstrap replicates are omitted from the
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://magrittr.tidyverse.org" class="external-link">magrittr</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">20261017</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">gss7677</span><span class="op">[</span><span class="va">gss7677</span><span class="op">$</span><span class="va">COHORT</span> <span class="op">==</span> <span class="st">"YOUNG"</span>, <span class="op">]</span></span></span>
 <span class="r-in"><span><span class="va">stat2</span> <span class="op">&lt;-</span> <span class="fu"><a href="slca.html">slca</a></span><span class="op">(</span><span class="fu">status</span><span class="op">(</span><span class="fl">2</span><span class="op">)</span> <span class="op">~</span> <span class="va">PAPRES</span> <span class="op">+</span> <span class="va">PADEG</span> <span class="op">+</span> <span class="va">MADEG</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>   <span class="fu"><a href="estimate.html">estimate</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">data</span>, control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></span></span>
@@ -122,28 +129,32 @@ For <code>test = "boot"</code>, failed bootstrap replicates are omitted from the
 <span class="r-out co"><span class="r-pr">#&gt;</span> Analysis of Goodness of Fit Table</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       Df  logLik    AIC    BIC     Gsq Res. Df</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> stat2 21 -1179.2 2400.4 2489.5 115.979      53</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> stat3 32 -1139.3 2342.6 2478.5  36.204      42</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> stat4 43 -1135.4 2356.8 2539.4  28.423      31</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> stat2 21 -1179.2 2400.4 2489.0 115.980      53</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> stat3 32 -1139.3 2342.6 2477.7  36.204      42</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> stat4 43 -1135.4 2356.8 2538.3  28.424      31</span>
 <span class="r-in"><span><span class="fu">gof</span><span class="op">(</span><span class="va">stat2</span>, <span class="va">stat3</span>, <span class="va">stat4</span>, test <span class="op">=</span> <span class="st">"chisq"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Analysis of Goodness of Fit Table</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       Df  logLik    AIC    BIC     Gsq Res. Df Pr(&gt;Chi)    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> stat2 21 -1179.2 2400.4 2489.5 115.979      53 1.34e-06 ***</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> stat3 32 -1139.3 2342.6 2478.5  36.204      42   0.7226    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> stat4 43 -1135.4 2356.8 2539.4  28.423      31   0.5993    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> stat2 21 -1179.2 2400.4 2489.0 115.980      53 1.34e-06 ***</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> stat3 32 -1139.3 2342.6 2477.7  36.204      42   0.7225    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> stat4 43 -1135.4 2356.8 2538.3  28.424      31   0.5992    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
 <span class="r-in"><span><span class="co"># \donttest{</span></span></span>
-<span class="r-in"><span><span class="fu">gof</span><span class="op">(</span><span class="va">stat2</span>, <span class="va">stat3</span>, <span class="va">stat4</span>, test <span class="op">=</span> <span class="st">"boot"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># Five replicates illustrate the interface only; use more for inference.</span></span></span>
+<span class="r-in"><span><span class="va">absolute_boot</span> <span class="op">&lt;-</span> <span class="fu">gof</span><span class="op">(</span><span class="va">stat2</span>, <span class="va">stat3</span>, <span class="va">stat4</span>, test <span class="op">=</span> <span class="st">"boot"</span>,</span></span>
+<span class="r-in"><span>                     nboot <span class="op">=</span> <span class="fl">5</span>, maxiter <span class="op">=</span> <span class="fl">5000</span>, tol <span class="op">=</span> <span class="fl">1e-6</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">absolute_boot</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Analysis of Goodness of Fit Table</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       Df  logLik    AIC    BIC     Gsq Res. Df Pr(Boot)    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> stat2 21 -1179.2 2400.4 2489.5 115.979      53   &lt;2e-16 ***</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> stat3 32 -1139.3 2342.6 2478.5  36.204      42     0.19    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> stat4 43 -1135.4 2356.8 2539.4  28.423      31     0.39    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       Df  logLik    AIC    BIC     Gsq Res. Df Pr(Boot)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> stat2 21 -1179.2 2400.4 2489.0 115.980      53   0.1667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> stat3 32 -1139.3 2342.6 2477.7  36.204      42   0.1667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> stat4 43 -1135.4 2356.8 2538.3  28.424      31   0.5000</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">absolute_boot</span>, <span class="st">"bootFail"</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> stat2 stat3 stat4 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     0     0     0 </span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="compare.html">compare</a></span><span class="op">(</span><span class="va">stat3</span>, <span class="va">stat4</span><span class="op">)</span></span></span>
@@ -152,25 +163,30 @@ For <code>test = "boot"</code>, failed bootstrap replicates are omitted from the
 <span class="r-out co"><span class="r-pr">#&gt;</span> Model H0: stat3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Model H1: stat4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       Df  logLik    AIC    BIC    Gsq Res. Df</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> stat3 32 -1139.3 2342.6 2478.5               </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> stat4 43 -1135.4 2356.8 2539.4 7.7805      11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> stat3 32 -1139.3 2342.6 2477.7               </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> stat4 43 -1135.4 2356.8 2538.3 7.7805      11</span>
 <span class="r-in"><span><span class="fu"><a href="compare.html">compare</a></span><span class="op">(</span><span class="va">stat3</span>, <span class="va">stat4</span>, test <span class="op">=</span> <span class="st">"chisq"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Analysis of Relative Model Fit</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Model H0: stat3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Model H1: stat4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       Df  logLik    AIC    BIC    Gsq Res. Df Pr(&gt;Chi)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> stat3 32 -1139.3 2342.6 2478.5                        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> stat4 43 -1135.4 2356.8 2539.4 7.7805      11   0.7328</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> stat3 32 -1139.3 2342.6 2477.7                        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> stat4 43 -1135.4 2356.8 2538.3 7.7805      11   0.7328</span>
 <span class="r-in"><span><span class="co"># \donttest{</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="compare.html">compare</a></span><span class="op">(</span><span class="va">stat3</span>, <span class="va">stat4</span>, test <span class="op">=</span> <span class="st">"boot"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># Use EM refits here; always inspect convergence failures.</span></span></span>
+<span class="r-in"><span><span class="va">relative_boot</span> <span class="op">&lt;-</span> <span class="fu"><a href="compare.html">compare</a></span><span class="op">(</span><span class="va">stat3</span>, <span class="va">stat4</span>, test <span class="op">=</span> <span class="st">"boot"</span>, method <span class="op">=</span> <span class="st">"em"</span>,</span></span>
+<span class="r-in"><span>                         nboot <span class="op">=</span> <span class="fl">5</span>, maxiter <span class="op">=</span> <span class="fl">5000</span>, tol <span class="op">=</span> <span class="fl">1e-6</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">relative_boot</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Analysis of Relative Model Fit</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Model H0: stat3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Model H1: stat4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       Df  logLik    AIC    BIC    Gsq Res. Df Pr(Boot)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> stat3 32 -1139.3 2342.6 2478.5                        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> stat4 43 -1135.4 2356.8 2539.4 7.7805      11     0.18</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> stat3 32 -1139.3 2342.6 2477.7                        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> stat4 43 -1135.4 2356.8 2538.3 7.7805      11      0.5</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">relative_boot</span>, <span class="st">"bootFail"</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>

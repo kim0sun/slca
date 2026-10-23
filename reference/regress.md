@@ -14,7 +14,8 @@ regress(object, ...)
 regress(
    object, formula, data = parent.frame(),
    imputation = c("modal", "prop"),
-   method = c("naive", "BCH", "ML"), ...
+   method = c("naive", "BCH", "ML"), ...,
+   align = c("rownames", "position")
 )
 
 # S3 method for class 'slcafit'
@@ -24,7 +25,8 @@ regress(
   data = parent.frame(),
   imputation = c("modal", "prop"),
   method = c("naive", "BCH", "ML"),
-  ...
+  ...,
+  align = c("rownames", "position")
 )
 ```
 
@@ -46,8 +48,12 @@ regress(
 - data:
 
   an optional `data.frame` containing the exogenous variables of
-  interest. If omitted, the variables are taken from the parent
-  environment.
+  interest. Variables absent from the fitted data and `data` are taken
+  from the formula's environment and aligned before formula
+  transformations are evaluated. Such vectors and factors need
+  observation IDs in [`names()`](https://rdrr.io/r/base/names.html);
+  matrices and data frames need observation IDs in
+  [`rownames()`](https://rdrr.io/r/base/colnames.html).
 
 - imputation:
 
@@ -72,6 +78,34 @@ regress(
 
   - `"ML"`: A maximum likelihood approach that accounts for
     classification error.
+
+- align:
+
+  how supplied covariate rows are aligned with the fitted data. The
+  default, `"rownames"`, requires unique, nonempty row names and matches
+  them to the fitted observations, regardless of row count or order.
+  Extra rows are allowed, but every fitted observation must be present.
+  Automatic row numbers work only if they still identify the original
+  observations; do not reset them after subsetting or reordering. Use
+  `"position"` explicitly for data already in fitted-observation order;
+  it requires exactly the same number of rows and ignores row names.
+  There is no automatic positional fallback. These rules also apply
+  separately to each environment covariate, even when its length already
+  equals the fitted sample size. Unnamed environment covariates require
+  explicit `align = "position"` and fitted-row order. After observations
+  have been excluded, an unnamed original-length vector cannot be
+  aligned safely: supply `data` with preserved row IDs, or name the
+  vector with its original observation IDs. Matrix covariates remain
+  matrices and factor levels are retained. Unnamed scalar formula
+  parameters are left unchanged, not recycled as covariates. Non-scalar
+  transformation settings (such as spline knots or factor levels) must
+  be written inline or captured inside a transformation function;
+  otherwise they are treated as row inputs. Transformation functions
+  must use their explicit covariate arguments rather than retrieve
+  hidden observation vectors. Use explicit covariate columns instead of
+  dynamic [`get()`](https://rdrr.io/r/base/get.html) or
+  [`eval()`](https://rdrr.io/r/base/eval.html) lookups with row-ID
+  alignment.
 
 ## Value
 
