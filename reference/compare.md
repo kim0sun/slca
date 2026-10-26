@@ -88,7 +88,9 @@ Bootstrap samples retain the fitted data's missing-value pattern.
 Nonconverged refits and negative bootstrap likelihood ratios are counted
 as failures. Hybrid refits must converge in their final `nlm` stage.
 With \\B\\ successful replicates and \\b\\ statistics at least as large
-as observed, the p-value is \\(b + 1)/(B + 1)\\.
+as observed, the p-value is \\(b + 1)/(B + 1)\\. When the observed
+likelihood ratio is effectively zero, the p-value is one; no bootstrap
+samples or histogram are generated.
 
 ## See also
 

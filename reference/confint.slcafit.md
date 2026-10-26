@@ -173,6 +173,7 @@ param(nlsy_jlcpa, index = TRUE)
 #> MRJ_03 EMRJ_03 CMRJ_03 OMRJ_03 SMRJ_03
 #> MRJ_08 EMRJ_08 CMRJ_08 OMRJ_08 SMRJ_08
 confint(nlsy_jlcpa)
+#> Warning: Model information matrix is numerically rank deficient (rank 73 of 117); generalized-inverse standard errors and Wald inference may be unreliable.
 #>                2.5 %        97.5 %
 #> (1)     2.196632e-01  3.384007e-01
 #> (2)     1.708777e-01  2.582819e-01
@@ -356,6 +357,7 @@ confint(nlsy_jlcpa)
 #> (180)   0.000000e+00  0.000000e+00
 #> (181)   1.000000e+00  1.000000e+00
 confint(nlsy_jlcpa, 1:4)
+#> Warning: Model information matrix is numerically rank deficient (rank 73 of 117); generalized-inverse standard errors and Wald inference may be unreliable.
 #>         2.5 %    97.5 %
 #> (1) 0.2196632 0.3384007
 #> (2) 0.1708777 0.2582819

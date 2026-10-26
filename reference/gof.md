@@ -14,7 +14,7 @@ gof(object, ...)
 gof(
    object, ..., test = c("none", "chisq", "boot"),
    nboot = 100, plot = FALSE,
-   maxiter = 100, tol = 1e-6, verbose = FALSE
+   maxiter = 5000, tol = 1e-6, verbose = FALSE
 )
 
 # S3 method for class 'slcafit'
@@ -24,7 +24,7 @@ gof(
   test = c("none", "chisq", "boot"),
   nboot = 100,
   plot = FALSE,
-  maxiter = 100,
+  maxiter = 5000,
   tol = 1e-06,
   verbose = FALSE
 )
@@ -63,7 +63,7 @@ gof(
 
   an integer specifying the maximum number of iterations allowed for the
   estimation process during each bootstrap iteration. The default is
-  100.
+  5000.
 
 - tol:
 

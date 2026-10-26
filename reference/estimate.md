@@ -41,8 +41,11 @@ estimate(x,
 
 - fix2zero:
 
-  a `vector` specifying parameters to be constrained to zero. See the
-  'Details' section for further information.
+  a `vector` specifying parameters to be constrained to zero. When
+  re-estimating a fitted object, an omitted argument retains its
+  existing constraints; explicitly supplying `NULL` removes the
+  constraint specification. See the 'Details' section for further
+  information.
 
 - control:
 

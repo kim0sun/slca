@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">slca</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -140,7 +140,10 @@ instead of dynamic <code><a href="https://rdrr.io/r/base/get.html" class="extern
 <dd><p>The log-likelihood of the regression model.</p></dd>
 
 
-</dl><p>The <code>summary</code> function can be used to display the regression coefficients, standard errors, Wald statistics, and p-values. The standard errors are derived by numerically calculated Hessian matrix from <code>nlm</code> function.</p>
+</dl><p>The <code>summary</code> function can be used to display the regression coefficients, standard errors, Wald statistics, and p-values. The standard errors are derived by numerically calculated Hessian matrix from <code>nlm</code> function.
+A warning is issued if the regression information matrix is numerically
+rank deficient. Existing generalized-inverse estimates are retained, but
+their standard errors and Wald inference may be unreliable.</p>
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>

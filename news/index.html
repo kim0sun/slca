@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">slca</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -32,7 +32,18 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="1.4.1" id="slca-141">slca 1.4.1<a class="anchor" aria-label="anchor" href="#slca-141"></a></h2>
+<h2 class="pkg-version" data-toc-text="1.4.2" id="slca-142">slca 1.4.2<a class="anchor" aria-label="anchor" href="#slca-142"></a></h2>
+<ul><li><p>Filled missing defaults when reusing historical control objects, and ignored saturated-table convergence metadata when comparing otherwise identical datasets.</p></li>
+<li><p>Prevented undefined subtraction in posterior calculations when a latent-state subtree has zero likelihood, retaining zero posterior mass for that path.</p></li>
+<li><p>Restored the 1.4.0 internal response convention (<code>0</code> for missing, <code>1,...,K</code> for categories), retaining missing-score and range-check fixes. Continued estimation rebuilds saved response caches, and model comparison ignores derived encoding caches. Public labels and fitted numerical results are unchanged.</p></li>
+<li><p>Retained existing zero constraints when re-estimating fitted objects unless <code>fix2zero</code> is supplied explicitly, and rejected unknown, unnamed or duplicate control options before estimation.</p></li>
+<li><p>Added warnings for numerically rank-deficient information matrices without changing existing covariance calculations. Skipped bootstrap histograms when a zero likelihood ratio bypasses simulation.</p></li>
+<li><p>Fixed out-of-bounds reads when reordering or summarizing fitted objects saved with the older response encoding, including the bundled NLSY fits. Native likelihood calculations now reject out-of-range response codes.</p></li>
+<li><p>Regenerated the bundled NLSY objects with current preprocessing and calculation code at exactly the original CRAN 1.4.0 parameters, without refitting. Original convergence history and numerical results are retained; missing control defaults and current internal metadata are populated.</p></li>
+<li><p>Increased the default absolute-bootstrap iteration limit in <code><a href="../reference/gof.html">gof()</a></code> from 100 to 5000; explicit <code>maxiter</code> values and <code><a href="../reference/compare.html">compare()</a></code> defaults are unchanged.</p></li>
+</ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.4.1" id="slca-141">slca 1.4.1<a class="anchor" aria-label="anchor" href="#slca-141"></a></h2><p class="text-muted">CRAN release: 2026-10-23</p>
 <ul><li><p>Aligned formula-environment regression covariates by their observation IDs before transformations, including factors and matrices. Unnamed environment covariates now require explicit positional alignment; ambiguous original-length inputs receive actionable errors.</p></li>
 <li><p>Reported saturated-table EM convergence and withheld absolute fit statistics for unfinished iterations.</p></li>
 <li><p>Aligned regression covariates by row identity even with equal row counts; added explicit positional alignment.</p></li>
@@ -59,7 +70,8 @@
 <li><p>Strengthened the relative bootstrap likelihood-ratio test with convergence checks, multiple starting values, missing-pattern preservation, and finite-sample p-values.</p></li>
 <li><p>Clarified the documented structure of <code>convergence</code>, <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code>, and simulated responses.</p></li>
 </ul></div>
-  </main></div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">

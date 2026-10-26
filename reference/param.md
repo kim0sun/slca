@@ -35,7 +35,10 @@ param(
 - se:
 
   a logical value indicating whether to display standard errors (`TRUE`)
-  or parameter estimates (`FALSE`). The default is `FALSE`.
+  or parameter estimates (`FALSE`). The default is `FALSE`. A warning is
+  issued if the information matrix for free parameters is numerically
+  rank deficient. Existing generalized-inverse estimates are retained,
+  but their standard errors and Wald inference may be unreliable.
 
 - index:
 

@@ -1,6 +1,49 @@
 # Changelog
 
+## slca 1.4.2
+
+- Filled missing defaults when reusing historical control objects, and
+  ignored saturated-table convergence metadata when comparing otherwise
+  identical datasets.
+
+- Prevented undefined subtraction in posterior calculations when a
+  latent-state subtree has zero likelihood, retaining zero posterior
+  mass for that path.
+
+- Restored the 1.4.0 internal response convention (`0` for missing,
+  `1,...,K` for categories), retaining missing-score and range-check
+  fixes. Continued estimation rebuilds saved response caches, and model
+  comparison ignores derived encoding caches. Public labels and fitted
+  numerical results are unchanged.
+
+- Retained existing zero constraints when re-estimating fitted objects
+  unless `fix2zero` is supplied explicitly, and rejected unknown,
+  unnamed or duplicate control options before estimation.
+
+- Added warnings for numerically rank-deficient information matrices
+  without changing existing covariance calculations. Skipped bootstrap
+  histograms when a zero likelihood ratio bypasses simulation.
+
+- Fixed out-of-bounds reads when reordering or summarizing fitted
+  objects saved with the older response encoding, including the bundled
+  NLSY fits. Native likelihood calculations now reject out-of-range
+  response codes.
+
+- Regenerated the bundled NLSY objects with current preprocessing and
+  calculation code at exactly the original CRAN 1.4.0 parameters,
+  without refitting. Original convergence history and numerical results
+  are retained; missing control defaults and current internal metadata
+  are populated.
+
+- Increased the default absolute-bootstrap iteration limit in
+  [`gof()`](https://kim0sun.github.io/slca/reference/gof.md) from 100 to
+  5000; explicit `maxiter` values and
+  [`compare()`](https://kim0sun.github.io/slca/reference/compare.md)
+  defaults are unchanged.
+
 ## slca 1.4.1
+
+CRAN release: 2026-10-23
 
 - Aligned formula-environment regression covariates by their observation
   IDs before transformations, including factors and matrices. Unnamed

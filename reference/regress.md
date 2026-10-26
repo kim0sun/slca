@@ -136,7 +136,10 @@ A `list` of class `reg.slca` with the following components:
 The `summary` function can be used to display the regression
 coefficients, standard errors, Wald statistics, and p-values. The
 standard errors are derived by numerically calculated Hessian matrix
-from `nlm` function.
+from `nlm` function. A warning is issued if the regression information
+matrix is numerically rank deficient. Existing generalized-inverse
+estimates are retained, but their standard errors and Wald inference may
+be unreliable.
 
 ## References
 

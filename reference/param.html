@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">slca</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -64,7 +64,10 @@
 
 
 <dt id="arg-se">se<a class="anchor" aria-label="anchor" href="#arg-se"></a></dt>
-<dd><p>a logical value indicating whether to display standard errors (<code>TRUE</code>) or parameter estimates (<code>FALSE</code>). The default is <code>FALSE</code>.</p></dd>
+<dd><p>a logical value indicating whether to display standard errors (<code>TRUE</code>) or parameter estimates (<code>FALSE</code>). The default is <code>FALSE</code>.
+A warning is issued if the information matrix for free parameters is
+numerically rank deficient. Existing generalized-inverse estimates are
+retained, but their standard errors and Wald inference may be unreliable.</p></dd>
 
 
 <dt id="arg-index">index<a class="anchor" aria-label="anchor" href="#arg-index"></a></dt>
