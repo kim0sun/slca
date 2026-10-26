@@ -90,8 +90,8 @@ count_row <- function(mf, nlev, na.rm) {
 }
 
 encode_response <- function(mf, child) {
-   mf[] <- lapply(mf, function(x) as.numeric(x) - 1)
-   mf[is.na(mf)] <- -1
+   mf[] <- lapply(mf, as.numeric)
+   mf[is.na(mf)] <- 0
    unlist(lapply(child, function(x) t(mf[x])), use.names = FALSE)
 }
 

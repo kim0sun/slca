@@ -50,6 +50,8 @@ Nonconverged refits and negative bootstrap likelihood ratios are counted
 as failures. Hybrid refits must converge in their final \code{nlm} stage.
 With \eqn{B} successful replicates and \eqn{b} statistics at least as large
 as observed, the p-value is \eqn{(b + 1)/(B + 1)}.
+When the observed likelihood ratio is effectively zero, the p-value is one;
+no bootstrap samples or histogram are generated.
 }
 \description{
 Conducts a relative model fit test between two fitted SLCM models using the deviance statistic.

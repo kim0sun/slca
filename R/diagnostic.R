@@ -307,6 +307,8 @@ gof.slcafit <- function(
 #' as failures. Hybrid refits must converge in their final `nlm` stage.
 #' With \eqn{B} successful replicates and \eqn{b} statistics at least as large
 #' as observed, the p-value is \eqn{(b + 1)/(B + 1)}.
+#' When the observed likelihood ratio is effectively zero, the p-value is one;
+#' no bootstrap samples or histogram are generated.
 #'
 #' @seealso \link[slca]{gof}
 #'
@@ -334,6 +336,12 @@ compare <- function(
    mf2 <- model2$mf
    attr(mf1, "y") <- NULL
    attr(mf2, "y") <- NULL
+   attr(mf1, "yu") <- NULL
+   attr(mf2, "yu") <- NULL
+   attr(mf1, "saturated.converged") <- NULL
+   attr(mf2, "saturated.converged") <- NULL
+   attr(mf1, "saturated.iterations") <- NULL
+   attr(mf2, "saturated.iterations") <- NULL
    if (!isTRUE(all.equal(mf1, mf2)))
       stop("datasets used for models are different")
 
@@ -439,7 +447,7 @@ compare <- function(
          warning(length(fail_msg), " bootstrap replicate(s) failed.",
                  call. = FALSE)
       dt <- add_boot_attrs(dt, length(fail_msg), list(compare = fail_msg))
-      if (plot && any(ok)) {
+      if (plot && gsq >= 1e-8 && any(ok)) {
          graphics::hist(gb[ok], breaks = "FD",
               main = "Bootstrap Histogram",
               xlab = bquote("G"^2 ~ "statistic"),

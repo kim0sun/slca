@@ -9,7 +9,7 @@ test_that("stop if there are multiple parents", {
                      l2[3] ~ a + b + c))
 })
 
-test_that("encoded responses use -1 for missing and zero-based categories", {
+test_that("encoded responses use zero for missing and one-based categories", {
    m <- slca(l[2] ~ y1 + y2)
    dat <- data.frame(
       y1 = factor(c(1, 2, NA, 1)),
@@ -17,9 +17,9 @@ test_that("encoded responses use -1 for missing and zero-based categories", {
    )
    mf <- proc_data(dat, m$model, na.rm = FALSE)
 
-   expect_true(-1 %in% attr(mf, "y"))
    expect_true(0 %in% attr(mf, "y"))
-   expect_false(any(attr(mf, "y") > 1))
+   expect_true(all(c(1, 2) %in% attr(mf, "y")))
+   expect_true(all(attr(mf, "y") %in% 0:2))
    expect_equal(sum(attr(mf, "freq")), nrow(dat))
 })
 
@@ -81,7 +81,7 @@ test_that("existing varied-size missing patterns keep saturated frequencies", {
    expect_true(is.finite(attr(mf, "loglik")))
 })
 
-test_that("simulate and re-estimate use zero-based encoded responses", {
+test_that("simulate and re-estimate preserve public category labels", {
    m <- slca(l[2] ~ y1 + y2 + y3)
    par <- c(
       .6, .4,

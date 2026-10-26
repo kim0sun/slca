@@ -1,65 +1,54 @@
-## Submission draft
+## slca 1.4.2
 
-Prepared locally for slca 1.4.1; not yet submitted. CRAN's public DESCRIPTION and
-source package index reported version 1.4.0 when checked on 2026-10-17.
-
-## Test environment
-
-* macOS 26.5.2 arm64, R 4.5.0
-* Apple clang 21, MacOSX26.5 SDK
-* `R CMD build` followed by `R CMD check --as-cran --run-donttest`
-
-## R CMD check results
-
-0 errors | 1 warning | 1 note
-
-The installation warning comes from the R framework header
-`R_ext/Boolean.h` with Apple clang 21:
+This is a bug-fix release addressing the additional-issue reports for
+version 1.4.1 (clang-ASAN, gcc-ASAN, M1-SAN):
 
 ```
-warning: unknown warning group '-Wfixed-enum-extension', ignored
+AddressSanitizer: heap-buffer-overflow ... src/upward.cpp:14 in upInit(...)
 ```
 
-The previous extended-example timing note has been resolved. The longitudinal
-example now uses a reproducible 500-row subset and two-class models while
-preserving the three-occasion structure and equality constraints. The text makes
-clear that this is a syntax illustration, not full-data inference. Its `\donttest`
-wrapper was removed so these examples run in ordinary checks. All examples passed
-with no timing note. Diagnostic bootstrap examples had zero failed replicates;
-their five illustrative replicates are not intended for statistical inference.
+triggered by the `reorder.slcafit` example on the bundled `nlsy_jlcpa`
+object.
 
-The remaining note is an environment limitation in HTML manual checks:
+### Cause
 
-* The installed HTML Tidy is too old for HTML validation.
-* Math rendering was skipped because V8 is unavailable.
+Version 1.4.1 changed the internal response encoding passed to the C++ code
+(zero-based categories, `-1` for missing), while the bundled fitted objects
+`nlsy_jlcpa` and `nlsy_jlta` still carried the response caches saved under
+the 1.4.0 convention (one-based categories, `0` for missing). Reading an
+observation with the maximal category code therefore indexed one element
+past the end of the `rho` block.
 
-The PDF manual, dependency checks, code/documentation consistency checks, compiled
-code checks, and test suite passed. Tests reported 201 passes, no failures,
-warnings, or skips. CRAN incoming feasibility passed in this local check.
+### Fix
 
-## Reverse dependencies
+* Restored the 1.4.0 internal response convention (`0` = missing,
+  `1,...,K` = categories) throughout `src/` and `R/`.
+* `reorder()` and `estimate()` on fitted objects rebuild the internal
+  response caches from the stored model frame instead of trusting a saved
+  cache; `compare()` ignores derived caches when comparing datasets.
+* `upInit()` now validates every response code against the number of
+  categories and raises an R error (via `Rcpp::stop()`) instead of reading
+  out of bounds, so objects saved under any encoding can no longer cause
+  undefined memory access.
+* The bundled NLSY objects were regenerated with the current code at exactly
+  the original 1.4.0 parameters (no refitting); printed results are
+  unchanged.
+* Small unrelated fixes listed in NEWS.md (undefined `-Inf - (-Inf)` in
+  posterior calculation for zero-likelihood subtrees, rank-deficiency
+  warnings, control-list validation).
 
-A fresh CRAN source package index query found no reverse dependencies in Depends,
-Imports, LinkingTo, Suggests, or Enhances. No reverse-dependency checks were run.
+### Verification
 
-## Release summary
+* The 1.4.1 failure was reproduced locally under clang 18 ASan/UBSan and no
+  longer occurs with 1.4.2.
+* `R CMD check --run-donttest` of 1.4.2 with the package compiled under
+  `-fsanitize=address,undefined` (clang 18, R 4.3.3, Ubuntu 24.04):
+  all examples and tests pass with no sanitizer diagnostics.
+* `R CMD check --as-cran --run-donttest` (ordinary build): 0 errors,
+  0 warnings. One NOTE on installed size (bundled example fits in `data/`).
 
-See NEWS.md for the full maintenance changelog. This candidate corrects missing
-response scores and fit diagnostics, bootstrap handling, class reordering,
-confidence intervals, and constrained starts. It also withholds saturated fit statistics when EM does not converge, and aligns
-regression covariates by row identity with an explicit positional option.
-It adds regression coverage for
-constrained categorical levels and clarifies that continuous indicators remain
-unsupported. Runtime Imports are unchanged; testthat >= 3.1.7 is required by the
-test helpers. Version 1.4.1 remains the proposed patch release.
+## Test environments
 
-## Before submission
-
-Refresh these results on the final candidate. Windows, Linux, current R release,
-R-devel, oldrel-1, and minimum dependency versions have not been checked for this
-candidate. Resolve or explain the compiler warning and complete HTML validation
-in a suitable environment before deciding to submit. Additional syntax-only checks parsed all 17 source files on installed R 3.5.3,
-3.6.0, and 4.2.0; missing or old dependencies prevented full checks there. An
-isolated install without the user Makevars also passed the test suite and removed
-an additional deprecated-linker warning. No external builder upload,
-CRAN submission, tag, or release has been performed.
+* Ubuntu 24.04, R 4.3.3, clang 18 (ASan/UBSan build and ordinary build)
+* macOS arm64, R 4.5.0, Apple clang 21 (ordinary build; previous candidate
+  checks)

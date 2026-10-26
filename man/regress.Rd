@@ -81,6 +81,9 @@ A \code{list} of class \code{reg.slca} with the following components:
 \item{ll}{The log-likelihood of the regression model.}
 
 The \code{summary} function can be used to display the regression coefficients, standard errors, Wald statistics, and p-values. The standard errors are derived by numerically calculated Hessian matrix from \code{nlm} function.
+A warning is issued if the regression information matrix is numerically
+rank deficient. Existing generalized-inverse estimates are retained, but
+their standard errors and Wald inference may be unreliable.
 }
 \description{
 Performs regression analysis to examine the influence of exogenous (external) variables on latent class variables in an estimated \code{slca} model. The function uses logistic regression with a three-step approach to account for measurement error.

@@ -19,7 +19,10 @@ param(object, ...)
 
 \item{type}{a character string specifying the format in which the estimated parameters should be displayed. The options are \code{"probs"} for probability format or \code{"logit"} for log-odds (logit) format. The default setting is \code{"probs"}.}
 
-\item{se}{a logical value indicating whether to display standard errors (\code{TRUE}) or parameter estimates (\code{FALSE}). The default is \code{FALSE}.}
+\item{se}{a logical value indicating whether to display standard errors (\code{TRUE}) or parameter estimates (\code{FALSE}). The default is \code{FALSE}.
+A warning is issued if the information matrix for free parameters is
+numerically rank deficient. Existing generalized-inverse estimates are
+retained, but their standard errors and Wald inference may be unreliable.}
 
 \item{index}{a logical value indicating whether to include (\code{TRUE}) or exclude (\code{FALSE}) the indices of the estimated parameters in the output. The default is \code{FALSE}.}
 }

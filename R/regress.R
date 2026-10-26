@@ -61,6 +61,9 @@
 #' \item{ll}{The log-likelihood of the regression model.}
 #'
 #' The `summary` function can be used to display the regression coefficients, standard errors, Wald statistics, and p-values. The standard errors are derived by numerically calculated Hessian matrix from `nlm` function.
+#' A warning is issued if the regression information matrix is numerically
+#' rank deficient. Existing generalized-inverse estimates are retained, but
+#' their standard errors and Wald inference may be unreliable.
 #'
 #' @references Vermunt, J. K. (2010). Latent Class Modeling with Covariates: Two Improved Three-Step Approaches. Political Analysis, 18(4), 450–469. http://www.jstor.org/stable/25792024
 #'
@@ -326,6 +329,7 @@ regress.slcafit <- function(
 
    par <- par[[which.min(ll)]]
    hess <- hess[[which.min(ll)]]
+   warn_information_rank(hess, "Regression information matrix")
 
    rn <- paste0(seq_len(nr), "/", nr + 1)
    cn <- colnames(X)

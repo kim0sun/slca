@@ -68,6 +68,11 @@ void dnRec(
          double val = 0;
          alpha[k] = R_NegInf;
          for (int l = 0; l < nl; l ++) {
+            // A zero subtree likelihood contributes no posterior mass.
+            if (jlambda[l] == R_NegInf) {
+               joint[k + l * nk] = R_NegInf;
+               continue;
+            }
             val = tau[k + l * nk] + ualpha[l] + ulambda[l] - jlambda[l];
             joint[k + l * nk] = val + lambda[k] - lr[i];
             alpha[k] = log_add_exp(alpha[k], val);

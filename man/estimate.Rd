@@ -22,7 +22,7 @@ estimate(x, ...)
 
 \item{method}{a character string specifying the estimation method for SLCM parameters. The default is \code{"em"}, which uses the expectation-maximization (EM) algorithm. The alternative \code{"nlm"} employs the Newton-Raphson algorithm via the \code{nlm} function, while \code{"hybrid"} combines both approaches, starting with EM and finishing with \code{nlm} for refined estimates.}
 
-\item{fix2zero}{a \code{vector} specifying parameters to be constrained to zero. See the 'Details' section for further information.}
+\item{fix2zero}{a \code{vector} specifying parameters to be constrained to zero. When re-estimating a fitted object, an omitted argument retains its existing constraints; explicitly supplying \code{NULL} removes the constraint specification. See the 'Details' section for further information.}
 
 \item{control}{a \code{list} of control parameters for the estimation procedure. Modify default values using \code{\link[=slcaControl]{slcaControl()}}.}
 }

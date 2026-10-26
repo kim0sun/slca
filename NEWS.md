@@ -1,8 +1,17 @@
-# slca (development version)
+# slca 1.4.2
+
+* Filled missing defaults when reusing historical control objects, and ignored saturated-table convergence metadata when comparing otherwise identical datasets.
+* Prevented undefined subtraction in posterior calculations when a latent-state subtree has zero likelihood, retaining zero posterior mass for that path.
+
+* Restored the 1.4.0 internal response convention (`0` for missing, `1,...,K` for categories), retaining missing-score and range-check fixes. Continued estimation rebuilds saved response caches, and model comparison ignores derived encoding caches. Public labels and fitted numerical results are unchanged.
+
+* Retained existing zero constraints when re-estimating fitted objects unless `fix2zero` is supplied explicitly, and rejected unknown, unnamed or duplicate control options before estimation.
+
+* Added warnings for numerically rank-deficient information matrices without changing existing covariance calculations. Skipped bootstrap histograms when a zero likelihood ratio bypasses simulation.
 
 * Fixed out-of-bounds reads when reordering or summarizing fitted objects saved with the older response encoding, including the bundled NLSY fits. Native likelihood calculations now reject out-of-range response codes.
 
-* Updated the bundled NLSY fits' internal response caches to the current encoding without refitting or changing their stored parameter estimates.
+* Regenerated the bundled NLSY objects with current preprocessing and calculation code at exactly the original CRAN 1.4.0 parameters, without refitting. Original convergence history and numerical results are retained; missing control defaults and current internal metadata are populated.
 
 * Increased the default absolute-bootstrap iteration limit in `gof()` from 100 to 5000; explicit `maxiter` values and `compare()` defaults are unchanged.
 

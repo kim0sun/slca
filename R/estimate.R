@@ -15,7 +15,7 @@
 #' @param x an `slca` object defining the `slca` model to be estimated.
 #' @param data a `data.frame` containing the observed categorical variables included in the model.
 #' @param method a character string specifying the estimation method for SLCM parameters. The default is `"em"`, which uses the expectation-maximization (EM) algorithm. The alternative `"nlm"` employs the Newton-Raphson algorithm via the `nlm` function, while `"hybrid"` combines both approaches, starting with EM and finishing with `nlm` for refined estimates.
-#' @param fix2zero a `vector` specifying parameters to be constrained to zero. See the 'Details' section for further information.
+#' @param fix2zero a `vector` specifying parameters to be constrained to zero. When re-estimating a fitted object, an omitted argument retains its existing constraints; explicitly supplying `NULL` removes the constraint specification. See the 'Details' section for further information.
 #' @param control a `list` of control parameters for the estimation procedure. Modify default values using [slcaControl()].
 #' @param ... additional arguments passed to the estimation process.
 #'
@@ -58,17 +58,32 @@ estimate.slca <- function(
    fix2zero = NULL, control = slcaControl(), ...
 ) {
    method <- match.arg(method)
-   if (!inherits(control, "slcaControl")) {
-      ctrl <- slcaControl()
-      index <- match(names(control), names(ctrl), 0L)
-      ctrl[index] <- control[!is.na(index)]
+   if (missing(fix2zero) && inherits(x, "slcafit"))
+      fix2zero <- x$fix2zero
+   ctrl <- slcaControl()
+   if (!inherits(control, "slcaControl") ||
+       !all(names(ctrl) %in% names(control))) {
+      if (!is.list(control) || (length(control) &&
+          (is.null(names(control)) || anyNA(names(control)) ||
+           any(!nzchar(names(control))) || anyDuplicated(names(control)))))
+         stop("`control` must be a list with unique, nonempty names.",
+              call. = FALSE)
+      unknown <- setdiff(names(control), names(ctrl))
+      if (length(unknown))
+         stop("Unknown control parameter(s): ", paste(unknown, collapse = ", "),
+              call. = FALSE)
+      ctrl[names(control)] <- control
       control <- ctrl
    }
    na.rm <- control$na.rm
    if (!missing(data))
       mf <- proc_data(data, x$model, na.rm)
-   else if (inherits(x, "slcafit"))
+   else if (inherits(x, "slcafit")) {
       mf <- x$mf
+      attr(mf, "y") <- encode_response(mf, x$model$measure$indicator)
+      attr(mf, "yu") <- encode_response(
+         attr(mf, "y_unique"), x$model$measure$indicator)
+   }
    else {
       data = parent.frame()
       mf <- proc_data(data, x$model, na.rm)

@@ -184,11 +184,11 @@ List calcModel(
          _ref_ = _ref2_[u];
          for (int k = 0; k < nc_rho[u]; k ++) {
             for (int m = 0; m < nvar[u]; m ++) {
-               if (_y_[m] >= 0)
-                  _scr_[_y_[m]] += exp(_tmp1_[k]);
+               if (_y_[m] > 0)
+                  _scr_[_y_[m] - 1] += exp(_tmp1_[k]);
                for (int r = 0; r < _lev_[m]; r ++) {
                   if (r == _ref_[m]) _scr_[r] = R_NaN;
-                  else if (_y_[m] >= 0)
+                  else if (_y_[m] > 0)
                      _scr_[r] -= exp(_tmp1_[k] + _tmp2_[r]);
                }
                _scr_ += _lev_[m];

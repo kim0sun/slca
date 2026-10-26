@@ -252,6 +252,9 @@ summary.slcafit <- function(object, ...) {
 #' @param object an object of class `slcafit`.
 #' @param type a character string specifying the format in which the estimated parameters should be displayed. The options are `"probs"` for probability format or `"logit"` for log-odds (logit) format. The default setting is `"probs"`.
 #' @param se a logical value indicating whether to display standard errors (`TRUE`) or parameter estimates (`FALSE`). The default is `FALSE`.
+#' A warning is issued if the information matrix for free parameters is
+#' numerically rank deficient. Existing generalized-inverse estimates are
+#' retained, but their standard errors and Wald inference may be unreliable.
 #' @param index a logical value indicating whether to include (`TRUE`) or exclude (`FALSE`) the indices of the estimated parameters in the output. The default is `FALSE`.
 #' @param ... additional arguments passed to other methods.
 #'
@@ -342,6 +345,9 @@ vcov.slcafit <- function(
    if (hessian && !all(is.na(object$hessian))) {
       hess <- object$hessian
       nan <- is.na(diag(hess))
+      free <- which(!nan & !object$arg$fix0)
+      warn_information_rank(hess[free, free, drop = FALSE],
+                            "Model information matrix")
       vcov[!nan, !nan] <- MASS::ginv(hess[!nan, !nan])
    } else {
       if (hessian)
@@ -350,6 +356,9 @@ vcov.slcafit <- function(
       score <- object$score
       fi <- crossprod(score)
       nan <- apply(score, 2, anyNA)
+      free <- which(!nan & !object$arg$fix0)
+      warn_information_rank(fi[free, free, drop = FALSE],
+                            "Model information matrix")
       vcov[!nan, !nan] <- MASS::ginv(fi[!nan, !nan])
    }
 
@@ -628,7 +637,7 @@ reorder.slcafit <- function(x, ...) {
       )
    }
 
-   # Saved fits may still contain the pre-1.4.1 response encoding.
+   # Rebuild caches from the model frame, regardless of the saved encoding.
    attr(x$mf, "y") <- encode_response(x$mf, x$model$measure$indicator)
    attr(x$mf, "yu") <- encode_response(
       attr(x$mf, "y_unique"), x$model$measure$indicator)

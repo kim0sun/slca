@@ -5,3 +5,7 @@
 .DS_Store
 .quarto
 docs
+/cran-review.Rcheck/
+/slca.Rcheck/
+/slca_*.tar.gz
+/paper/

@@ -2,6 +2,17 @@ norm1 <- function(x) log(x) - log(sum(x))
 
 norm2 <- function(x) x - log_sum_exp(x)
 
+warn_information_rank <- function(x, label) {
+   if (!ncol(x)) return(invisible(NULL))
+   values <- svd(x, nu = 0, nv = 0)$d
+   rank <- sum(values > sqrt(.Machine$double.eps) * max(values))
+   if (rank < ncol(x))
+      warning(label, " is numerically rank deficient (rank ", rank,
+              " of ", ncol(x), "); generalized-inverse standard errors and Wald inference may be unreliable.",
+              call. = FALSE)
+   invisible(NULL)
+}
+
 ginv <- function(x, tol = sqrt(.Machine$double.eps)) {
    xsvd <- svd(x)
    pos <- xsvd$d > tol * xsvd$d[1]
