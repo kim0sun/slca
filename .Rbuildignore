@@ -13,5 +13,3 @@
 ^paper$
 ^cran-comments\.md$
 ^.*\.DS_Store$
-
-^maintenance$
