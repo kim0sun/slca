@@ -9,3 +9,4 @@ docs
 /slca.Rcheck/
 /slca_*.tar.gz
 /paper/
+/cran-comments.md
