@@ -98,3 +98,6 @@ slca(l1[3] ~ x1 + x2 + x3 + x4,
      pf[4] ~ l1 + l2 + l3,
      constraints = c("l1", "l2", "l3"))
 }
+\references{
+Kim, Y. and Chung, H. (2026). slca: An R Package for Structural Modeling for Multiple Latent Class Variables. \emph{Journal of Statistical Software}, \bold{117}(8), 1--52. \doi{10.18637/jss.v117.i08}
+}

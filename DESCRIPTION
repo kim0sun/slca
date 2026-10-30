@@ -1,35 +1,45 @@
-Package: slca
 Type: Package
+Package: slca
 Title: Structural Modeling for Multiple Latent Class Variables
-Version: 1.4.2
-Authors@R: 
-   c(person(given = "Youngsun", family = "Kim",
-            email = "yskstat@gmail.com",
-            role = c("aut", "cre"),
-            comment = c(ORCID = "0000-0001-8003-1939")),
-     person(given = "Hwan", family = "Chung",
-            email = "hwanch@korea.ac.kr",
-            role = c("aut"), 
-            comment = c(ORCID = "0000-0002-8969-9086")))
+Version: 1.4.3
+Authors@R: c(
+    person("Youngsun", "Kim", , "yskstat@gmail.com", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0001-8003-1939")),
+    person("Hwan", "Chung", , "hwanch@korea.ac.kr", role = "aut",
+           comment = c(ORCID = "0000-0002-8969-9086"))
+  )
+Author: Youngsun Kim [aut, cre] (ORCID:
+    <https://orcid.org/0000-0001-8003-1939>), Hwan Chung [aut] (ORCID:
+    <https://orcid.org/0000-0002-8969-9086>)
 Maintainer: Youngsun Kim <yskstat@gmail.com>
-Description: Provides comprehensive tools for the implementation of Structural Latent Class Models (SLCM), including
-    Latent Transition Analysis (LTA; Linda M. Collins and Stephanie T. Lanza, 2009) <doi:10.1002/9780470567333>,
-    Latent Class Profile Analysis (LCPA; Hwan Chung et al., 2010) <doi:10.1111/j.1467-985x.2010.00674.x>, and
-    Joint Latent Class Analysis (JLCA; Saebom Jeon et al., 2017) <doi:10.1080/10705511.2017.1340844>, and 
-    any other extended models involving multiple latent class variables.
+Description: Provides comprehensive tools for the implementation of
+    Structural Latent Class Models (SLCM), including Latent Transition
+    Analysis (LTA; Linda M. Collins and Stephanie T. Lanza, 2009)
+    <doi:10.1002/9780470567333>, Latent Class Profile Analysis (LCPA; Hwan
+    Chung et al., 2010) <doi:10.1111/j.1467-985x.2010.00674.x>, and Joint
+    Latent Class Analysis (JLCA; Saebom Jeon et al., 2017)
+    <doi:10.1080/10705511.2017.1340844>, and any other extended models
+    involving multiple latent class variables. Details on the methodology
+    and implementation are given in Kim and Chung (2026)
+    <doi:10.18637/jss.v117.i08>.
 License: GPL (>= 3)
-Encoding: UTF-8
-LazyData: true
-Roxygen: list(markdown = TRUE)
-LinkingTo: Rcpp
-Imports: DiagrammeR, magrittr, MASS, Rcpp, stats
-Depends: R (>= 2.10)
 URL: https://kim0sun.github.io/slca/
 BugReports: https://github.com/kim0sun/slca/issues
-Suggests: testthat (>= 3.1.7)
-Config/testthat/edition: 3
-NeedsCompilation: yes
-Author: Youngsun Kim [aut, cre] (ORCID:
-    <https://orcid.org/0000-0001-8003-1939>),
-  Hwan Chung [aut] (ORCID: <https://orcid.org/0000-0002-8969-9086>)
+Depends: 
+    R (>= 2.10)
+Imports: 
+    DiagrammeR,
+    magrittr,
+    MASS,
+    Rcpp,
+    stats
+Suggests: 
+    testthat (>= 3.1.7)
+LinkingTo: 
+    Rcpp
 Config/roxygen2/version: 8.1.0
+Config/testthat/edition: 3
+Encoding: UTF-8
+LazyData: true
+NeedsCompilation: yes
+Roxygen: list(markdown = TRUE)

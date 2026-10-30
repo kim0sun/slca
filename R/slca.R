@@ -65,6 +65,7 @@
 #'   \item \strong{Dependency constraints}: Outlines constraints applied to conditional dependencies, where uppercase letters represent consistent dependency structures.
 #' }
 #'
+#' @references Kim, Y. and Chung, H. (2026). slca: An R Package for Structural Modeling for Multiple Latent Class Variables. \emph{Journal of Statistical Software}, \bold{117}(8), 1--52. \doi{10.18637/jss.v117.i08}
 #'
 #' @example man/examples/slca.R
 #'
