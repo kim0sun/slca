@@ -7,6 +7,13 @@ Profile Analysis (LCPA), and Joint Latent Class Analysis (JLCA),
 facilitating the analysis of complex latent structures in statistical
 data.
 
+## References
+
+Kim, Y. and Chung, H. (2026). slca: An R Package for Structural Modeling
+for Multiple Latent Class Variables. *Journal of Statistical Software*,
+**117**(8), 1–52.
+[doi:10.18637/jss.v117.i08](https://doi.org/10.18637/jss.v117.i08)
+
 ## See also
 
 Useful links:

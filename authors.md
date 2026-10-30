@@ -12,14 +12,18 @@
 Source:
 [`inst/CITATION`](https://github.com/kim0sun/slca/blob/master/inst/CITATION)
 
-Kim Y, Chung H (2024). *slca: Structural Modeling for Multiple Latent
-Class Variables*. R package version 1.3.1,
-<https://CRAN.R-project.org/package=slca>.
+Kim Y, Chung H (2026). “slca: An R Package for Structural Modeling for
+Multiple Latent Class Variables.” *Journal of Statistical Software*,
+**117**(8), 1–52.
+[doi:10.18637/jss.v117.i08](https://doi.org/10.18637/jss.v117.i08).
 
-    @Manual{slca-package,
-      title = {slca: Structural Modeling for Multiple Latent Class Variables},
+    @Article{,
+      title = {{slca}: An {R} Package for Structural Modeling for Multiple Latent Class Variables},
       author = {Youngsun Kim and Hwan Chung},
-      year = {2024},
-      note = {R package version 1.3.1},
-      url = {https://CRAN.R-project.org/package=slca},
+      journal = {Journal of Statistical Software},
+      year = {2026},
+      volume = {117},
+      number = {8},
+      pages = {1--52},
+      doi = {10.18637/jss.v117.i08},
     }

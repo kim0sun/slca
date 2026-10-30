@@ -1,6 +1,14 @@
 # Changelog
 
+## slca 1.4.3
+
+- Added the reference to the accompanying Journal of Statistical
+  Software article (Kim and Chung, 2026, <doi:10.18637/jss.v117.i08>) in
+  `CITATION`, `DESCRIPTION`, and the package documentation.
+
 ## slca 1.4.2
+
+CRAN release: 2026-10-27
 
 - Filled missing defaults when reusing historical control objects, and
   ignored saturated-table convergence metadata when comparing otherwise
